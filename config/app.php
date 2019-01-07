@@ -167,6 +167,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+        Orangehill\Iseed\IseedServiceProvider::class,
 
         /*
          * Application Service Providers...
