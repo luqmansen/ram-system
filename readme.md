@@ -1,3 +1,20 @@
+
+## Cloning Procedure
+1. Clone your project
+2. Go to the folder application using cd command on your cmd or terminal
+3. Copy .env.example file to .env on the root folder. You can type copy .env.example .env if using command prompt Windows or cp .env.example .env if using terminal, Ubuntu
+4. Open your .env file and change the database name (DB_DATABASE) to whatever you have, username (DB_USERNAME) and password (DB_PASSWORD) field correspond to your configuration. 
+By default, the username is root and you can leave the password field empty. (This is for Xampp) 
+By default, the username is root and password is also root. (This is for Lamp) 
+5. Run composer update & composer install on your cmd or terminal
+6. Run php artisan key:generate
+7. Run php artisan migrate
+8. Run php artisan db:seed atau db:seed --class=NamaSeedClass
+8. Run php artisan serve
+9. Go to localhost:8000
+
+
+<hr>
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
