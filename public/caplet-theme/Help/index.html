@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<head lang="en">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>Template Documentation Template</title>
+<!-- Framework CSS -->
+<link rel="stylesheet" href="assets/blueprint-css/screen.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="assets/blueprint-css/print.css" type="text/css" media="print">
+<!--[if lt IE 8]><link rel="stylesheet" href="assets/blueprint-css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+<link rel="stylesheet" href="assets/blueprint-css/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
+<style type="text/css" media="screen">
+p, table, hr, .box {
+	margin-bottom:25px;
+}
+.box p {
+	margin-bottom:10px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+		<h3 class="center alt">&ldquo;Caplet Admin HTML Theme&rdquo; Documentation
+				by &ldquo;Pinyo Pungfueng&rdquo; v1.1.4</h3>
+		<hr>
+		<h1 class="center">&ldquo;<span class="center alt">CAPLET</span>&rdquo;</h1>
+		<div class="borderTop">
+				<div class="span-6 colborder info prepend-1">
+						<p class="prepend-top"> <strong> Created: 07/31/2014<br>
+								By: Pinyo Pungfueng<br>
+								Email: <a href="mailto:zicedemo@gmail.com"> zicedemo@gmail.com </a> </strong> </p>
+				</div>
+				<!-- end div .span-6 -->
+				<div class="span-12 last">
+						<p class="prepend-top append-0">Thank you for purchasing my theme. If you
+								have any questions that are beyond the scope of this help file, please
+								feel free to email via my user page contact form <a href="http://themeforest.net/user/zicedemo">here</a>.
+								Thanks so much!</p>
+				</div>
+		</div>
+		<!-- end div .borderTop -->
+		<hr>
+		<h2 id="toc" class="alt">Table of Contents</h2>
+		<ol class="alpha">
+				<li><a href="#htmlStructure">HTML Structure</a></li>
+				<li><a href="#cssFiles">CSS Files and Structure</a></li>
+				<li><a href="#javascript">JavaScript</a></li>
+				<li><a href="#credits">Sources and Credits</a></li>
+				<li><a href="#phpFile">PHP Code Explanation</a></li>
+		</ol>
+		<hr>
+		
+
+		
+		<h3 id="htmlStructure"><strong>A) HTML Structure</strong> - <a href="#toc">top</a></h3>
+		<p>This template layout is responsive with two columns, based on Bootstrap
+				Framework 3.02 from Twitter. Here is the general structure.</p>
+		<h3>Wraper-Structure</h3>
+		<p align="center"><img src="assets/images/01_htmlstructure.png" alt="HTML Structure" /></p>
+		<h3>Main-Structure</h3>
+		<p>All of the information within the main content area is nested within a div
+				with an id of #main</p>
+		<p align="center"><img src="assets/images/02_htmlstructure.png" ></p>
+		<p>&nbsp;</p>
+		<hr>
+		<h3 id="cssFiles"><strong>B) CSS Files and Structure</strong> - <a href="#toc">top</a></h3>
+		<p> This template includes a number of CSS files that are used for display
+				the website. All CSS files, can be found in the Template's assets/css/ folder
+				and some plugins folder. </p>
+		<p> The CSS file :</p>
+		<ol >
+				<li><strong>bootstrap.min.css</strong> - It includes the based on Bootstrap
+						Framework from Twitter ( Original code )</li>
+				<li><strong>themes.css</strong> - modify from based on Bootstrap Framework
+						3.02 for this theme,</li>
+				<li><strong>styles.css </strong> - This style sheet contains specific styling
+						for the template structure. It is the base styles color , text styles,
+						header and include style sheet some plugin</li>
+		</ol>
+		<h3>Main CSS -Include</h3>
+		<p align="center"><img src="assets/images/03_cssstructure.png" width="100%"></p>
+		<p> All images used in the demo are not distributed with the theme. They are
+				all licensed under Creative Commons and credited to their respective creator/owner. </p>
+		<hr>
+		
+		
+		
+		<h3 id="javascript"><strong>C) JavaScript</strong> - <a href="#toc">top</a></h3>
+		<p> Caplet Themes uses the following javascript files:</p>
+		<ol class="doc">
+				<li>Library Jquery
+						<ul>
+								<li>jquery.min.js</li>
+								<li>jquery.ui.min.js</li>
+						</ul>
+				</li>
+				<li>Library Bootstrap
+						<ul>
+								<li>Bootstrap v3.0.2</li>
+								<li>Hammer.JS</li>
+								<li>Bootstrap Hover Dropdown</li>
+								<li>Bootstrap-progressbar</li>
+								<li>Bootstrap-modal</li>
+								<li>Bootstrap-tabdrop</li>
+						</ul>
+				</li>
+				<li>Modernizr Library For HTML5 And CSS3 </li>
+				<li>Library Form plugins
+						<ul>
+								<li>Textarea Elastic (Autosize) </li>
+								<li>Bootstrap-markdown</li>
+								<li>iCheck</li>
+								<li>Bootstrap</li>
+								<li>Bootstrap-tagsinput</li>
+								<li>Parsley validate form</li>
+								<li>Colpick Color Picker</li>
+								<li>Bootstrap-colorpalette</li>
+								<li>Bootstrap-maxlength</li>
+								<li>Bootstrap-select</li>
+								<li>Bootstrap: fileinput</li>
+								<li>Notification8</li>
+								<li>jQuery Slider Plugin</li>
+								<li>Slider Pagination Concept (modern slide)</li>
+								<li>jQuery FullScreen Plugin</li>
+								<li>Bootstrap wizard plugin</li>
+								<li>HTML Loading canvas</li>
+								<li>Treeview</li>
+								<li>Jcrop</li>
+								<li>Isotope</li>
+						</ul>
+				</li>
+				<li>Library Datetime plugins </li>
+				<li>Library Chart
+						<ul>
+								<li>flot </li>
+								<li>flot.pie</li>
+								<li>flot.categories</li>
+								<li>flot.resize</li>
+								<li>flot.stack</li>
+								<li>graphtable</li>
+								<li>flot.tooltip</li>
+								<li>jQuery Knob</li>
+								<li>jquery.sparkline </li>
+								<li>easyPieChart</li>
+						</ul>
+				</li>
+				<li>caplet.custom.js ( Library Themes Customize )</li>
+		</ol>
+		<br>
+		<hr>
+		
+		
+		<h3 id="credits"><strong>D) Sources and Credits</strong> - <a href="#toc">top</a></h3>
+		<p>I've used the following images, icons or other files as listed.</p>
+		<h4>jQuery & Plugins </h4>
+		<br>
+		<ul>
+				<li>jQuery Autosize [ <a href="http://www.jacklmoore.com/autosize/">Link</a> ]</li>
+				<li>jQuery color plugin xcolor [ <a href="http://www.xarg.org/project/jquery-color-plugin-xcolor/">Link</a> ]</li>
+				<li>Bootstrap plugin for markdown editing [ <a href="https://github.com/toopay/bootstrap-markdown">Link</a> ]</li>
+				<li>Bootstrap-switch [ <a href="https://github.com/nostalgiaz/bootstrap-switch">Link</a> ]</li>
+				<li>Bootstrap-tagsinput [ <a href="https://github.com/TimSchlechter/bootstrap-tagsinput/pull/59">Link</a> ]</li>
+				<li>iCheck [ <a href="https://github.com/damirfoy/icheck">Link</a> ]</li>
+				<li>Parsley dist/parsley.min.js build version 1.2.2 Javascript forms validation.
+						[ <a href="http://parsleyjs.org/">Link</a> ]</li>
+				<li>Bootstrap-select [ <a href="http://silviomoreto.github.io/bootstrap-select/">Link</a> ]</li>
+				<li>Bootstrap: fileinput [ <a href="http://jasny.github.io/bootstrap/javascript/">Link</a> ]</li>
+				<li>bootstrap wizard plugin [ <a href="https://github.com/VinceG/twitter-bootstrap-wizard">Link</a> ]</li>
+				<li>jQuery plugin: Treeview [ <a href="http://bassistance.de/jquery-plugins/jquery-plugin-treeview/">Link</a> ]</li>
+				<li>Hammer [ <a href="http://eightmedia.github.io/hammer.js/">Link</a> ]</li>
+				<li>Tab drop for Bootstrap [ <a href="http://www.eyecon.ro/bootstrap-tabdrop/">Link</a> ]</li>
+				<li>Bootstrap-progressbar [ <a href="https://www.minddust.com/bootstrap-progressbar">Link</a> ]</li>
+				<li>Bootstrap-modal </li>
+				<li>Flot Chart and Flot Plugin[ <a href="http://www.flotcharts.org/">Link</a> ]</li>
+				<li>jQuery-Knob [ <a href="https://github.com/aterrien/jQuery-Knob">Link</a> ]</li>
+				<li>jQuery.sparkline 2.1.2 [ <a href="http://omnipotent.net/jquery.sparkline">Link</a> ]</li>
+				<li>Ckeditor [ <a href="http://ckeditor.com/license">Link</a> ]</li>
+				<li>DataTables [ <a href="http://datatables.net/">Link</a> ]</li>
+				<li>bootstrap-datetimepicker [ <a href="http://www.malot.fr/bootstrap-datetimepicker">Link</a> ]</li>
+				<li>elFinder [ <a href="http://elfinder.org">Link</a> ]</li>
+				<li>Fullcalendar/ [ <a href="http://arshaw.com/fullcalendar/">Link</a> ]</li>
+				<li>swipebox [ <a href="http://github.com/brutaldesign/swipebox">Link</a> ]</li>
+				<li>Gmap [ <a href="http://hpneo.github.com/gmaps/">Link</a> ]</li>
+				<li>M Menu [ <a href="http://www.frebsite.nl">Link</a> ]</li>
+				<li>and All Plugin </li>
+		</ul>
+
+		<hr>
+		<h3 id="phpFile"><strong>E) PHP Files</strong> - <a href="#toc">top</a></h3>
+		<p>I've included three php file : </p>
+		<ul>
+				<li> <strong>data/checklogin.php</strong> - This pages is check login pages </li>
+				<li> <strong>data/crop-imges.php</strong> - images crop example </li>
+				<li> <strong>load_img.php</strong> -  each image  folder  show in gallery</li>
+		</ul>
+		
+		<hr>
+		<p>Once again, thank you so much for purchasing this theme. As I said at the
+				beginning, I'd be glad to help you if you have any questions relating to
+				this theme. No guarantees, but I'll do my best to assist. If you have a more
+				general question relating to the themes on ThemeForest, you might consider
+				visiting the forums and asking your question in the "Item Discussion" section.</p>
+		<p class="append-bottom alt large"><strong>Pinyo Pungfueng</strong></p>
+		<p><a href="#toc">Go To Table of Contents</a></p>
+		<hr class="space">
+</div>
+<!-- end div .container -->
+</body>
+</html>
