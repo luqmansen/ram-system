@@ -103,7 +103,7 @@
 		<nav id="menu">
 				<ul>
 					<li><a href="#"><i class="icon  fa fa-inbox"></i> Manage User</a></li>
-                    <li><a href="#"><i class="icon  fa fa-inbox"></i> View History</a></li>
+                    <li><a href="/admin/history"><i class="icon  fa fa-inbox"></i> View History</a></li>
                 </ul>
 		</nav>
 </div>

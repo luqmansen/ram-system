@@ -15,6 +15,10 @@ Route::get('/', function    () {
     return view('index');
 });
 
+Route::get('/admin', 'AdminController@index');
+
+Route::get('/admin/history', 'AdminController@history');
+
 Auth::routes();
 
 Route::get('/sudosu', 'HomeController@index')->name('home');
