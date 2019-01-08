@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('/BookingForm', 'FormController@form');
+
 Auth::routes();
 
 Route::get('/sudosu', 'HomeController@index')->name('home');
