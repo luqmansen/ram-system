@@ -54,6 +54,7 @@
 <script type="text/javascript" src="{{asset('assets/plugins/chart/chart.js')}}"></script>
 
 <script src="{{asset('assets/plugins/fullcalendar/fullcalendar.js')}}"></script>
+<link href="{{asset('assets/plugins/fullcalendar/fullcalendar.css')}}" rel="stylesheet" />
 <!-- Library  5+ plugins for bootstrap -->
 <script type="text/javascript" src="{{asset('assets/plugins/pluginsForBS/pluginsForBS.js')}}"></script>
 <!-- Library 10+ miscellaneous plugins -->

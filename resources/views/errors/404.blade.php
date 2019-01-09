@@ -1,8 +1,12 @@
 @extends('layouts.mainLayout')
 
+@section('title')
+<title>Page not found</title>
+@endsection
+
 
 @section('bodyWrapper')
-<body>
+<body  class="full-lg">
 <div id="wrapper" class="wrapper-shadow" style="background-color:#e5e9ec;">
 
 		<canvas id="world"></canvas>
@@ -14,7 +18,7 @@
 										<h2>Oops! That page can’t be found.</h2>
 										<div class="error-details"> Sorry, an error has occured, Requested page not found! </div>
 										<div class="error-actions">
-										<a href="{{url('/')}}" class="btn btn-theme-inverse btn-lg"><span class="fa fa-home"></span> Return me </a>
+										<a href="{{url('/')}}" class="btn btn-theme-inverse btn-lg"><span class="fa fa-home"></span> Take me home </a>
 										</div>
 										<div class="error-details"> Copyright &copy; 2019 PT Undip Citra Cipta Prima</div>
 								</div>
