@@ -11,21 +11,27 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function    () {
+    return view('index');
 });
 
+//Route untuk input costomer, sebelumnya harusnya masuk ke page reservation dulu
+Route::get('/customerinput', 'FormController@form');
 
-Route::get('/BookingForm', 'FormController@form');
+Route::get('/home', 'HomeController@index');
+
+Route::get('/admin', 'AdminController@index');
+
+Route::get('/admin/history', 'AdminController@history');
 
 Auth::routes();
 
 Route::get('/sudosu', 'HomeController@index')->name('home');
 
-Auth::routes();
+//cuma untuk nyoba---
+Route::get('/user', function    () {
+    return view('calendar');
+});
+//----
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
