@@ -1,9 +1,9 @@
 @extends('layouts.NoScriptLayout')
 
 @section('content')
-    <h1>Create Post</h1>
+    <h1>Data Peminjam</h1>
     
-    {!! Form::open(['action' => 'FormController@form', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
+    {!! Form::open(['action' => 'FormController@store', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
     {{-- this action is where our form is submitting to --}}
             <div class="form-group">
                 {{Form::label('name', 'Nama: ',['class' => 'col-lg-2 control-label'])}}

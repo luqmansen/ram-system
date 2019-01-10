@@ -15,8 +15,15 @@ Route::get('/', function    () {
     return view('index');
 });
 
-//Route untuk input costomer, sebelumnya harusnya masuk ke page reservation dulu
-Route::get('/customerinput', 'FormController@form');
+
+Route::get('/reservation', 'FormController@index');
+// Route::get('/customerinput', 'FormController@showForm1');
+// Route::get('/reservationinput', 'FormController@reservationinput');
+
+Route::get('/reservation/customerform' ,'FormController@create');
+Route::get('/reservation/bookingform' ,'FormController@create1');
+
+// Route::resource('/reservation', 'FormController');
 
 Route::get('/home', 'HomeController@index');
 

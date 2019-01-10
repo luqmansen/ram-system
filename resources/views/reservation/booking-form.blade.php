@@ -1,26 +1,37 @@
-@extends('layouts.layouts')
+@extends('layouts.NoScriptLayout')
 
 @section('content')
     <h1>Create Post</h1>
     
-    {!! Form::open(['action' => 'FormController@form', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
+    {!! Form::open(['action' => 'FormController@store1', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
     {{-- this action is where our form is submitting to --}}
             <div class="form-group">
-                {{Form::label('title', 'Title')}}
-                {{Form::text('title', '',['class' => 'form-control', 'placeholder' => 'Title'])}}
-                    {{--Bagian ini dikosongin karena ini bakal buat isi form Titlenya, jadi valuenya null--}}
+                {{Form::label('date', 'Tanggal Peminjaman: ',['class' => 'col-lg-2 control-label'])}}
+                {{Form::date('date', '',['class' => 'form-control'])}}
+                    
+            </div>
+            
+            <div class="form-group">
+                    {{Form::label('start_hour', 'Waktu Mulai Peminjaman: ',['class' => 'col-lg-2 control-label'])}}
+                    {{Form::time('start_hour', '')}}
             </div>
 
             <div class="form-group">
-                {{Form::label('body', 'Body')}}
-                {{Form::text('body', '',['class' => 'form-control', 'placeholder' => 'Body Text'])}}
-                    {{-- sama kosong juga --}}
+                    {{Form::label('end_hour', 'Waktu Selesai Peminjaman: ',['class' => 'col-lg-2 control-label'])}}
+                    {{Form::time('end_hour', '')}}
             </div>
+            
+            
             <div class="form-group">
-                   
-                {{Form::file('cover_image')}}
-
+                    {{Form::label('description', 'Deskripsi Singkat: ',['class' => 'col-lg-2 control-label'])}}
+                    {{Form::text('description', '',['class' => 'form-control', 'placeholder' => 'Diskripsi Singkat '])}}
             </div>
+            
+            <div class="form-group">
+                    {{Form::label('note', 'Catatan : ',['class' => 'col-lg-2 control-label'])}}
+                    {{Form::text('note', '',['class' => 'form-control', 'placeholder' => 'Diskripsi Singkat '])}}
+            </div>
+
             {{Form::submit('Submit', ['class' => 'btn btn-primary', 'style' => 'float :right;'])}}
     {!! Form::close() !!}
 

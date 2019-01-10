@@ -5,5 +5,9 @@
         padding-top: 0 !important;
     }
 </style>
-@extends('inc.calendar')
+@extends('layouts.NoScriptLayout')
+
+@section('content')
+    
+@endsection
 @extends('inc.js-script')
