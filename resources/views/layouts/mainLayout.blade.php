@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 <!-- Title-->
 @section('title')
-<title>CAPLET |  Admin HTML Themes</title>
+<<title>Room Reservation & Monitoring System</title>
 @show
 <!-- Favicons -->
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{asset('assets/ico/apple-touch-icon-144-precomposed.png')}}">
