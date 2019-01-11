@@ -66,20 +66,15 @@ class FormController extends Controller
         
         // $user = json_decode(json_decode($name), true);
 
-        $name =  Customer::select('id')->orderBy('created_at','desc')->take(1)->get();
+        $name =  Customer::select('id')->orderBy('created_at','desc')->first();
         // $something = json_decode($name);
         // $id = $something->{'id'};
-            foreach ($name as $id ) {
-                ($id -> id);
-                
-            }
-        
-        
-
-        // $user = var_dump($customer->id);
-        
+            // foreach ($name as $id ) {
+            //     ($id -> id);
+            // }
+       
         $reservations = new Reservation;
-        $reservations->id_customer = $id->id;
+        $reservations->id_customer = $name->id;
         // dd($reservations);
         $reservations->id_room = $request->input('id_room');
         $reservations->note = $request->input('note');
