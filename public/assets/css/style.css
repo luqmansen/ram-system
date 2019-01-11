@@ -435,11 +435,17 @@ a.logo {
   height: 50px;
   position: relative;
 }
-
 body.leftMenu {
   background: url(../img/logo_white_icon.png) no-repeat;
   background-position: 11px 10px;
-  background-color: #262a33;
+  background-color: #FFFFFF;
+}
+@media screen and (max-width: 991px) {
+  body.leftMenu {
+    background: url(../img/logo_white_icon2.png) no-repeat;
+    background-position: 11px 10px;
+    background-color: #FFFFFF;
+  }
 }
 body.leftMenu:after {
   content: "";

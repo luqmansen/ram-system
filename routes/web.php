@@ -27,7 +27,7 @@ Route::get('/sudosu', 'HomeController@index')->name('home');
 
 Route::get('/manageRooms','ManageRoomsController@index');
 
-Route::get('/manageCostumers','ManageCostumersController@index');
+// Route::get('/manageCostumers','ManageCostumersController@index');
 
 Route::get('/manageReservations','ManageReservationsController@index');
 
@@ -40,3 +40,10 @@ Route::get('/user', function    () {
 //----
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
+Route::get('/hoobla',function(){
+    return view('hoobla');
+});
+
+Route::get('/roomDelete/{id}', 'ManageRoomsController@delete');
+Route::get('/exportRoomTable', 'ManageRoomsController@export');

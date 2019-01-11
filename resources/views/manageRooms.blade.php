@@ -1,9 +1,40 @@
 @extends('layouts.mainLayout')
+
 @section('title')
 <title>Manage Rooms | Room Reservation & Monitoring System</title>
 @endsection
+
+@section('customStyle')
+<style>
+	@media screen and (max-width: 762px) {
+		.ico {
+			top:40px !important;
+		}
+	}
+	@media screen and (max-width: 760px) {
+		.ico {
+			top:36px !important;
+		}
+	}
+	@media screen and (max-width: 363px) {
+		.ico {
+			top:74px !important;
+		}
+	}
+	@media screen and (max-width: 353px) {
+		.ico {
+			top:74px !important;
+		}
+	}
+	@media screen and (min-width: 991px) {
+	.icon-toolsbar {
+		visibility:hidden !important;
+	}	
+</style>
+@endsection
+
 @section('bodyWrapper')
-<body class="nav-collapse leftMenu">
+<body class="leftMenu nav-collapse">
 <div id="wrapper">
 		<!--
 		/////////////////////////////////////////////////////////////////////////
@@ -13,13 +44,16 @@
 		<div id="header">
 		
 				<div class="logo-area clearfix">
-						<a href="home" class="logo"></a>
+						<a href="#" class="logo"></a>
 				</div>
 				<!-- //logo-area-->
 				
 				<div class="tools-bar">
+						<ul class="nav navbar-nav nav-main-xs">
+								<li><a href="#menu" class="icon-toolsbar"><i class="fa fa-bars"></i></a></li>
+						</ul>
 						<ul class="nav navbar-nav navbar-right tooltip-area">
-								<li class="dropdown">
+                            <li class="dropdown">
 										<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
 											<em><strong>Hi</strong>, {{ Auth::user()->name }}    </em> <i class="dropdown-icon fa fa-angle-down"></i>
 										</a>
@@ -55,6 +89,10 @@
 		//////////////////////////////////////////////////////////////////////
 		-->
 		<div id="nav">
+				<div id="nav-title">
+					<h3><strong>Hi</strong>, Nutprawee</h3>
+				</div>
+				<!-- //nav-title-->
 				<div id="nav-scroll">
 						<div class="avatar-slide">
 						
@@ -65,7 +103,7 @@
 								<!-- //avatar-chart-->
 								
 								<div class="avatar-detail">
-										<p><strong>Hi</strong>, Nutprawee</p>
+										<p><button class="btn btn-inverse btn-sm"><i class="fa fa-pencil"></i> Edit Profile</button></p>
 										<p><a href="#">@ Chaing Mai , TH</a></p>
 										<span>12,110 Sales</span>
 										<span>106 Follower</span>
@@ -195,7 +233,102 @@
 				</div>
 				<!-- //nav-scroller-->
 		</div>
-		<!-- //nav-->
+        <!-- //nav-->
+        
+        <!--
+		/////////////////////////////////////////////////////////////////////////
+		//////////     MAIN SHOW CONTENT     //////////
+		//////////////////////////////////////////////////////////////////////
+		-->
+		<div id="main">
+        
+        <div id="content">
+        
+                <div class="row">
+                
+                        <div class="col-lg-12">
+                                <section class="panel">
+                                        <header class="panel-heading">
+                                                <h2><strong>Manage</strong> Rooms</h2>
+                                        </header>
+                                        <div class="panel-tools fully color" align="right" data-toolscolor="#6CC3A0">
+                                                
+                                                <ul class="tooltip-area">
+                                                </ul>
+                                        </div>
+                                        <div class="panel-body">
+                                                <form>
+													<ul style="padding-bottom:10px">
+													<a href="#" type="button" class="btn btn-primary "><i class="fa fa-plus"></i> Add room</a>
+                                                    <a href="#" type="button" id="export-button" class="btn btn-success "><i class="fa fa-external-link-square"></i> Export .xls</a>
+                                                    <a href="#" type="button" class="btn btn-danger"><i class="fa fa-external-link-square"></i> Export .pdf</a>
+													<button type="button" class="btn btn-danger btn-transparent md-effect pull-right" data-effect="md-scale"><i class="fa fa-trash-o"></i> Delete selected data</button>
+													<span class="pull-right">
+														<span><input id="selectall" style="margin-top:15px" name="selectdata" type="checkbox"></span>
+														<label  style="padding:8px 20px 10px 10px;position:relative;top:-3px;"> Select all data</label>
+														
+													</span>
+													
+													</ul>
+                                                    
+                                                        <table class="table table-striped" id="table-example">
+                                                                <thead>
+                                                                        <tr>
+																				<th class="center" align="center">	</th>
+                                                                                <th  class="text-center ok">ID <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ok">Room Name <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ok">Capacity With Table <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ok">Capacity Without Table <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ok">Action</th>
+                                                                        </tr>
+                                                                </thead>
+                                                                <tbody align="center">
+                                                                        @foreach($rooms as $room)
+                                                                        <tr  id="tablerow{{$room->id}}">
+																				<td><input name="selectdata" type="checkbox"></td>
+                                                                                <td>{{$room->id}}</td>
+                                                                                <td>{{$room->name}}</td>
+                                                                                <td>{{$room->table_capacity}}</td>
+                                                                                <td>{{$room->chair_capacity}}</td>
+                                                                                <td class="center">
+                                                                                    <a href="#" type="button" class="btn btn-success btn-transparent"><i class="fa fa-edit"></i> Edit</a>
+                                                                                    <button type="button" value="{{$room->id}}" class="btn btn-danger btn-transparent md-effect" data-effect="md-scale"><i class="fa fa-trash-o"></i> Delete</button>
+                                                                                </td>
+																		</tr>	
+																		<!--
+																		////////////////////////////////////////////////////////////////////////
+																		//////////     MODAL DELETE    //////////
+																		//////////////////////////////////////////////////////////////////////
+																		-->
+																		<div id="md-effect{{$room->id}}" class="modal fade" tabindex="-1" data-width="450">
+																				<div class="modal-header bg-inverse bd-inverse-darken">
+																						<h4 class="modal-title">Confirmation</h4>
+																				</div>
+																				<!-- //modal-header-->
+																				<div class="modal-body">
+																					<p>Are you sure you want to delete room {{$room->name}}?</p>
+																					<div class="modal-footer">
+																							<button type="button" id="cancel-delete-btn" class="btn btn-default" data-dismiss="modal">Cancel</button>
+																							
+																							<button type="button" id="delete{{$room->id}}" value="{{$room->id}}" class="btn btn-danger delete-yes">Yes</button>
+																					</div>
+																				</div>
+																				<!-- //modal-body-->
+																		</div>
+																		<!-- //modal-->     
+                                                                        @endforeach
+                                                                </tbody>
+                                                        </table>
+                                                </form>
+                                        </div>
+                                </section>
+                        </div>
+
+                </div>
+                <!-- //content > row-->
+                
+        </div>
+        <!-- //content-->
 		
 		
 		<!--
@@ -218,36 +351,6 @@
 			</form>
 		</div>
 		<!-- //widget-top-search-->
-		
-		
-		
-		
-		<!--
-		/////////////////////////////////////////////////////////////////////////
-		//////////     MAIN SHOW CONTENT     //////////
-		//////////////////////////////////////////////////////////////////////
-		-->
-		<div id="main">
-		
-				<div id="content">
-				
-						<div class="row">
-						
-								<div class="col-lg-8" ></div>
-								<!-- //content > row > col-lg-8 -->
-								
-								<div class="col-lg-4"></div>
-								<!-- //content > row > col-lg-4 -->
-								
-						</div>
-						<!-- //content > row-->
-						
-				</div>
-				<!-- //content-->
-				
-				
-		</div>
-		<!-- //main-->
 		
 		
 		
@@ -458,7 +561,7 @@
 				</div>
 				<!-- //modal-body-->
 		</div>
-		<!-- //modal-->
+		<!-- //modal-->        
 		
 		
 		
@@ -467,12 +570,12 @@
 		//////////     LEFT NAV MENU     //////////
 		///////////////////////////////////////////////////////////
 		-->
-		<nav id="menu">
+		<nav id="menu"  data-search="close">
 				<ul>
                         <li><a href="{{url('home')}}">
 							<span><i class="icon  fa fa-calendar"></i>  Reservations Calendar </a></span>
 						</li>
-						<li><a href="{{url('manageRooms')}}">
+				        <li><a href="{{url('manageRooms')}}">
 							<span><i class="icon  fa fa-square"></i>  Manage Rooms </a></span>
 						</li>
 						<li><a href="{{url('manageCustomers')}}">
@@ -484,491 +587,9 @@
 						<li><a href="{{url('history')}}">
 							<span><i class="icon  fa fa-laptop"></i> View Log / History </a></span>
 						</li>
-						
-						<!-- <li><a href="front/index.html"><i class="icon  fa fa-rocket"></i> Front End </a></li>
-						<li><span><i class="icon  fa fa-th-list"></i> Layout</span>
-								<ul>
-										<li class="Label label-lg">Main Layout</li>
-										<li><a href="alwayMenu.html"> Alway Left  Menu </a></li>
-										<li><a href="hideUserPanel.html"> Hide User Panel </a></li>
-										<li><a href="hideUserPanelIn.html"> Show & Hide</a></li>
-										<li class="Label label-lg">Other Layout</li>
-										<li><a href="topMenu.html"> Top Menu</a></li>
-										<li><a href="footerShow.html"> Footer Show</a></li>
-										<li><a href="footerMenu.html"> Footer with menu</a></li>
-								</ul>
-						</li>
-						<li><a href="mailBox.html"><i class="icon  fa fa-inbox"></i> Mail</a></li>
-						<li><span><i class="icon  fa fa-briefcase"></i> UI Element</span>
-								<ul>
-										<li><a href="ui.html"> UI </a></li>
-										<li><a href="ui_button.html"> Button </a></li>
-										<li><a href="ui_icon.html"> Fonts Icon</a></li>
-										<li><a href="ui_slide.html"> Slide</a></li>
-										<li><a href="ui_modal.html"> Modal</a></li>
-										<li><a href="ui_panel.html"> Panel</a></li>
-										<li><a href="ui_alert.html"> Alert</a></li>
-										<li><a href="ui_typography.html"> Typography</a></li>
-										<li><a href="ui_nestable.html"> Nestable</a></li>
-								</ul>
-						</li>
-						<li><span><i class="icon  fa fa-bar-chart-o"></i> Chart </span>
-								<ul>
-										<li><a href="chartFlot.html"> Flot Chart</a></li>
-										<li><a href="chartMorris.html"> Morris Chart</a></li>
-										<li><a href="chartOther.html"> Other Chart</a></li>
-								</ul>
-						</li>
-						<li><a href="calendar.html"><i class="icon  fa fa-calendar-o"></i> Calendar </a></li>
-						<li><span><i class="icon  fa fa-align-right"></i>Off  Canvas  Menu</span>
-								<ul>
-										<li><a href="menu.html"> Position </a></li>
-										<li><a href="menuOpen.html"> Touch to open</a></li>
-										<li><a href="menuVertical.html"> Vertical Level</a></li>
-										<li><span> Unlimited Level </span>
-												<ul>
-														<li><a href="#"> Level 3 </a></li>
-														<li><a href="#"> Level 3 </a></li>
-														<li><span> Level 4</span>
-																<ul>
-																		<li><a href="#"> Level 4 </a></li>
-																		<li><a href="#"> Level 4 </a></li>
-																</ul>
-														</li>
-												</ul>
-										</li>
-								</ul>
-						</li>
-						<li><span><i class="icon  fa fa-clipboard"></i> From</span>
-								<ul>
-										<li><a href="form.html">Form Basic</a></li>
-										<li><a href="formComponents.html">Form Components</a></li>
-										<li><a href="formValidate.html">Form Validate</a></li>
-										<li><a href="formWizard.html">Form Wizard</a></li>
-										<li><a href="formMutiselect.html">Form Mutiseletion</a></li>
-										<li><a href="form_x_edit.html">Form x-edit</a></li>
-										<li><a href="drop_upload.html">Drop Upload</a></li>
-								</ul>
-						</li>
-						<li><a href="fileManager.html"><i class="icon  fa fa-file-text"></i> File Manager </a></li>
-						<li><span><i class="icon  fa fa-fire"></i> Table</span>
-								<ul>
-										<li><a href="table.html">Table Basic</a></li>
-										<li><a href="tableResponsive.html">Table Responsive</a></li>
-										<li><a href="tableDynamic.html">Data Table</a></li>
-								</ul>
-						</li>
-						<li><span><i class="icon  fa fa-folder-open-o"></i> Other Page</span>
-								<ul>
-										<li><a href="login.html"> login </a></li>
-										<li><a href="lockscreen.html"> Lockscreen </a></li>
-										<li><a href="images_manager.html"> Images Manager</a></li>
-										<li><a href="gallery.html"> Gallery</a></li>
-										<li><a href="timeline.html"> Timeline</a></li>
-										<li><a href="profile.html"> Profile</a></li>
-										<li><a href="blankPage.html"> Blank Page</a></li>
-										<li><a href="page_invoice.html"> Invoice</a></li>
-										<li><a href="page_search.html"> Search result</a></li>
-										<li><a href="pages_pricing.html"> Pricing Table</a></li>
-										<li><a href="register.html"> Register</a></li>
-										<li><a href="page_chat.html"> Full Chat</a></li>
-								</ul>
-						</li>
-						<li><a href="map.html"><i class="icon  fa fa-map-marker"></i> Maps</a></li>
-						<li><a href="404.html"><i class="icon  fa fa-exclamation-triangle"></i> Error Pages</a></li>
-						<li><a href="siteMap.html"><i class="icon  fa fa-sitemap"></i>Site Map</a></li> -->
 				</ul>
 		</nav>
 		<!-- //nav left menu-->
-		
-		
-		
-		<!--
-		/////////////////////////////////////////////////////////////////
-		//////////     RIGHT NAV MENU     //////////
-		/////////////////////////////////////////////////////////////
-		-->
-		<nav id="menu-right">
-				<ul>
-						<li class="Label label-lg">Theme color</li>
-						<li>
-							<span class="text-center">
-								<div id="style1" class="color-themes col1"></div>
-								<div id="style2" class="color-themes col2" ></div>
-								<div id="style3" class="color-themes col3" ></div>
-								<div id="style4" class="color-themes col4" ></div>
-								<div id="none" class="color-themes col5" ></div>
-							</span>
-						</li>
-						<li class="Label label-lg">Contact Group</li>
-						<li data-counter-color="theme">
-								<span><i class="icon fa fa-smile-o"></i> Friends</span>
-								<ul>
-										<li class="Label">A</li>
-										<li class="img">
-												<a href="#" class="online">
-														<img alt="" src="assets/photos_preview/50/people/1.jpg" /> Alexa 
-														<small>Johnson</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#" class="busy">
-														<img alt="" src="assets/photos_preview/50/people/2.jpg" /> Alexander 
-														<small>Brown</small>
-												</a>
-										</li>
-										<li class="Label">F</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/3.jpg" /> Fred
-														<small>Smith</small>
-												</a>
-										</li>
-										<li class="Label">J</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/4.jpg" /> James
-														<small>Miller</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/5.jpg" /> Jefferson
-														<small>Jackson</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/6.jpg" /> Jordan
-														<small>Lee</small>
-												</a>
-										</li>
-										<li class="Label">K</li>
-										<li class="img">
-												<a href="#" class="online">
-														<img alt="" src="assets/photos_preview/50/people/7.jpg" /> Kim
-														<small>Adams</small>
-												</a>
-										</li>
-										<li class="Label">M</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/8.jpg" /> Meagan
-														<small>Miller</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#" class="busy">
-														<img alt="" src="assets/photos_preview/50/people/9.jpg" /> Melissa
-														<small>Johnson</small>
-												</a>
-										</li>
-										<li class="Label">N</li>
-										<li class="img">
-												<a href="#" class="online">
-														<img alt="" src="assets/photos_preview/50/people/10.jpg" /> Nicole
-														<small>Smith</small>
-												</a>
-										</li>
-										<li class="Label">S</li>
-										<li class="img">
-												<a href="#" class="online">
-														<img alt="" src="assets/photos_preview/50/people/1.jpg" /> Samantha
-														<small>Harris</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#" class="block">
-														<img alt="" src="assets/photos_preview/50/people/2.jpg" /> Scott
-														<small>Thompson</small>
-												</a>
-										</li>
-								</ul>
-						</li>
-						<li>
-								<span><i class="icon  fa fa-home"></i> Family</span>
-								<ul>
-										<li class="Label">A</li>
-										<li class="img">
-												<a href="#" class="busy">
-														<img alt="" src="assets/photos_preview/50/people/3.jpg" /> Adam
-														<small>White</small>
-												</a>
-										</li>
-										<li class="Label">B</li>
-										<li class="img">
-												<a href="#" class="busy">
-														<img alt="" src="assets/photos_preview/50/people/4.jpg" /> Ben
-														<small>Robinson</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/5.jpg" /> Bruce
-														<small>Lee</small>
-												</a>
-										</li>
-										<li class="Label">E</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/6.jpg" /> Eddie
-														<small>Williams</small>
-												</a>
-										</li>
-										<li class="Label">J</li>
-										<li class="img">
-												<a href="#" class="online">
-														<img alt="" src="assets/photos_preview/50/people/7.jpg" /> Jack
-														<small>Johnson</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/8.jpg" /> John
-														<small>Jackman</small>
-												</a>
-										</li>
-										<li class="Label">M</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/9.jpg" /> Martina
-														<small>Thompson</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#" class="busy">
-														<img alt="" src="assets/photos_preview/50/people/10.jpg" /> Matthew
-														<small>Watson</small>
-												</a>
-										</li>
-										<li class="Label">O</li>
-										<li class="img">
-												<a href="#" class="online">
-														<img alt="" src="assets/photos_preview/50/people/1.jpg" /> Olivia
-														<small>Taylor</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#" class="online">
-														<img alt="" src="assets/photos_preview/50/people/2.jpg" /> Owen
-														<small>Wilson</small>
-												</a>
-										</li>
-								</ul>
-						</li>
-						<li data-counter-color="theme-inverse">
-								<span><i class="icon  fa fa-briefcase"></i> Work colleagues</span>
-								<ul>
-										<li class="Label">D</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/3.jpg" /> David
-														<small>Harris</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/4.jpg" /> Dennis
-														<small>King</small>
-												</a>
-										</li>
-										<li class="Label">E</li>
-										<li class="img">
-												<a href="#" class="online">
-														<img alt="" src="assets/photos_preview/50/people/5.jpg" /> Eliza
-														<small>Walker</small>
-												</a>
-										</li>
-										<li class="Label">L</li>
-										<li class="img">
-												<a href="#" class="busy">
-														<img alt="" src="assets/photos_preview/50/people/6.jpg" /> Larry
-														<small>Turner</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#" class="online">
-														<img alt="" src="assets/photos_preview/50/people/7.jpg" /> Lisa<br />
-														<small>Wilson</small>
-												</a>
-										</li>
-										<li class="Label">M</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/8.jpg" /> Michael
-														<small>Jordan</small>
-												</a>
-										</li>
-										<li class="Label">R</li>
-										<li class="img">
-												<a href="#">
-														<img alt="" src="assets/photos_preview/50/people/9.jpg" /> Rachelle
-														<small>Cooper</small>
-												</a>
-										</li>
-										<li class="img">
-												<a href="#" class="online">
-														<img alt="" src="assets/photos_preview/50/people/10.jpg" /> Rick
-														<small>James</small>
-												</a>
-										</li>
-								</ul>
-						</li>
-						<li class="Label label-lg">Total week Earnings</li>
-						<li>
-								<span><i class="icon  fa fa-bar-chart-o"></i> See This week</span>
-								<ul>
-										<li class="Label">themeforest</li>
-										<li><span><i class="label label-warning pull-right">HTML</i> Earnings $395 </span></li>
-										<li><span> Earnings $485 </span></li>
-										<li><span><i class="label label-info pull-right">Wordpress</i> Earnings $1,589 </span></li>
-										<li class="Label">codecanyon </li>
-										<li><span><i class="label label-danger pull-right">Item 6537086</i> Earnings $897</span></li>
-										<li><span>Sunday Earnings $395</span></li>
-										<li class="Label">Other</li>
-										<li><span><i class="label label-success  pull-right">up 35%</i> Total Earnings $5,025</span></li>
-								</ul>
-						</li>
-						<li>
-								<span>
-									<div class="widget-mini-chart align-xs-right">
-											<div class="pull-left">
-													<div class="sparkline mini-chart" data-type="bar" data-color="warning" data-bar-width="10" data-height="45">2,3,7,5,4,6,6,3</div>
-											</div>
-											<p>This week Earnings</p>
-											<h4>$11,987</h4>
-									</div>
-									<!-- //widget-mini-chart -->			
-								</span>
-						</li>
-						<li class="Label label-lg">Processing </li>
-						<li>
-								<span>								
-									<p>Server Processing</p>
-									<div class="progress progress-dark progress-stripes progress-xs">
-											<div class="progress-bar bg-danger" aria-valuetransitiongoal="37"></div>
-									</div>
-									<label class="progress-label">Today , CPU 37%</label>
-									<!-- //progress-->
-									<div class="progress progress-dark progress-xs">
-											<div class="progress-bar bg-warning" aria-valuetransitiongoal="23"></div>
-									</div>
-									<label class="progress-label lasted">Today , Server load  22.85%</label>
-									<!-- //progress-->
-								</span>
-						</li>
-						<li class="Label label-lg">Quick Friends Chat </li>
-						<li class="img">
-								<a href="#" class="online">
-										<img alt="" src="assets/photos_preview/50/people/1.jpg" /> Olivia
-										<small>Taylor</small>
-								</a>
-						</li>
-						<li class="img">
-								<a href="#" class="online">
-										<img alt="" src="assets/photos_preview/50/people/2.jpg" /> Owen
-										<small>Wilson</small>
-								</a>
-						</li>
-						<li class="img">
-								<a href="#">
-										<img alt="" src="assets/photos_preview/50/people/8.jpg" /> Meagan
-										<small>Miller</small>
-								</a>
-						</li>
-						<li class="img">
-								<a href="#" class="busy">
-										<img alt="" src="assets/photos_preview/50/people/9.jpg" /> Melissa
-										<small>Johnson</small>
-								</a>
-						</li>
-						<li class="img">
-								<a href="#" class="online">
-										<img alt="" src="assets/photos_preview/50/people/5.jpg" /> Samantha
-										<small>Harris</small>
-								</a>
-						</li>
-						<li class="Label label-lg">visitors Real Time</li>
-						<li>
-								<span>
-									<div class="widget-chart">
-											<div id="realtimeChart" class="demo-placeholder" style="height:150px"></div>
-											<div id="realtimeChartCount" class="align-lg-center"><span>0</span> visitors on site </div>
-									</div><!-- // widget-chart -->
-								</span>
-						</li>
-				</ul>
-		</nav>
-        <!-- //nav right menu-->
-        
-        		<!--
-		/////////////////////////////////////////////////////////////////////////
-		//////////     MAIN SHOW CONTENT     //////////
-		//////////////////////////////////////////////////////////////////////
-		-->
-		<div id="main">
-        
-        <div id="content">
-        
-                <div class="row">
-                
-                        <div class="col-lg-12">
-                                <section class="panel">
-                                        <header class="panel-heading">
-                                                <h2><strong>Manage</strong> Rooms</h2>
-                                        </header>
-                                        <div class="panel-tools fully color" align="right" data-toolscolor="#6CC3A0">
-                                                
-                                                <ul class="tooltip-area">
-                                                        <li><a href="javascript:void(0)" type="button" class="btn btn-collapse" title="Collapse"><i class="fa fa-sort-amount-asc"></i></a></li>
-                                                        <li><a href="javascript:void(0)" class="btn btn-reload"  title="Reload"><i class="fa fa-retweet"></i></a></li>
-                                                        <li><a href="javascript:void(0)" class="btn btn-close" title="Close"><i class="fa fa-times"></i></a></li>
-                                                </ul>
-                                        </div>
-                                        <div class="panel-body">
-                                                <form>
-                                                    <a href="#" type="button" class="btn btn-primary btn-transparent"><i class="fa fa-plus"></i> Add room</a>
-                                                    <a href="#" type="button" class="btn btn-success btn-transparent"><i class="fa fa-external-link-square"></i> Export .xls</a>
-                                                    <a href="#" type="button" class="btn btn-danger btn-transparent"><i class="fa fa-external-link-square"></i> Export .pdf</a>
-                                                        <table class="table table-striped" id="table-example">
-                                                                <thead>
-                                                                        <tr>
-                                                                                <th  class="text-center">ID</th>
-                                                                                <th class="text-center">Room Name</th>
-                                                                                <th class="text-center">Capacity With Table</th>
-                                                                                <th class="text-center">Capacity Without Table</th>
-                                                                                <th class="text-center">Action</th>
-                                                                        </tr>
-                                                                </thead>
-                                                                <tbody align="center">
-                                                                        @foreach($asd as $room)
-                                                                        <tr class="odd gradeX">
-                                                                                <td>{{$room->id}}</td>
-                                                                                <td>{{$room->name}}</td>
-                                                                                <td>{{$room->table_capacity}}</td>
-                                                                                <td>{{$room->chair_capacity}}</td>
-                                                                                <td class="center">
-                                                                                    <a href="#" type="button" class="btn btn-success btn-transparent"><i class="fa fa-edit"></i> Edit</a>
-                                                                                    <a href="#" type="button" class="btn btn-danger btn-transparent"><i class="fa fa-trash-o"></i> Delete</a>
-                                                                                </td>
-                                                                        </tr>
-                                                                        @endforeach
-                                                                </tbody>
-                                                        </table>
-                                                </form>
-                                        </div>
-                                </section>
-                        </div>
-
-                </div>
-                <!-- //content > row-->
-                
-        </div>
-        <!-- //content-->
-        
-        
-</div>
-<!-- //main-->
 		
 		
 </div>
@@ -1010,5 +631,84 @@
 		$('#table-example').dataTable();
 		$('table[data-provide="data-table"]').dataTable();
 	});
+</script>
+<script>
+var touchWrapper=document.getElementById("wrapper");
+if(touchWrapper){
+	var wrapper= Hammer( touchWrapper );
+	 wrapper.on("dragright", function(event) {	// hold , tap, doubletap ,dragright ,swipe, swipeup, swipedown, swipeleft, swiperight
+		if((event.gesture.deltaY<=7 && event.gesture.deltaY>=-7) && event.gesture.deltaX >100){
+			$('nav#menu').trigger( 'open.mm' );
+		}
+	 });
+	 wrapper.on("dragleft", function(event) {
+		if((event.gesture.deltaY<=5 && event.gesture.deltaY>=-5) && event.gesture.deltaX <-100){
+			$('nav#contact-right').trigger( 'open.mm' );
+		}
+	 });
+}
+</script>
+
+<!-- modal script -->
+<script type="text/javascript">
+$(function() {
+			
+			$(".md-effect").click(function(event){
+					event.preventDefault();
+					var id=$(this).val();
+					var modal='#md-effect'+id;
+					var data=$(this).data();
+					$(modal).attr('class','modal fade').addClass(data.effect).modal('show');
+			});
+
+			// $('#cancel-delete-btn').click(function(){
+			// 	$("#md-effect").attr('class','modal fade').addClass(data.effect).modal('hide')
+			// })
+			
+			$.ajaxSetup ({
+				// Disable caching of AJAX responses
+				cache: false
+			});
+			var $modal = $('#md-ajax');
+			$('.md-ajax-load').on('click', function(){
+				  $('body').modalmanager('loading');
+				  setTimeout(function(){
+					 $modal.find(".modal-body").load('data/md-ajax-load.html', '', function(){
+					  $modal.modal();
+					});
+				  }, 2000);
+			});
+
+			// AJAX Script
+			$(".delete-yes").click(function(event){
+				event.preventDefault();
+				var id=$(this).val();
+				var tr="#tablerow"+id;
+				$.ajax({
+					url: '/roomDelete/'+id,
+					type:"GET",
+					dataType:"json",
+					success:function(data) {
+						$(tr).remove();
+						var modal='#md-effect'+id;
+						$(modal).attr('class','modal fade').modal('hide');					   						
+						}
+					}
+				);
+				
+			});
+
+			$('#export-button').click(function(){
+				window.location.href="{{url('/exportRoomTable')}}"
+			});
+			
+			$('#selectall').click(function() {    
+				$('input[name=selectdata]').prop('checked', this.checked);    
+			});
+
+	});
+
+
+	
 </script>
 @endsection
