@@ -1,8 +1,7 @@
 @extends('layouts.mainLayout')
 @section('title')
-<title>Admin Panel | Room Reservation & Monitoring System</title>
+<title>Manage Rooms | Room Reservation & Monitoring System</title>
 @endsection
-
 @section('bodyWrapper')
 <body class="nav-collapse leftMenu">
 <div id="wrapper">
@@ -14,7 +13,7 @@
 		<div id="header">
 		
 				<div class="logo-area clearfix">
-						<a href="#" class="logo"></a>
+						<a href="home" class="logo"></a>
 				</div>
 				<!-- //logo-area-->
 				
@@ -470,10 +469,10 @@
 		-->
 		<nav id="menu">
 				<ul>
-				<li><a href="{{url('home')}}">
+                        <li><a href="{{url('home')}}">
 							<span><i class="icon  fa fa-calendar"></i>  Reservations Calendar </a></span>
 						</li>
-				<li><a href="{{url('manageRooms')}}">
+						<li><a href="{{url('manageRooms')}}">
 							<span><i class="icon  fa fa-square"></i>  Manage Rooms </a></span>
 						</li>
 						<li><a href="{{url('manageCustomers')}}">
@@ -900,7 +899,76 @@
 						</li>
 				</ul>
 		</nav>
-		<!-- //nav right menu-->
+        <!-- //nav right menu-->
+        
+        		<!--
+		/////////////////////////////////////////////////////////////////////////
+		//////////     MAIN SHOW CONTENT     //////////
+		//////////////////////////////////////////////////////////////////////
+		-->
+		<div id="main">
+        
+        <div id="content">
+        
+                <div class="row">
+                
+                        <div class="col-lg-12">
+                                <section class="panel">
+                                        <header class="panel-heading">
+                                                <h2><strong>Manage</strong> Rooms</h2>
+                                        </header>
+                                        <div class="panel-tools fully color" align="right" data-toolscolor="#6CC3A0">
+                                                
+                                                <ul class="tooltip-area">
+                                                        <li><a href="javascript:void(0)" type="button" class="btn btn-collapse" title="Collapse"><i class="fa fa-sort-amount-asc"></i></a></li>
+                                                        <li><a href="javascript:void(0)" class="btn btn-reload"  title="Reload"><i class="fa fa-retweet"></i></a></li>
+                                                        <li><a href="javascript:void(0)" class="btn btn-close" title="Close"><i class="fa fa-times"></i></a></li>
+                                                </ul>
+                                        </div>
+                                        <div class="panel-body">
+                                                <form>
+                                                    <a href="#" type="button" class="btn btn-primary btn-transparent"><i class="fa fa-plus"></i> Add room</a>
+                                                    <a href="#" type="button" class="btn btn-success btn-transparent"><i class="fa fa-external-link-square"></i> Export .xls</a>
+                                                    <a href="#" type="button" class="btn btn-danger btn-transparent"><i class="fa fa-external-link-square"></i> Export .pdf</a>
+                                                        <table class="table table-striped" id="table-example">
+                                                                <thead>
+                                                                        <tr>
+                                                                                <th  class="text-center">ID</th>
+                                                                                <th class="text-center">Room Name</th>
+                                                                                <th class="text-center">Capacity With Table</th>
+                                                                                <th class="text-center">Capacity Without Table</th>
+                                                                                <th class="text-center">Action</th>
+                                                                        </tr>
+                                                                </thead>
+                                                                <tbody align="center">
+                                                                        @foreach($asd as $room)
+                                                                        <tr class="odd gradeX">
+                                                                                <td>{{$room->id}}</td>
+                                                                                <td>{{$room->name}}</td>
+                                                                                <td>{{$room->table_capacity}}</td>
+                                                                                <td>{{$room->chair_capacity}}</td>
+                                                                                <td class="center">
+                                                                                    <a href="#" type="button" class="btn btn-success btn-transparent"><i class="fa fa-edit"></i> Edit</a>
+                                                                                    <a href="#" type="button" class="btn btn-danger btn-transparent"><i class="fa fa-trash-o"></i> Delete</a>
+                                                                                </td>
+                                                                        </tr>
+                                                                        @endforeach
+                                                                </tbody>
+                                                        </table>
+                                                </form>
+                                        </div>
+                                </section>
+                        </div>
+
+                </div>
+                <!-- //content > row-->
+                
+        </div>
+        <!-- //content-->
+        
+        
+</div>
+<!-- //main-->
 		
 		
 </div>
@@ -908,25 +976,39 @@
 @endsection
 
 @section('customScript')
-<script>
-var touchWrapper=document.getElementById("wrapper");
-if(touchWrapper){
-	var wrapper= Hammer( touchWrapper );
-	 wrapper.on("dragright", function(event) {	// hold , tap, doubletap ,dragright ,swipe, swipeup, swipedown, swipeleft, swiperight
-		if((event.gesture.deltaY<=7 && event.gesture.deltaY>=-7) && event.gesture.deltaX >100){
-			$('nav#menu').trigger( 'open.mm' );
-		}
-	 });
-	 wrapper.on("dragleft", function(event) {
-		if((event.gesture.deltaY<=5 && event.gesture.deltaY>=-5) && event.gesture.deltaX <-100){
-			$('nav#contact-right').trigger( 'open.mm' );
-		}
-	 });
-}
-</script>
-<script>
-$(function(){
-	$("html").css("background-color","white");
-})
+<!-- Library datable -->
+<script type="text/javascript" src="assets/plugins/datable/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="assets/plugins/datable/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+
+	function fnShowHide( iCol , table){
+	    var oTable = $(table).dataTable(); 
+	    var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
+	    oTable.fnSetColumnVis( iCol, bVis ? false : true );
+	}
+
+	$(function() {
+		
+		//////////     DATA TABLE  COLUMN TOGGLE    //////////
+		$('[data-table="table-toggle-column"]').each(function(i) {
+				var data=$(this).data(), 
+				table=$(this).data("table-target"), 
+				dropdown=$(this).parent().find(".dropdown-menu"),
+				col=new Array;
+				$(table).find("thead th").each(function(i) {
+				 		$("<li><a  class='toggle-column' href='javascript:void(0)' onclick=fnShowHide("+i+",'"+table+"') ><i class='fa fa-check'></i> "+$(this).text()+"</a></li>").appendTo(dropdown);
+				});
+		});
+
+		//////////     COLUMN  TOGGLE     //////////
+		 $("a.toggle-column").on('click',function(){
+				$(this).toggleClass( "toggle-column-hide" );  				
+				$(this).find('.fa').toggleClass( "fa-times" );  			
+		});
+
+		// Call dataTable in this page only
+		$('#table-example').dataTable();
+		$('table[data-provide="data-table"]').dataTable();
+	});
 </script>
 @endsection
