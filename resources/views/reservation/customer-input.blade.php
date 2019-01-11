@@ -9,7 +9,7 @@
                 {{Form::label('name', 'Nama: ',['class' => 'col-lg-2 control-label'])}}
                 {{Form::text('name', '',['class' => 'form-control', 'placeholder' => 'Masukan Nama Anda'])}}
                     {{--Bagian string  dikosongin untuk isi namanya, jadi valuenya null--}}
-            </div>
+                </div>
             
             <div class="form-group">
                     {{Form::label('telephone', 'Telepon: ',['class' => 'col-lg-2 control-label'])}}

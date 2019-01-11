@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\Reservation;
 use Illuminate\Http\Request;
+use DB;
 
 class FormController extends Controller
 {
@@ -40,14 +41,15 @@ class FormController extends Controller
             'telephone' => 'required',
             'email' => 'required'
         ]);
-
+        
+        $name = $request->input('name');
         $customers = new Customer;
         $customers->name = $request->input('name');
         $customers->telephone = $request->input('telephone');
         $customers->email = $request->input('email');
         $customers->save();
 
-        return redirect('/reservation/bookingform')->with('success', 'Data Input Success');
+        return redirect('/reservation/bookingform')->with('success', 'Data Input Success', $name);
     }
 
 
@@ -59,15 +61,35 @@ class FormController extends Controller
             'end_hour' => 'required',
             'description' => 'required',
         ]);
+        
+        // $name = DB::table('reservations')->select('id')->orderBy('created_at', 'desc')->first();
+        
+        // $user = json_decode(json_decode($name), true);
 
+        $name =  Customer::select('id')->orderBy('created_at','desc')->take(1)->get();
+        // $something = json_decode($name);
+        // $id = $something->{'id'};
+            foreach ($name as $id ) {
+                ($id -> id);
+                
+            }
+        
+        
+
+        // $user = var_dump($customer->id);
+        
         $reservations = new Reservation;
+        $reservations->id_customer = $id->id;
+        // dd($reservations);
+        $reservations->id_room = $request->input('id_room');
+        $reservations->note = $request->input('note');
         $reservations->date = $request->input('date');
         $reservations->start_hour = $request->input('start_hour');
         $reservations->end_hour = $request->input('end_hour');
         $reservations->description = $request->input('description');
         $reservations->save();
 
-        return redirect('/reservation')->with('success', 'Peminjaman Telah Disimpan');
+        return view('reservation.room-detail')->with('success', 'Peminjaman Telah Disimpan');
     }
 
   

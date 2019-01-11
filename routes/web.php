@@ -17,11 +17,26 @@ Route::get('/', function    () {
 
 
 Route::get('/reservation', 'FormController@index');
-// Route::get('/customerinput', 'FormController@showForm1');
-// Route::get('/reservationinput', 'FormController@reservationinput');
 
-Route::get('/reservation/customerform' ,'FormController@create');
-Route::get('/reservation/bookingform' ,'FormController@create1');
+Route::get('/reservation/customerform', function(){
+    return view('reservation.customer-input');
+});
+Route::post('/reservationinput/customerform', 'FormController@store');
+
+Route::get('/reservation/bookingform', function(){
+    return view('reservation.booking-form');
+});
+Route::post('/reservationinput/bookingform', 'FormController@store1');
+
+
+Route::get('/coba', function(){
+    $name = DB::table('reservations')->select('id')->orderBy('created_at', 'desc')->first();
+    return $customers->id;
+});
+
+// Route::get('/reservation/customerform' ,'FormController@create');
+
+// Route::get('/reservation/bookingform' ,'FormController@create1');
 
 // Route::resource('/reservation', 'FormController');
 
