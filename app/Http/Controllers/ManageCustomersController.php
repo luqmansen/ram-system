@@ -23,8 +23,6 @@ class ManageCustomersController extends Controller
      */
     public function index()
     {
-        $rooms= Room::get()->all();
-        dd($rooms);
         return view('manageRooms');
     }
 }

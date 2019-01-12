@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Room;
 use Response;
+use PDF;
 
 class ManageRoomsController extends Controller
 {
@@ -51,6 +52,8 @@ class ManageRoomsController extends Controller
     public function exportPdf()
     {
         $data['rooms']=Room::get()->all();
-        return view('exportRoomsDocs',$data);
+        $pdf = PDF::loadView('exportRoomsDocs',$data);
+        return $pdf->download('RoomsTable.pdf');
+        // return view('exportRoomsDocs',$data);
     }
 }

@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function    () {
-    return view('index');
-});
+Route::get('/', 'IndexController@index');
 
 Route::get('/home', 'HomeController@index');
 
@@ -27,11 +25,11 @@ Route::get('/sudosu', 'HomeController@index')->name('home');
 
 Route::get('/manageRooms','ManageRoomsController@index');
 
-// Route::get('/manageCostumers','ManageCostumersController@index');
+// Route::get('/manageCustomers','ManageCostumersController@index');
 
-Route::get('/manageReservations','ManageReservationsController@index');
+// Route::get('/manageReservations','ManageReservationsController@index');
 
-Route::get('/history','HistoryController@index');
+// Route::get('/history','HistoryController@index');
 
 //cuma untuk nyoba---
 Route::get('/user', function    () {
