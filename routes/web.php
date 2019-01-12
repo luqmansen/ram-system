@@ -34,12 +34,6 @@ Route::get('/coba', function(){
     return $customers->id;
 });
 
-// Route::get('/reservation/customerform' ,'FormController@create');
-
-// Route::get('/reservation/bookingform' ,'FormController@create1');
-
-// Route::resource('/reservation', 'FormController');
-
 Route::get('/home', 'HomeController@index');
 
 Route::get('/admin', 'AdminController@index');

@@ -15,7 +15,8 @@ class FormController extends Controller
      */
     public function index()
     {
-        return view('reservation.room-detail');
+        $reservations =  Reservation::all();
+        return view('reservation.room-detail')->with('reservations',$reservations);
     }
     
     /**
