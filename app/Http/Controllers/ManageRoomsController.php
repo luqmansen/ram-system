@@ -56,4 +56,37 @@ class ManageRoomsController extends Controller
         return $pdf->download('RoomsTable.pdf');
         // return view('exportRoomsDocs',$data);
     }
+    public function edit(Request $request){
+        $id = $request->id;
+        $name = $request->name;
+        $table_capacity = $request->table_capacity;
+        $chair_capacity = $request->chair_capacity;
+        
+        $room = Room::find($request->id);
+
+        $room->name = $name;
+        $room->table_capacity = $table_capacity;
+        $room->chair_capacity = $chair_capacity;
+
+        $room->save();
+        $response = 'ok';
+        return Response::json($response);
+    }
+    public function add(Request $request){
+        $name = $request->name;
+        $table_capacity = $request->table_capacity;
+        $chair_capacity = $request->chair_capacity;
+        
+        $room = new Room;
+
+        $room->name = $name;
+        $room->table_capacity = $table_capacity;
+        $room->chair_capacity = $chair_capacity;
+
+        $room->save();
+
+        $data['id'] = Room::where('name',$request->name)->first();
+        $response = $data['id']->id;
+        return Response::json($response);
+    }
 }

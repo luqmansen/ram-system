@@ -61,6 +61,8 @@
 <script type="text/javascript" src="{{asset('assets/plugins/miscellaneous/miscellaneous.js')}}"></script>
 <!-- Library Themes Customize-->
 <script type="text/javascript" src="{{asset('assets/js/caplet.custom.js')}}"></script>
+<!-- Sweet Alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.33.1/dist/sweetalert2.all.min.js"></script>
 @show
 
   @yield('customScript')

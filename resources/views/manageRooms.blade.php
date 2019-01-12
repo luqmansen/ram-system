@@ -26,6 +26,9 @@
 			top:74px !important;
 		}
 	}
+	.unclickable{
+		pointer-events:none;
+	}
 		
 </style>
 @endsection
@@ -102,11 +105,12 @@
                                         </div>
                                         <div class="panel-body">
                                                 <form>
+												{{ csrf_field() }}
 													<ul style="padding-bottom:10px">
-													<a href="#" type="button" class="btn btn-primary "><i class="fa fa-plus"></i> Add room</a>
+													<a href="#" type="button" id="add-room-button" class="btn btn-primary "><i class="fa fa-plus"></i> Add room</a>
                                                     <a href="#" type="button" id="export-excel-button" class="btn btn-success "><i class="fa fa-external-link-square"></i> Export .xls</a>
                                                     <a href="#" type="button" id="export-pdf-button" class="btn btn-danger"><i class="fa fa-external-link-square"></i> Export .pdf</a>
-													<button id="delete-selected-button" type="button" class="btn btn-danger btn-transparent md-effect delete-selected pull-right" data-effect="md-scale"><i class="fa fa-trash-o"></i> Delete selected data</button>
+													<button id="delete-selected-button" type="button" class="btn btn-danger btn-transparent delete-selected pull-right" data-effect="md-scale"><i class="fa fa-trash-o"></i> Delete selected data</button>
 													<span class="pull-right">
 														<span><input id="selectall" style="margin-top:15px" type="checkbox"></span>
 														<label  style="padding:8px 20px 10px 10px;position:relative;top:-3px;"> Select all data</label>
@@ -118,12 +122,12 @@
                                                         <table class="table table-striped" id="table-example">
                                                                 <thead>
                                                                         <tr>
-																				<th class="center" align="center">	</th>
-                                                                                <th  class="text-center ok">ID <i class="fa fa-sort"></i></th>
-                                                                                <th class="text-center ok">Room Name <i class="fa fa-sort"></i></th>
-                                                                                <th class="text-center ok">Capacity With Table <i class="fa fa-sort"></i></th>
-                                                                                <th class="text-center ok">Capacity Without Table <i class="fa fa-sort"></i></th>
-                                                                                <th class="text-center ok">Action</th>
+																				<th class="center unclickable" align="center">	</th>
+                                                                                <th  class="text-center " >ID <i class="fa fa-sort-amount-asc"></i></th>
+                                                                                <th class="text-center ">Room Name <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Capacity With Table <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Capacity Without Table <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center  unclickable">Action</th>
                                                                         </tr>
                                                                 </thead>
                                                                 <tbody align="center">
@@ -135,8 +139,8 @@
                                                                                 <td>{{$room->table_capacity}}</td>
                                                                                 <td>{{$room->chair_capacity}}</td>
                                                                                 <td class="center">
-                                                                                    <a href="#" type="button" class="btn btn-success btn-transparent"><i class="fa fa-edit"></i> Edit</a>
-                                                                                    <button type="button" value="{{$room->id}}" class="btn btn-danger btn-transparent md-effect" data-effect="md-scale"><i class="fa fa-trash-o"></i> Delete</button>
+                                                                                    <button type="button" value="{{$room->id}}" data-toggle="tooltip" title="Edit" class="btn btn-warning edit-button" data-effect="md-scale"><i class="fa fa-edit"></i></button>
+                                                                                    <button type="button" value="{{$room->id}}" data-toggle="tooltip" title="Delete" class="btn btn-danger md-effect" data-effect="md-scale"><i class="fa fa-trash-o"></i></button>
                                                                                 </td>
 																		</tr>	
 																		<!--
@@ -145,7 +149,7 @@
 																		//////////////////////////////////////////////////////////////////////
 																		-->
 																		<div id="md-effect{{$room->id}}" class="modal fade" tabindex="-1" data-width="450">
-																				<div class="modal-header bg-inverse bd-inverse-darken">
+																				<div class="modal-header bg-theme bd-theme-darken">
 																						<h4 class="modal-title">Confirmation</h4>
 																				</div>
 																				<!-- //modal-header-->
@@ -153,21 +157,58 @@
 																					<p>Are you sure you want to delete room {{$room->name}}?</p>
 																					<div class="modal-footer">
 																							<button type="button" id="cancel-delete-btn" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																							
 																							<button type="button" id="delete{{$room->id}}" value="{{$room->id}}" class="btn btn-danger delete-yes">Yes</button>
 																					</div>
 																				</div>
 																				<!-- //modal-body-->
 																		</div>
-																		<!-- //modal-->     
+																		<!-- //modal-->  
+																		<!--
+																		////////////////////////////////////////////////////////////////////////
+																		//////////     MODAL EDIT   //////////
+																		//////////////////////////////////////////////////////////////////////
+																		-->
+																		<div id="modal-edit{{$room->id}}" class=" modal fade container">
+																				<div class="modal-header bg-warning-darken">
+																						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+																						<h4 class="modal-title">Edit Room (id room = {{$room->id}})</h4>
+																				</div>
+																				<!-- //modal-header-->
+																				<div class="modal-body">
+
+																				<form role="form">
+																				{{ csrf_field() }}
+																						<div class="form-group">
+																								<label>Room Name</label>
+																										<input autofocus type="text" class="form-control rounded inpud{{$room->id}}" placeholder="{{$room->name}}" name="name{{$room->id}}">
+																						</div>
+																						<div class="form-group">
+																								<label>Capacity With Table</label>
+																										<input autofocus type="number" class="form-control rounded inpud{{$room->id}}" placeholder="{{$room->table_capacity}}" name="table_capacity{{$room->id}}">
+																										<p class="help-block">number of maximum capacity which room could served with a pair of table and chair.</p>
+																						</div>
+																						<div class="form-group">
+																								<label>Capacity Without Table</label>
+																										<input autofocus type="number" class="form-control rounded inpud{{$room->id}}" placeholder="{{$room->chair_capacity}}" name="chair_capacity{{$room->id}}">
+																										<p class="help-block">number of maximum capacity which room could served with only chair.(exclude capacity with table)</p>
+																						</div>
+																					<div class="modal-footer">
+																							<button type="button" id="" class="btn btn-default" data-dismiss="modal">Cancel</button>
+																							<button type="button" id="edit-btn{{$room->id}}" value="{{$room->id}}" class="btn btn-primary edit-data-button">Update Data</button>
+																					</div>
+																				</form>
+																				</div>
+																				<!-- //modal-body-->
+																		</div>
+																		<!-- //modal-->   
 																		@endforeach
 																		<!--
 																		////////////////////////////////////////////////////////////////////////
 																		//////////     MODAL DELETE SELECTED   //////////
 																		//////////////////////////////////////////////////////////////////////
 																		-->
-																		<div id="delete-selected" class=" modal fade" tabindex="-1" data-width="450">
-																				<div class="modal-header bg-inverse bd-inverse-darken">
+																		<div id="delete-selected" class=" modal fade" tabindex="-1" data-width="450" data-header-color="#736086">
+																				<div class="modal-header bg-theme bd-theme-darken">
 																						<h4 class="modal-title">Confirmation</h4>
 																				</div>
 																				<!-- //modal-header-->
@@ -178,6 +219,44 @@
 																							
 																							<button type="button" id="delete-selected-confirmation" value="" class="btn btn-danger">Yes</button>
 																					</div>
+																				</div>
+																				<!-- //modal-body-->
+																		</div>
+																		<!-- //modal-->
+																		<!--
+																		////////////////////////////////////////////////////////////////////////
+																		//////////     MODAL ADD   //////////
+																		//////////////////////////////////////////////////////////////////////
+																		-->
+																		<div id="modal-add" class=" modal fade container">
+																				<div class="modal-header bg-primary">
+																						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+																						<h4 class="modal-title">Add Room</h4>
+																				</div>
+																				<!-- //modal-header-->
+																				<div class="modal-body">
+
+																				<form role="form">
+																				{{ csrf_field() }}
+																						<div class="form-group">
+																								<label>Room Name</label>
+																										<input autofocus type="text" class="form-control rounded inputAdd" name="name">
+																						</div>
+																						<div class="form-group">
+																								<label>Capacity With Table</label>
+																										<input autofocus type="number" class="form-control rounded inputAdd" name="table_capacity">
+																										<p class="help-block">number of maximum capacity which room could served with a pair of table and chair.</p>
+																						</div>
+																						<div class="form-group">
+																								<label>Capacity Without Table</label>
+																										<input autofocus type="number" class="form-control rounded inputAdd" name="chair_capacity">
+																										<p class="help-block">number of maximum capacity which room could served with only chair.(exclude capacity with table)</p>
+																						</div>
+																					<div class="modal-footer">
+																							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+																							<button type="button" id="add-btn"  class="btn btn-primary">Update Data</button>
+																					</div>
+																				</form>
 																				</div>
 																				<!-- //modal-body-->
 																		</div>
@@ -237,132 +316,268 @@
 		var table = $('#table-example').dataTable();
 		table.fnSort([[1,'asc']]);
 		$('table[data-provide="data-table"]').dataTable();
+
+		$('th').click(function(){
+			$('.fa-sort-amount-asc, .fa-sort-amount-desc').attr('class','fa fa-sort');
+			$(this).find('i').attr('class', 'fa fa-sort-amount-desc');
+			if($(this).hasClass('sorting_asc'))			{
+				$(this).find('i').attr('class', 'fa fa-sort-amount-asc');
+			}
+		});
 	}));
 </script>
+
+<!-- Script swipe navbar -->
 <script>
-var touchWrapper=document.getElementById("wrapper");
-if(touchWrapper){
-	var wrapper= Hammer( touchWrapper );
-	 wrapper.on("dragright", function(event) {	// hold , tap, doubletap ,dragright ,swipe, swipeup, swipedown, swipeleft, swiperight
-		if((event.gesture.deltaY<=7 && event.gesture.deltaY>=-7) && event.gesture.deltaX >100){
-			$('nav#menu').trigger( 'open.mm' );
-		}
-	 });
-	 wrapper.on("dragleft", function(event) {
-		if((event.gesture.deltaY<=5 && event.gesture.deltaY>=-5) && event.gesture.deltaX <-100){
-			$('nav#contact-right').trigger( 'open.mm' );
-		}
-	 });
-}
+	var touchWrapper=document.getElementById("wrapper");
+	if(touchWrapper){
+		var wrapper= Hammer( touchWrapper );
+		wrapper.on("dragright", function(event) {	// hold , tap, doubletap ,dragright ,swipe, swipeup, swipedown, swipeleft, swiperight
+			if((event.gesture.deltaY<=7 && event.gesture.deltaY>=-7) && event.gesture.deltaX >100){
+				$('nav#menu').trigger( 'open.mm' );
+			}
+		});
+		wrapper.on("dragleft", function(event) {
+			if((event.gesture.deltaY<=5 && event.gesture.deltaY>=-5) && event.gesture.deltaX <-100){
+				$('nav#contact-right').trigger( 'open.mm' );
+			}
+		});
+	}
 </script>
 
-<!-- modal script -->
+<!-- Script tooltip -->
+<script>
+	$(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();   
+	});
+</script>
+
+<!-- Script Modal -->
 <script type="text/javascript">
-$(function() {
-			
-			$(".md-effect").click(function(event){
+	$(function() {
+				
+				$(".md-effect").click(function(event){
+						event.preventDefault();
+						var id=$(this).val();
+						var modal='#md-effect'+id;
+						var data=$(this).data();
+						$(modal).attr('class','modal fade').addClass(data.effect).modal('show');
+				}); 
+				$(".edit-button").click(function(event){
 					event.preventDefault();
 					var id=$(this).val();
-					var modal='#md-effect'+id;
+					var modal='#modal-edit'+id;
 					var data=$(this).data();
-					$(modal).attr('class','modal fade').addClass(data.effect).modal('show');
-			}); 
-
-			$(".delete-selected").click(function(event){
-					event.preventDefault();
-					var data=$(this).data();
-					$('#delete-selected').attr('class','modal fade').addClass(data.effect).modal('show');
-			});
-
-			// $('#cancel-delete-btn').click(function(){
-			// 	$("#md-effect").attr('class','modal fade').addClass(data.effect).modal('hide')
-			// })
-			
-			$.ajaxSetup ({
-				// Disable caching of AJAX responses
-				cache: false
-			});
-			var $modal = $('#md-ajax');
-			$('.md-ajax-load').on('click', function(){
-				  $('body').modalmanager('loading');
-				  setTimeout(function(){
-					 $modal.find(".modal-body").load('data/md-ajax-load.html', '', function(){
-					  $modal.modal();
-					});
-				  }, 2000);
-			});
-
-			// AJAX Script
-			$(".delete-yes").click(function(event){
-				event.preventDefault();
-				var id=$(this).val();
-				var tr="#tablerow"+id;
-				$.ajax({
-					url: '/roomDelete/'+id,
-					type:"GET",
-					dataType:"json",
-					success:function(data) {
-						$('#table-example').dataTable().fnDeleteRow($(tr)[0]);
-						var modal='#md-effect'+id;
-						$(modal).attr('class','modal fade').modal('hide');					   						
+					$(modal).attr('class','modal fade container').addClass(data.effect).modal('show');
+					var inpud = '.inpud'+id;
+					$(inpud).keypress(function (e) {
+						var key = e.which;
+						if(key == 13)  // the enter key code
+						{
+							var btnid="#edit-btn"+id;
+							// console.log(btnid);
+							$(btnid).click(); 
+							return false;
 						}
-					}
-				);
-				
-			});
-
-			//Export Excel Script
-			$('#export-excel-button').click(function(){
-				window.location.href="{{url('/exportRoomTable')}}"
-			});
-
-			//Export PDF Script
-			$('#export-pdf-button').click(function(){
-				window.location.href="{{url('/exportRoomPdf')}}"
-			});
-
-			//Select All Script
-			$('#selectall').click(function() {    
-				$('input[name=selectdata]').prop('checked', this.checked);    
-			});
-
-			//Delete Selected Script
-			$("#delete-selected-button").click(function(){
-				var allVals = []; 
-				$("input[name='selectdata']:checked").each(function() { 
-					allVals.push($(this).val());
+					}); 
 				});
-				$("#delete-selected-confirmation").click(function(){
-					var join_selected_values = allVals.join(",");
-					$.ajax({
-					url: '/roomsDelete/',
-					type:"GET",
-					data: 'ids='+join_selected_values,
-					dataType:"json",
-					success:function(data) {
-						$("input[name=selectdata]:checked").each(function() { 
-							var val=$(this).val();
-							var tr="#tablerow"+val;
-							console.log(tr);
-							$('#table-example').dataTable().fnDeleteRow($(tr)[0]);
-						});					   						
-						$("#delete-selected").attr('class','modal fade').modal('hide');
-						}
-					}
-				);
 
+				$(".delete-selected").click(function(event){
+						event.preventDefault();
+						var data=$(this).data();
+						var allVals = []; 
+						$("input[name='selectdata']:checked").each(function() { 
+							allVals.push($(this).val());
+						});
+						if(allVals.length > 0){
+							$('#delete-selected').attr('class','modal fade').addClass(data.effect).modal('show');
+						}
+				});
+				$('#add-room-button').click(function(event){
+					event.preventDefault();
+					$('#modal-add').modal('show');
+				});
+
+				$('.inputAdd').keypress(function (e) {
+						var key = e.which;
+						if(key == 13)  // the enter key code
+						{
+							$('#add-btn').click(); 
+							return false;
+						}
+					}); 
+
+				// $('#cancel-delete-btn').click(function(){
+				// 	$("#md-effect").attr('class','modal fade').addClass(data.effect).modal('hide')
+				// })
+				
+				$.ajaxSetup ({
+					// Disable caching of AJAX responses
+					cache: false
+				});
+				var $modal = $('#md-ajax');
+				$('.md-ajax-load').on('click', function(){
+					$('body').modalmanager('loading');
+					setTimeout(function(){
+						$modal.find(".modal-body").load('data/md-ajax-load.html', '', function(){
+						$modal.modal();
+						});
+					}, 2000);
+				});
+
+				// AJAX Script
+				$(".delete-yes").click(function(event){
+					event.preventDefault();
+					var id=$(this).val();
+					var tr="#tablerow"+id;
+					$.ajax({
+						url: '/roomDelete/'+id,
+						type:"GET",
+						dataType:"json",
+						success:function(data) {
+							$('#table-example').dataTable().fnDeleteRow($(tr)[0]);
+							var modal='#md-effect'+id;
+							$(modal).attr('class','modal fade').modal('hide');					   						
+							}
+						}
+					);
 					
 				});
+
+				//Export Excel Script
+				$('#export-excel-button').click(function(){
+					window.location.href="{{url('/exportRoomTable')}}"
+				});
+
+				//Export PDF Script
+				$('#export-pdf-button').click(function(){
+					window.location.href="{{url('/exportRoomPdf')}}"
+				});
+
+				//Select All Script
+				$('#selectall').click(function() {    
+					$('input[name=selectdata]').prop('checked', this.checked);    
+				});
+
+				//Delete Selected Script
+				$("#delete-selected-button").click(function(){
+					var allVals = []; 
+					$("input[name='selectdata']:checked").each(function() { 
+						allVals.push($(this).val());
+					});
+					$("#delete-selected-confirmation").click(function(){
+						var join_selected_values = allVals.join(",");
+						$.ajax({
+						url: '/roomsDelete/',
+						type:"GET",
+						data: 'ids='+join_selected_values,
+						dataType:"json",
+						success:function(data) {
+							$("input[name=selectdata]:checked").each(function() { 
+								var val=$(this).val();
+								var tr="#tablerow"+val;
+								// console.log(tr);
+								$('#table-example').dataTable().fnDeleteRow($(tr)[0]);
+							});					   						
+							$("#delete-selected").attr('class','modal fade').modal('hide');
+							}
+						});
+					});
+				});
+		});
+</script>
+
+<!-- Script form edit -->
+<script>
+	$('.edit-data-button').click(function(){
+		var id = $(this).val();
+		var sname = 'input[name=name'+id+']';
+		var stab = 'input[name=table_capacity'+id+']';
+		var schair = 'input[name=chair_capacity'+id+']';
+		var name = $(sname).val();
+		var table_capacity = $(stab).val();
+		var chair_capacity = $(schair).val();
+		if(!name && !table_capacity && !chair_capacity)
+		{
+			var modal ="#modal-edit"+id;
+			$(modal).modal('hide');
+			// alert('input cannot be empty');	
+			Swal({
+				type: 'error',
+				title: 'Error',
+				text: 'Input cannot be empty!',
+				showConfirmButton: false,
+				timer: 1500
 			});
-
-			
-
-			
-			  
-
+			return false	;
+		}
+		$.ajax({
+			url: '/roomEdit/',
+			type:"GET",
+			data: {id:id, name:name, table_capacity:table_capacity, chair_capacity:chair_capacity},
+			dataType:"json",
+			success:function(data) {
+				var tr = "#tablerow"+id;
+				var table = $('#table-example').dataTable();
+				table.fnUpdate(name,$(tr)[0],2);
+				table.fnUpdate(table_capacity,$(tr)[0],3);
+				table.fnUpdate(chair_capacity,$(tr)[0],4);
+				$(sname).attr("placeholder",name);
+				$(stab).attr("placeholder",table_capacity);
+				$(schair).attr("placeholder",chair_capacity);
+				$(sname).removeAttr("value");
+				$(stab).removeAttr("value");
+				$(schair).removeAttr("value");
+				var modal ="#modal-edit"+id;
+				$(modal).modal('hide');
+			}
+		});
 	});
+</script>
 
-
-	
+<!-- Script form add -->
+<script>
+	$('#add-btn').click(function(){
+		var name = $('input[name=name]').val();
+		var table_capacity = $('input[name=table_capacity]').val();
+		var chair_capacity = $('input[name=chair_capacity]').val();
+		if(!name && !table_capacity && !chair_capacity)
+		{
+			var modal ="#modal-add"
+			$(modal).modal('hide');
+			// alert('input cannot be empty');	
+			Swal({
+				type: 'error',
+				title: 'Error',
+				text: 'Input cannot be empty!',
+				showConfirmButton: false,
+				timer: 1500
+			});
+			return false	;
+		}
+		$.ajax({
+			url: '/roomAdd/',
+			type:"GET",
+			data: {name:name, table_capacity:table_capacity, chair_capacity:chair_capacity},
+			dataType:"json",
+			success:function(data) {
+				$('tbody').append(
+					'<tr id="tablerow'+data+'">'+
+					'<td><input name="selectdata" type="checkbox" value="'+data+'"></td'+
+					'<td>' + data + '</td>' +
+					'<td>' + name + '</td>' +
+					'<td>' + table_capacity+ '</td>' +
+					'<td>' + chair_capacity + '</td>' +
+					'<td class="center">'+
+						'<button type="button" value="'+data+'" data-toggle="tooltip" title="Edit" class="btn btn-warning edit-button" data-effect="md-scale"><i class="fa fa-edit"></i></button>'+
+						'<button type="button" value="'+data+'" data-toggle="tooltip" title="Delete" class="btn btn-danger md-effect" data-effect="md-scale"><i class="fa fa-trash-o"></i></button>'+
+					'</td>'+
+					'</tr>'
+				);
+				$("#modal-add").modal('hide');
+				window.location.href="{{url('/manageRooms')}}"
+			}
+		});
+	});
 </script>
 @endsection
