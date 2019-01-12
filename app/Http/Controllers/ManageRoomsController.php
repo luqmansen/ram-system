@@ -25,8 +25,8 @@ class ManageRoomsController extends Controller
      */
     public function index()
     {
-        $data['rooms']= Room::get()->all();
-        // dd($rooms);
+        $data['rooms']= Room::orderBy('id','asc')->get()->all();
+        // dd($data);
         return view('manageRooms',$data);
     }
 
@@ -36,9 +36,21 @@ class ManageRoomsController extends Controller
         $response = 'ok';
         return Response::json($response);
     }
-    public function export()
+    public function deletes(Request $request)
+    {
+        $ids = $request->ids;
+        Room::whereIn('id',explode(",",$ids))->delete();
+        $response = 'ok';
+        return Response::json($response);
+    }
+    public function exportXls()
     {
         $data['rooms']=Room::get()->all();
         return view('exportRoomsTable',$data);
+    }
+    public function exportPdf()
+    {
+        $data['rooms']=Room::get()->all();
+        return view('exportRoomsDocs',$data);
     }
 }

@@ -436,17 +436,24 @@ a.logo {
   position: relative;
 }
 body.leftMenu {
-  background: url(../img/logo_white_icon.png) no-repeat;
-  background-position: 11px 10px;
+  background: url(../img/logo_.png) no-repeat;
+  background-position: 11px 8px;
   background-color: #FFFFFF;
+  background-size: 130px 40px;
 }
 @media screen and (max-width: 991px) {
   body.leftMenu {
-    background: url(../img/logo_white_icon2.png) no-repeat;
-    background-position: 11px 10px;
+    background: url(../img/logo_2.png) no-repeat;
+    background-position: 5px 15px;
     background-color: #FFFFFF;
+    background-size:42px 20px;
   }
 }
+@media screen and (min-width: 991px) {
+  .icon-toolsbar {
+    visibility:hidden !important;
+  }
+}	
 body.leftMenu:after {
   content: "";
   position: absolute;

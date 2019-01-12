@@ -46,4 +46,6 @@ Route::get('/hoobla',function(){
 });
 
 Route::get('/roomDelete/{id}', 'ManageRoomsController@delete');
-Route::get('/exportRoomTable', 'ManageRoomsController@export');
+Route::get('/roomsDelete', 'ManageRoomsController@deletes');
+Route::get('/exportRoomTable', 'ManageRoomsController@exportXls');
+Route::get('/exportRoomPdf', 'ManageRoomsController@exportPdf');
