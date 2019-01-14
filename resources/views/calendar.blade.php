@@ -57,20 +57,48 @@
 
 		
 		
+		// // fungsi untuk post value clicked day
+		// function getDate(e){
+		// 		e.preventDefault();
+				
+		// 		var xhr = new XMLHttpRequest();
+		// 		xhr = date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear();
+		// 		xhr.open('POST', 'room-detail.blade.php', true );
+		// 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+		// 		xhr.onload = function(){
+		// 			console.log(this.xhr);
+		// 		}
+
+		// 		xhr.send();
+		// 	}
+
+		
 	   $('#calendar').fullCalendar({
 			dayClick: function(date, jsEvent, view) { 
 			$date = date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear();
-            alert($date);
+            
+
+			function getDate(e){
+				e.preventDefault();
+				
+				var date = date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear();
+
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', '../reservation/room-detail.blade.php', true );
+				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+				xhr.onload = function(){
+					console.log(this.responseText);
+				}
+
+				xhr.send($date);
+			}
+			console.log($date);
+			// alert($date);
 			window.location.href="/reservation/";  
         },
-			eventDragStop: function(event, jsEvent, ui, view) {			
-				var x = isElemOverDiv(ui, $('#slide-trash'));
-				alert(x);			
-				if (x) {
-					alert("delete");
-					$('#calendar').fullCalendar('removeEvents', event.id);
-				}			
-			},
+			
 			header: {
 				left: 'title',
 				center: '',
@@ -78,18 +106,9 @@
 			},
 			editable: true,
             droppable: true,
-            selectable: true, 
+            selectable: true
 			
-			drop: function(date, allDay) { 
-                        var  copiedEventObject = {
-                                title: $(this).text(),
-                                start: date,
-                                allDay: allDay,
-                                color: $(this).css('background-color')
-                            };
-				$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-				$(this).remove();
-            },
+		
 		});
 		$(".change-view").click(function(){
 			 var data=$(this).data();

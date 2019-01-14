@@ -25,6 +25,7 @@ class CreateReservationTable extends Migration
             $table->string('description');
             $table->string('note');
             $table->string('status');
+            $table->string('file_name');
             $table->timestamps();
         });
     }

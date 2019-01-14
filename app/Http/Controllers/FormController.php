@@ -5,6 +5,7 @@ use App\Customer;
 use App\Reservation;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Storage; // untuk bisa pakai fitur storage
 
 class FormController extends Controller
 {
@@ -57,16 +58,39 @@ class FormController extends Controller
     public function store1(Request $request) //Method untuk store form data peminjaman
     {
         $this->validate($request, [
-            'date' => 'required',
+            // 'date' => 'required',
             'start_hour' => 'required',
             'end_hour' => 'required',
+            'file_name' => 'file | nullable | max:1999',
             'description' => 'required',
         ]);
         
-        // $name = DB::table('reservations')->select('id')->orderBy('created_at', 'desc')->first();
-        
-        // $user = json_decode(json_decode($name), true);
+        //handle file upload
+        if($request->hasFile('file_name')){
+            // Get File Name with extension
 
+            $filenameWithExt = $request->file('file_name')->getClientOriginalName();
+            //kalo gini doang, nanti semisal 2 orang yg upload dengan nama 
+            // file yang sama, nanti bakal jadi masalah, jadi buat fungsi 
+            // untuk misahin 
+            
+            //get just file name
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+            //get just extension
+            $extension = $request->file('file_name')->getClientOriginalExtension();
+            
+            //filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+
+            //upload the image
+            $path = $request->file('file_name')->storeAs('public/file_name', $fileNameToStore);
+        } else{
+            $fileNameToStore = 'file.ext';
+        }
+
+
+      
         $name =  Customer::select('id')->orderBy('created_at','desc')->first();
         // $something = json_decode($name);
         // $id = $something->{'id'};

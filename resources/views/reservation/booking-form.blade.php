@@ -39,6 +39,12 @@
                     {{Form::text('note', '',['class' => 'form-control', 'placeholder' => 'Diskripsi Singkat '])}}
             </div>
 
+            <div class="form-group">
+                        {{Form::label('file', 'Surat Peminjaman Ruangan : ',['class' => 'col-lg-2 control-label'])}}
+                        {{Form::file('file_name')}}
+            </div>
+                
+
             {{Form::submit('Submit', ['class' => 'btn btn-primary', 'style' => 'float :right;'])}}
     {!! Form::close() !!}
 

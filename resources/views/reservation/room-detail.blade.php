@@ -27,15 +27,14 @@ tr:nth-child(even) {
 
 @php
     
-    $reservations = DB::select('SELECT * FROM reservations');  
-    // dd($reservations);
+if(isset($_POST['$date'])){
+    echo 'GET : date is '. $_POST['$date'];
+    dd($_POST['$date']);
+}
 @endphp
 
-<h2>Filterable Table</h2>
-<p>Type something in the input field to search the table for first names, last names or emails:</p>  
-<input id="myInput" type="text" placeholder="Search..">
-<br><br>
 
+<br><br>
 <table>
   <thead>
     <tr>
