@@ -16,7 +16,7 @@ Route::get('/', function    () {
 });
 
 
-Route::get('/reservation', 'FormController@index');
+Route::get('/reservation/{date}', 'FormController@index');
 
 Route::get('/reservation/customerform', function(){
     return view('reservation.customer-input');

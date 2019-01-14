@@ -59,18 +59,45 @@
 		
 	   $('#calendar').fullCalendar({
 			dayClick: function(date, jsEvent, view) { 
-			$date = date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear();
-            alert($date);
-			window.location.href="/reservation/";  
+			$date = date.getDate()+date.getMonth()+date.getFullYear();
+            // alert($date);
+			
+			// $.ajax({
+			// 			url: '/roomsDelete/',
+			// 			type:"GET",
+			// 			data: 'ids='+join_selected_values,
+			// 			dataType:"json",
+			// 			success:function(data) {
+			// 				$("input[name=selectdata]:checked").each(function() { 
+			// 					var val=$(this).val();
+			// 					var tr="#tablerow"+val;
+			// 					// console.log(tr);
+			// 					$('#table-example').dataTable().fnDeleteRow($(tr)[0]);
+			// 				});					   						      
+			// 				$("#delete-selected").attr('class','modal fade').modal('hide');
+			// 				}
+			// 			});
+					
+	// 		function postName(e){
+	// 			e.preventDefault();
+
+	// 			var name = $date;
+	// 			var params = "name="+name;
+
+	// 			var xhr = new XMLHttpRequest();
+	// 			xhr.open('POST', 'room-detail.php', true);
+	// 			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+	// 			xhr.onload = function(){
+	// 				console.log(this.responseText);
+	// 			}
+
+    //   xhr.send(params);
+    // }
+			$url = "/reservation/"+$date;
+			window.location.href= $url;  
         },
-			eventDragStop: function(event, jsEvent, ui, view) {			
-				var x = isElemOverDiv(ui, $('#slide-trash'));
-				alert(x);			
-				if (x) {
-					alert("delete");
-					$('#calendar').fullCalendar('removeEvents', event.id);
-				}			
-			},
+			
 			header: {
 				left: 'title',
 				center: '',

@@ -14,8 +14,10 @@ class FormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($date)
     {
+        $data = $date;
+        dd($data);
         $reservations =  Reservation::all();
         return view('reservation.room-detail')->with('reservations',$reservations);
     }

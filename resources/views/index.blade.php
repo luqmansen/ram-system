@@ -1,2 +1,4 @@
+
+dd($data);
 @extends('calendar')
 
