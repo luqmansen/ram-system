@@ -108,8 +108,8 @@
 												{{ csrf_field() }}
 													<ul style="padding-bottom:10px">
 													<a href="#" type="button" id="add-room-button" class="btn btn-primary "><i class="fa fa-plus"></i> Add room</a>
-                                                    <a href="#" type="button" id="export-excel-button" class="btn btn-success "><i class="fa fa-external-link-square"></i> Export .xls</a>
-                                                    <a href="#" type="button" id="export-pdf-button" class="btn btn-danger"><i class="fa fa-external-link-square"></i> Export .pdf</a>
+                                                    <a href="{{url('/exportRoomTable')}}" type="button" id="export-excel-button" class="btn btn-success "><i class="fa fa-external-link-square"></i> Export .xls</a>
+                                                    <a href="{{url('/exportRoomPdf')}}" type="button" id="export-pdf-button" class="btn btn-danger"><i class="fa fa-external-link-square"></i> Export .pdf</a>
 													<button id="delete-selected-button" type="button" class="btn btn-danger btn-transparent delete-selected pull-right" data-effect="md-scale"><i class="fa fa-trash-o"></i> Delete selected data</button>
 													<span class="pull-right">
 														<span><input id="selectall" style="margin-top:15px" type="checkbox"></span>
@@ -135,43 +135,44 @@
                                                                         <tr  id="tablerow{{$room->id}}">
 																				<td><input name="selectdata" type="checkbox" value="{{$room->id}}"></td>
                                                                                 <td>{{$room->id}}</td>
-                                                                                <td>{{$room->name}}</td>
+                                                                                <td id="item{{$room->id}}">{{$room->name}}</td>
                                                                                 <td>{{$room->table_capacity}}</td>
                                                                                 <td>{{$room->chair_capacity}}</td>
                                                                                 <td class="center">
                                                                                     <button type="button" value="{{$room->id}}" data-toggle="tooltip" title="Edit" class="btn btn-warning edit-button" data-effect="md-scale"><i class="fa fa-edit"></i></button>
                                                                                     <button type="button" value="{{$room->id}}" data-toggle="tooltip" title="Delete" class="btn btn-danger md-effect" data-effect="md-scale"><i class="fa fa-trash-o"></i></button>
                                                                                 </td>
-																		</tr>	
+																		</tr>
+																		@endforeach
 																		<!--
 																		////////////////////////////////////////////////////////////////////////
 																		//////////     MODAL DELETE    //////////
 																		//////////////////////////////////////////////////////////////////////
 																		-->
-																		<div id="md-effect{{$room->id}}" class="modal fade" tabindex="-1" data-width="450">
+																		<div id="md-effect" class="modal fade" tabindex="-1" data-width="450">
 																				<div class="modal-header bg-theme bd-theme-darken">
 																						<h4 class="modal-title">Confirmation</h4>
 																				</div>
 																				<!-- //modal-header-->
 																				<div class="modal-body">
-																					<p>Are you sure you want to delete room {{$room->name}}?</p>
+																					<p>Are you sure you want to delete room <strong id="delete-item"></strong>?</p>
 																					<div class="modal-footer">
 																							<button type="button" id="cancel-delete-btn" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																							<button type="button" id="delete{{$room->id}}" value="{{$room->id}}" class="btn btn-danger delete-yes">Yes</button>
+																							<button type="button" id="delete-btn"  class="btn btn-danger">Yes</button>
 																					</div>
 																				</div>
 																				<!-- //modal-body-->
 																		</div>
-																		<!-- //modal-->  
+																		<!-- //modal-->
 																		<!--
 																		////////////////////////////////////////////////////////////////////////
 																		//////////     MODAL EDIT   //////////
 																		//////////////////////////////////////////////////////////////////////
 																		-->
-																		<div id="modal-edit{{$room->id}}" class=" modal fade container">
+																		<div id="modal-edit" class=" modal fade container">
 																				<div class="modal-header bg-warning-darken">
 																						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-																						<h4 class="modal-title">Edit Room (id room = {{$room->id}})</h4>
+																						<h4 class="modal-title">Edit Room (id room = <strong id="edit-item-id"></strong>)</h4>
 																				</div>
 																				<!-- //modal-header-->
 																				<div class="modal-body">
@@ -180,28 +181,27 @@
 																				{{ csrf_field() }}
 																						<div class="form-group">
 																								<label>Room Name</label>
-																										<input autofocus type="text" class="form-control rounded inpud{{$room->id}}" placeholder="{{$room->name}}" name="name{{$room->id}}">
+																										<input autofocus type="text" class="form-control rounded inputEdit" placeholder="{{$room->name}}" id="nameEdit">
 																						</div>
 																						<div class="form-group">
 																								<label>Capacity With Table</label>
-																										<input autofocus type="number" class="form-control rounded inpud{{$room->id}}" placeholder="{{$room->table_capacity}}" name="table_capacity{{$room->id}}">
+																										<input autofocus type="number" class="form-control rounded inputEdit" placeholder="{{$room->table_capacity}}" id="table_capacityEdit">
 																										<p class="help-block">number of maximum capacity which room could served with a pair of table and chair.</p>
 																						</div>
 																						<div class="form-group">
 																								<label>Capacity Without Table</label>
-																										<input autofocus type="number" class="form-control rounded inpud{{$room->id}}" placeholder="{{$room->chair_capacity}}" name="chair_capacity{{$room->id}}">
+																										<input autofocus type="number" class="form-control rounded inputEdit" placeholder="{{$room->chair_capacity}}" id="chair_capacityEdit">
 																										<p class="help-block">number of maximum capacity which room could served with only chair.(exclude capacity with table)</p>
 																						</div>
 																					<div class="modal-footer">
 																							<button type="button" id="" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																							<button type="button" id="edit-btn{{$room->id}}" value="{{$room->id}}" class="btn btn-primary edit-data-button">Update Data</button>
+																							<button type="button" id="edit-btn" value="{{$room->id}}" class="btn btn-primary edit-data-button">Update Data</button>
 																					</div>
 																				</form>
 																				</div>
 																				<!-- //modal-body-->
 																		</div>
-																		<!-- //modal-->   
-																		@endforeach
+																		<!-- //modal-->
 																		<!--
 																		////////////////////////////////////////////////////////////////////////
 																		//////////     MODAL DELETE SELECTED   //////////
@@ -334,7 +334,9 @@
 		var wrapper= Hammer( touchWrapper );
 		wrapper.on("dragright", function(event) {	// hold , tap, doubletap ,dragright ,swipe, swipeup, swipedown, swipeleft, swiperight
 			if((event.gesture.deltaY<=7 && event.gesture.deltaY>=-7) && event.gesture.deltaX >100){
-				$('nav#menu').trigger( 'open.mm' );
+				if($(window).width() < 991 ){
+					$('nav#menu').trigger( 'open.mm' );
+				}	
 			}
 		});
 		wrapper.on("dragleft", function(event) {
@@ -354,34 +356,110 @@
 
 <!-- Script Modal -->
 <script type="text/javascript">
-	$(function() {
-				
-				$(".md-effect").click(function(event){
-						event.preventDefault();
-						var id=$(this).val();
-						var modal='#md-effect'+id;
-						var data=$(this).data();
-						$(modal).attr('class','modal fade').addClass(data.effect).modal('show');
-				}); 
-				$(".edit-button").click(function(event){
-					event.preventDefault();
-					var id=$(this).val();
-					var modal='#modal-edit'+id;
-					var data=$(this).data();
-					$(modal).attr('class','modal fade container').addClass(data.effect).modal('show');
-					var inpud = '.inpud'+id;
-					$(inpud).keypress(function (e) {
-						var key = e.which;
-						if(key == 13)  // the enter key code
-						{
-							var btnid="#edit-btn"+id;
-							// console.log(btnid);
-							$(btnid).click(); 
-							return false;
-						}
-					}); 
+	//SCRIPT DELETE
+	$(".md-effect").click(function(event){
+			event.preventDefault();
+			//SHOW DELETE MODAL
+			var id,tr = undefined;
+			id=$(this).val();
+			var itemid='#item'+id;
+			var item=$(itemid).html();
+			var data=$(this).data();
+			$('#delete-item').text(item);
+			$('#delete-btn').val(id);
+			$('#md-effect').attr('class','modal fade').addClass(data.effect).modal('show');
+	});
+	//SEND DELETE QUERY THROUGH AJAX
+	$('#delete-btn').click(function(){
+				id=$(this).val();
+				tr="#tablerow"+id;
+				$.ajaxSetup({
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					}
 				});
+				$.ajax({
+					url: '/roomDelete',
+					type:"POST",
+					dataType:"json",
+					data:{id:id},
+					success:function(data) {
+						//HIDE DELETE QUERY ON DELETION SUCCESS
+						$('#table-example').dataTable().fnDeleteRow($(tr)[0]);
+						$('#table-example').dataTable().fnDraw();
+						$('#md-effect').attr('class','modal fade').modal('hide');					   						
+						}
+					}
+				);
+			})
 
+	//SCRIPT EDIT
+	$(".edit-button").click(function(event){
+			event.preventDefault();
+			//SHOW DELETE MODAL
+			var id=$(this).val();
+			var data=$(this).data();
+			$('#edit-item-id').text(id);
+			$('#modal-edit').attr('class','modal fade container').addClass(data.effect).modal('show');
+			//SUBMIT ON ENTER
+			$('.inputEdit').keypress(function (e) {
+				var key = e.which;
+				if(key == 13)  // the enter key code
+				{
+					// console.log(btnid);
+					$('#edit-btn').click(); 
+					return false;
+				}
+			});
+			//SEND DELETE QUERY THROUGH AJAX
+			$('#edit-btn').click(function(event){
+				var name = $('#nameEdit').val();
+				var table_capacity = $('#table_capacityEdit').val();
+				var chair_capacity = $('#chair_capacityEdit').val();
+				//RETURN FALSE IF FORM INPUT FILL EMPTY
+				if(!name && !table_capacity && !chair_capacity)
+				{
+					var modal ="#modal-edit"+id;
+					$(modal).modal('hide');
+					// alert('input cannot be empty');	
+					Swal({
+						type: 'error',
+						title: 'Error',
+						text: 'Input cannot be empty!',
+						showConfirmButton: false,
+						timer: 1500
+					});
+					return false	;
+				}
+				//AJAX SCRIPT
+				$.ajaxSetup({
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					}
+				});
+				$.ajax({
+					url: '/roomEdit',
+					type:"POST",
+					data: {id:id, name:name, table_capacity:table_capacity, chair_capacity:chair_capacity},
+					dataType:"json",
+					success:function(data) {
+						var tr = "#tablerow"+id;
+						var table = $('#table-example').dataTable();
+						table.fnUpdate(name,$(tr)[0],2);
+						table.fnUpdate(table_capacity,$(tr)[0],3);
+						table.fnUpdate(chair_capacity,$(tr)[0],4);
+						$('#nameEdit').attr("placeholder",name);
+						$('#table_capacityEdit').attr("placeholder",table_capacity);
+						$('#chair_capacityEdit').attr("placeholder",chair_capacity);
+						$('#nameEdit, #table_capacityEdit, #chair_capacityEdit').removeAttr("value");
+						var modal ="#modal-edit";
+						$(modal).modal('hide');
+					}
+				});
+			})
+	}); 
+
+	$(function() {
 				$(".delete-selected").click(function(event){
 						event.preventDefault();
 						var data=$(this).data();
@@ -424,36 +502,7 @@
 						});
 					}, 2000);
 				});
-
-				// AJAX Script
-				$(".delete-yes").click(function(event){
-					event.preventDefault();
-					var id=$(this).val();
-					var tr="#tablerow"+id;
-					$.ajax({
-						url: '/roomDelete/'+id,
-						type:"GET",
-						dataType:"json",
-						success:function(data) {
-							$('#table-example').dataTable().fnDeleteRow($(tr)[0]);
-							var modal='#md-effect'+id;
-							$(modal).attr('class','modal fade').modal('hide');					   						
-							}
-						}
-					);
-					
-				});
-
-				//Export Excel Script
-				$('#export-excel-button').click(function(){
-					window.location.href="{{url('/exportRoomTable')}}"
-				});
-
-				//Export PDF Script
-				$('#export-pdf-button').click(function(){
-					window.location.href="{{url('/exportRoomPdf')}}"
-				});
-
+				
 				//Select All Script
 				$('#selectall').click(function() {    
 					$('input[name=selectdata]').prop('checked', this.checked);    
@@ -467,9 +516,14 @@
 					});
 					$("#delete-selected-confirmation").click(function(){
 						var join_selected_values = allVals.join(",");
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+							}
+						});
 						$.ajax({
-						url: '/roomsDelete/',
-						type:"GET",
+						url: '/roomsDelete',
+						type:"POST",
 						data: 'ids='+join_selected_values,
 						dataType:"json",
 						success:function(data) {
@@ -485,54 +539,6 @@
 					});
 				});
 		});
-</script>
-
-<!-- Script form edit -->
-<script>
-	$('.edit-data-button').click(function(){
-		var id = $(this).val();
-		var sname = 'input[name=name'+id+']';
-		var stab = 'input[name=table_capacity'+id+']';
-		var schair = 'input[name=chair_capacity'+id+']';
-		var name = $(sname).val();
-		var table_capacity = $(stab).val();
-		var chair_capacity = $(schair).val();
-		if(!name && !table_capacity && !chair_capacity)
-		{
-			var modal ="#modal-edit"+id;
-			$(modal).modal('hide');
-			// alert('input cannot be empty');	
-			Swal({
-				type: 'error',
-				title: 'Error',
-				text: 'Input cannot be empty!',
-				showConfirmButton: false,
-				timer: 1500
-			});
-			return false	;
-		}
-		$.ajax({
-			url: '/roomEdit/',
-			type:"GET",
-			data: {id:id, name:name, table_capacity:table_capacity, chair_capacity:chair_capacity},
-			dataType:"json",
-			success:function(data) {
-				var tr = "#tablerow"+id;
-				var table = $('#table-example').dataTable();
-				table.fnUpdate(name,$(tr)[0],2);
-				table.fnUpdate(table_capacity,$(tr)[0],3);
-				table.fnUpdate(chair_capacity,$(tr)[0],4);
-				$(sname).attr("placeholder",name);
-				$(stab).attr("placeholder",table_capacity);
-				$(schair).attr("placeholder",chair_capacity);
-				$(sname).removeAttr("value");
-				$(stab).removeAttr("value");
-				$(schair).removeAttr("value");
-				var modal ="#modal-edit"+id;
-				$(modal).modal('hide');
-			}
-		});
-	});
 </script>
 
 <!-- Script form add -->
@@ -555,25 +561,17 @@
 			});
 			return false	;
 		}
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
 		$.ajax({
-			url: '/roomAdd/',
-			type:"GET",
+			url: '/roomAdd',
+			type:"POST",
 			data: {name:name, table_capacity:table_capacity, chair_capacity:chair_capacity},
 			dataType:"json",
 			success:function(data) {
-				$('tbody').append(
-					'<tr id="tablerow'+data+'">'+
-					'<td><input name="selectdata" type="checkbox" value="'+data+'"></td'+
-					'<td>' + data + '</td>' +
-					'<td>' + name + '</td>' +
-					'<td>' + table_capacity+ '</td>' +
-					'<td>' + chair_capacity + '</td>' +
-					'<td class="center">'+
-						'<button type="button" value="'+data+'" data-toggle="tooltip" title="Edit" class="btn btn-warning edit-button" data-effect="md-scale"><i class="fa fa-edit"></i></button>'+
-						'<button type="button" value="'+data+'" data-toggle="tooltip" title="Delete" class="btn btn-danger md-effect" data-effect="md-scale"><i class="fa fa-trash-o"></i></button>'+
-					'</td>'+
-					'</tr>'
-				);
 				$("#modal-add").modal('hide');
 				window.location.href="{{url('/manageRooms')}}"
 			}

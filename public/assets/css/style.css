@@ -1,5 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300,800);
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300,800);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,700);
 @import url(../plugins/form/icheck/skins/all.css);
 @import url(../plugins/form/switch/switch.css);
 @import url(../plugins/datetime/datetime.css);
@@ -85,7 +85,7 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
 
 #header {
   background: white;
-  border-bottom: 5px #0aa699 solid;
+  border-bottom: 5px #005b9f solid;
   height: 55px;
   left: 0;
   position: absolute;
@@ -124,7 +124,7 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
   top: 19px;
 }
 #header .tools-bar a.icon-toolsbar {
-  color: #08897e;
+  color: #FFFFFF;
   font-size: 21px;
   padding: 0 25px;
 }

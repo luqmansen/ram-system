@@ -23,8 +23,6 @@ Auth::routes();
 
 Route::get('/sudosu', 'HomeController@index')->name('home');
 
-// Route::get('/manageCustomers','ManageCostumersController@index');
-
 // Route::get('/manageReservations','ManageReservationsController@index');
 
 // Route::get('/history','HistoryController@index');
@@ -43,9 +41,13 @@ Route::get('/hoobla',function(){
 
 //Manage Rooms
 Route::get('/manageRooms','ManageRoomsController@index');
-Route::get('/roomDelete/{id}', 'ManageRoomsController@delete');
-Route::get('/roomsDelete', 'ManageRoomsController@deletes');
-Route::get('/roomEdit', 'ManageRoomsController@edit');
-Route::get('/roomAdd', 'ManageRoomsController@add');
+Route::post('/roomDelete', 'ManageRoomsController@delete');
+Route::post('/roomsDelete', 'ManageRoomsController@deletes');
+Route::post('/roomEdit', 'ManageRoomsController@edit');
+Route::post('/roomAdd', 'ManageRoomsController@add');
 Route::get('/exportRoomTable', 'ManageRoomsController@exportXls');
 Route::get('/exportRoomPdf', 'ManageRoomsController@exportPdf');
+
+//Manage Customers
+Route::get('/manageCustomers','ManageCustomersController@index');
+Route::post('/customerDelete', 'ManageCustomersController@delete');

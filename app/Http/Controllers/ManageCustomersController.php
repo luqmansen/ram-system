@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Customer;
+use Response;
+use PDF;
 
 class ManageCustomersController extends Controller
 {
@@ -23,6 +26,15 @@ class ManageCustomersController extends Controller
      */
     public function index()
     {
-        return view('manageRooms');
+        $data['customers']=Customer::get()->all();
+        return view('manageCustomers',$data);
+    }
+
+    public function delete(Request $request)
+    {
+        $id=$request->id;
+        Customer::where('id',$id)->delete();
+        $response = 'ok';
+        return Response::json($response);
     }
 }

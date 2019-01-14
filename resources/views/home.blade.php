@@ -318,20 +318,23 @@
 @endsection
 
 @section('customScript')
+<!-- Script swipe navbar -->
 <script>
-var touchWrapper=document.getElementById("wrapper");
-if(touchWrapper){
-	var wrapper= Hammer( touchWrapper );
-	 wrapper.on("dragright", function(event) {	// hold , tap, doubletap ,dragright ,swipe, swipeup, swipedown, swipeleft, swiperight
-		if((event.gesture.deltaY<=7 && event.gesture.deltaY>=-7) && event.gesture.deltaX >100){
-			$('nav#menu').trigger( 'open.mm' );
-		}
-	 });
-	 wrapper.on("dragleft", function(event) {
-		if((event.gesture.deltaY<=5 && event.gesture.deltaY>=-5) && event.gesture.deltaX <-100){
-			$('nav#contact-right').trigger( 'open.mm' );
-		}
-	 });
-}
+	var touchWrapper=document.getElementById("wrapper");
+	if(touchWrapper){
+		var wrapper= Hammer( touchWrapper );
+		wrapper.on("dragright", function(event) {	// hold , tap, doubletap ,dragright ,swipe, swipeup, swipedown, swipeleft, swiperight
+			if((event.gesture.deltaY<=7 && event.gesture.deltaY>=-7) && event.gesture.deltaX >100){
+				if($(window).width() < 991 ){
+					$('nav#menu').trigger( 'open.mm' );
+				}	
+			}
+		});
+		wrapper.on("dragleft", function(event) {
+			if((event.gesture.deltaY<=5 && event.gesture.deltaY>=-5) && event.gesture.deltaX <-100){
+				$('nav#contact-right').trigger( 'open.mm' );
+			}
+		});
+	}
 </script>
 @endsection

@@ -31,8 +31,9 @@ class ManageRoomsController extends Controller
         return view('manageRooms',$data);
     }
 
-    public function delete($id)
+    public function delete(Request $request)
     {
+        $id = $request->id;
         Room::where('id',$id)->delete();
         $response = 'ok';
         return Response::json($response);
