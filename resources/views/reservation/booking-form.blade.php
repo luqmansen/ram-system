@@ -6,11 +6,11 @@
     {!! Form::open(['action' => 'FormController@store1', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
     {{-- this action is where our form is submitting to --}}
 
-            {{-- <div class="form-group">
+            <div class="form-group">
                 {{Form::label('date', 'Tanggal Peminjaman: ',['class' => 'col-lg-2 control-label'])}}
                 {{Form::date('date', '',['class' => 'form-control'])}}
                     
-            </div> --}}
+            </div>
 
             <div class="form-group">
                 {{Form::label('id_room', 'Ruangan: ',['class' => 'col-lg-2 control-label'])}}
@@ -37,6 +37,12 @@
             <div class="form-group">
                     {{Form::label('note', 'Catatan : ',['class' => 'col-lg-2 control-label'])}}
                     {{Form::text('note', '',['class' => 'form-control', 'placeholder' => 'Diskripsi Singkat '])}}
+            </div>
+
+            <div>
+                    
+                {{Form::label('file_name', 'Surat Peminjaman : ',['class' => 'col-lg-2 control-label'])}}
+                {{Form::file('file_name')}}
             </div>
 
             {{Form::submit('Submit', ['class' => 'btn btn-primary', 'style' => 'float :right;'])}}

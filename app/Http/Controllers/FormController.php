@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use DB;
 
 class FormController extends Controller
@@ -40,8 +41,10 @@ class FormController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'telephone' => 'required',
-            'email' => 'required'
+            'email' => 'required',
+            
         ]);
+
         
         $name = $request->input('name');
         $customers = new Customer;
@@ -61,19 +64,39 @@ class FormController extends Controller
             'start_hour' => 'required',
             'end_hour' => 'required',
             'description' => 'required',
+            'file_name' => 'file | nullable | max: 1999'
         ]);
         
+            
+        if($request->hasFile('file_name')){
+            // Get File Name with extension
+
+            $filenameWithExt = $request->file('file_name')->getClientOriginalName();
+            //kalo gini doang, nanti semisal 2 orang yg upload dengan nama 
+            // file yang sama, nanti bakal jadi masalah, jadi buat fungsi 
+            // untuk misahin 
+            
+            //get just file name
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+            //get just extension
+            $extension = $request->file('file_name')->getClientOriginalExtension();
+            
+            //filename to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+
+            //upload the image
+            $path = $request->file('file_name')->storeAs('public/file_name', $fileNameToStore);
+        } else{
+            $fileNameToStore = 'file.ext';
+        }
+
         // $name = DB::table('reservations')->select('id')->orderBy('created_at', 'desc')->first();
         
         // $user = json_decode(json_decode($name), true);
 
         $name =  Customer::select('id')->orderBy('created_at','desc')->first();
-        // $something = json_decode($name);
-        // $id = $something->{'id'};
-            // foreach ($name as $id ) {
-            //     ($id -> id);
-            // }
-       
+      
         $reservations = new Reservation;
         $reservations->id_customer = $name->id;
         // dd($reservations);
@@ -83,6 +106,7 @@ class FormController extends Controller
         $reservations->start_hour = $request->input('start_hour');
         $reservations->end_hour = $request->input('end_hour');
         $reservations->description = $request->input('description');
+        $reservations->file_name = $fileNameToStore;
         $reservations->save();
 
         return view('reservation.room-detail')->with('success', 'Peminjaman Telah Disimpan');
