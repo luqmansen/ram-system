@@ -109,8 +109,8 @@
 														<form>
 															{{ csrf_field() }}
 															<ul style="padding-bottom:10px">
-		                                                    <a href="#" type="button" id="export-excel-button" class="btn btn-success "><i class="fa fa-external-link-square"></i> Export .xls</a>
-		                                                    <a href="#" type="button" id="export-pdf-button" class="btn btn-danger"><i class="fa fa-external-link-square"></i> Export .pdf</a>
+		                                                    <a href="{{url('/exportCustomersTable')}}" type="button" id="export-excel-button" class="btn btn-success "><i class="fa fa-external-link-square"></i> Export .xls</a>
+		                                                    <a href="{{url('/exportCustomersPdf')}}" type="button" id="export-pdf-button" class="btn btn-danger"><i class="fa fa-external-link-square"></i> Export .pdf</a>
 															<button id="delete-selected-button" type="button" class="btn btn-danger btn-transparent delete-selected pull-right" data-effect="md-scale"><i class="fa fa-trash-o"></i> Delete selected data</button>
 															<span class="pull-right">
 																<span><input id="selectall" style="margin-top:15px" type="checkbox"></span>
@@ -122,12 +122,12 @@
 																<table class="table table-striped" id="table-customers">
 																		<thead>
 																				<tr>
-																						<th  class="text-center"></th>
-																						<th class="text-center">ID</th>
-																						<th class="text-center">Name</th>
-																						<th class="text-center">Telephone</th>
-																						<th class="text-center">Email</th>
-																						<th class="text-center">Action</th>
+																				<th class="center unclickable" align="center">	</th>
+                                                                                <th  class="text-center " >ID <i class="fa fa-sort-amount-asc"></i></th>
+                                                                                <th class="text-center ">Name <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Telephone<i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Email<i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center  unclickable">Action</th>
 																				</tr>
 																		</thead>
 																		<tbody align="center">
@@ -158,12 +158,35 @@
 																						<p>Are you sure you want to delete customer <strong id="delete-item"></strong>?</p>
 																						<div class="modal-footer">
 																								<button type="button" id="cancel-delete-btn" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																								<button type="button" id="delete-btn" value="" class="btn btn-danger">Yes</button>
+																								<button type="button" id="delete-btn" class="btn btn-danger">Yes</button>
 																						</div>
 																					</div>
 																					<!-- //modal-body-->
 																			</div>
 																			<!-- //modal-->
+
+																			<!--
+																			////////////////////////////////////////////////////////////////////////
+																			//////////     MODAL DELETE SELECTED   //////////
+																			//////////////////////////////////////////////////////////////////////
+																			-->
+																			<div id="delete-selected" class=" modal fade" tabindex="-1" data-width="450" data-header-color="#736086">
+																					<div class="modal-header bg-theme bd-theme-darken">
+																							<h4 class="modal-title">Confirmation</h4>
+																					</div>
+																					<!-- //modal-header-->
+																					<div class="modal-body">
+																						<p>Are you sure you want to delete selected customer?</p>
+																						<div class="modal-footer">
+																								<button type="button" id="cancel-delete-btn" class="btn btn-default" data-dismiss="modal">Cancel</button>
+																								
+																								<button type="button" id="delete-selected-confirmation" value="" class="btn btn-danger">Yes</button>
+																						</div>
+																					</div>
+																					<!-- //modal-body-->
+																			</div>
+																			<!-- //modal-->
+
 																		</tbody>
 																</table>
 														</form>
@@ -242,8 +265,23 @@
 	$(function() {
 
 		// Call dataTable in this page only
-		$('#table-customers').dataTable();
+		var table = $('#table-customers').dataTable();
+		table.fnSort([[1,'asc']]);
 		$('table[data-provide="data-table"]').dataTable();
+
+		$('th').click(function(){
+			$('.fa-sort-amount-asc, .fa-sort-amount-desc').attr('class','fa fa-sort');
+			$(this).find('i').attr('class', 'fa fa-sort-amount-desc');
+			if($(this).hasClass('sorting_asc'))			{
+				$(this).find('i').attr('class', 'fa fa-sort-amount-asc');
+			}
+		});
+	});
+</script>
+<!-- Script tooltip -->
+<script>
+	$(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();   
 	});
 </script>
 <!-- Script Modal -->
@@ -253,15 +291,19 @@
 				$(".md-effect").click(function(event){
 						event.preventDefault();
 						//SHOW DELETE MODAL
-						var id=$(this).val();
+						var id,tr = undefined;
+						id=$(this).val();
 						var itemid='#item'+id;
 						var item=$(itemid).html();
 						var data=$(this).data();
 						$('#delete-item').text(item);
+						$('#delete-btn').val(id);
 						$('#md-effect').attr('class','modal fade').addClass(data.effect).modal('show');
-						//SEND DELETE QUERY THROUGH AJAX
-						$('#delete-btn').click(function(event){
-							var tr="#tablerow"+id;
+				});
+				//SEND DELETE QUERY THROUGH AJAX
+				$('#delete-btn').click(function(){
+							id=$(this).val();
+							tr="#tablerow"+id;
 							$.ajaxSetup({
 								headers: {
 									'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -275,12 +317,13 @@
 								success:function(data) {
 									//HIDE DELETE QUERY ON DELETION SUCCESS
 									$('#table-customers').dataTable().fnDeleteRow($(tr)[0]);
+									$('#table-customers').dataTable().fnDraw();
 									$('#md-effect').attr('class','modal fade').modal('hide');					   						
 									}
 								}
 							);
 						})
-				}); 
+
 				$(".delete-selected").click(function(event){
 						event.preventDefault();
 						var data=$(this).data();
@@ -292,19 +335,6 @@
 							$('#delete-selected').attr('class','modal fade').addClass(data.effect).modal('show');
 						}
 				});
-				$('#add-room-button').click(function(event){
-					event.preventDefault();
-					$('#modal-add').modal('show');
-				});
-
-				$('.inputAdd').keypress(function (e) {
-						var key = e.which;
-						if(key == 13)  // the enter key code
-						{
-							$('#add-btn').click(); 
-							return false;
-						}
-					}); 
 
 				// $('#cancel-delete-btn').click(function(){
 				// 	$("#md-effect").attr('class','modal fade').addClass(data.effect).modal('hide')
@@ -332,16 +362,6 @@
 					
 				});
 
-				//Export Excel Script
-				$('#export-excel-button').click(function(){
-					window.location.href="{{url('/exportRoomTable')}}"
-				});
-
-				//Export PDF Script
-				$('#export-pdf-button').click(function(){
-					window.location.href="{{url('/exportRoomPdf')}}"
-				});
-
 				//Select All Script
 				$('#selectall').click(function() {    
 					$('input[name=selectdata]').prop('checked', this.checked);    
@@ -355,9 +375,14 @@
 					});
 					$("#delete-selected-confirmation").click(function(){
 						var join_selected_values = allVals.join(",");
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+							}
+						});
 						$.ajax({
-						url: '/roomsDelete/',
-						type:"GET",
+						url: '/customersDelete',
+						type:"POST",
 						data: 'ids='+join_selected_values,
 						dataType:"json",
 						success:function(data) {
@@ -365,7 +390,7 @@
 								var val=$(this).val();
 								var tr="#tablerow"+val;
 								// console.log(tr);
-								$('#table-example').dataTable().fnDeleteRow($(tr)[0]);
+								$('#table-customers').dataTable().fnDeleteRow($(tr)[0]);
 							});					   						
 							$("#delete-selected").attr('class','modal fade').modal('hide');
 							}

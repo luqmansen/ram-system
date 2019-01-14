@@ -51,3 +51,6 @@ Route::get('/exportRoomPdf', 'ManageRoomsController@exportPdf');
 //Manage Customers
 Route::get('/manageCustomers','ManageCustomersController@index');
 Route::post('/customerDelete', 'ManageCustomersController@delete');
+Route::post('/customersDelete', 'ManageCustomersController@deletes');
+Route::get('/exportCustomersTable', 'ManageCustomersController@exportXls');
+Route::get('/exportCustomersPdf', 'ManageCustomersController@exportPdf');

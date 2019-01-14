@@ -37,4 +37,26 @@ class ManageCustomersController extends Controller
         $response = 'ok';
         return Response::json($response);
     }
+
+    public function deletes(Request $request)
+    {
+        $ids = $request->ids;
+        Customer::whereIn('id',explode(",",$ids))->delete();
+        $response = 'ok';
+        return Response::json($response);
+    }
+
+    public function exportXls()
+    {
+        $data['customers']=Customer::get()->all();
+        return view('exportCustomersTable',$data);
+    }
+
+    public function exportPdf()
+    {
+        $data['customers']=Customer::get()->all();
+        $pdf = PDF::loadView('exportCustomersDocs',$data);
+        return $pdf->download('CustomersTable.pdf');
+        // return view('exportRoomsDocs',$data);
+    }
 }
