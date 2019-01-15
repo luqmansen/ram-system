@@ -11,7 +11,11 @@
 |
 */
 
-Route::get('/', 'FormController@index'); // this return calendar as index
+
+Route::get('/calendar', 'FormController@index'); // this return calendar as index
+
+Route::get('/', 'IndexController@index');
+
 
 Route::get('/reservation/{day}/{month}/{year}', 'FormController@roomdetail');
 
@@ -34,12 +38,28 @@ Auth::routes();
 
 Route::get('/sudosu', 'HomeController@index')->name('home');
 
-Route::get('/manageRooms','ManageRoomsController@index');
+// Route::get('/manageReservations','ManageReservationsController@index');
 
-Route::get('/manageCostumers','ManageCostumersController@index');
-
-Route::get('/manageReservations','ManageReservationsController@index');
-
-Route::get('/history','HistoryController@index');
+// Route::get('/history','HistoryController@index');
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
+Route::get('/hoobla',function(){
+    return view('hoobla');
+});
+
+//Manage Rooms
+Route::get('/manageRooms','ManageRoomsController@index');
+Route::post('/roomDelete', 'ManageRoomsController@delete');
+Route::post('/roomsDelete', 'ManageRoomsController@deletes');
+Route::post('/roomEdit', 'ManageRoomsController@edit');
+Route::post('/roomAdd', 'ManageRoomsController@add');
+Route::get('/exportRoomTable', 'ManageRoomsController@exportXls');
+Route::get('/exportRoomPdf', 'ManageRoomsController@exportPdf');
+
+//Manage Customers
+Route::get('/manageCustomers','ManageCustomersController@index');
+Route::post('/customerDelete', 'ManageCustomersController@delete');
+Route::post('/customersDelete', 'ManageCustomersController@deletes');
+Route::get('/exportCustomersTable', 'ManageCustomersController@exportXls');
+Route::get('/exportCustomersPdf', 'ManageCustomersController@exportPdf');
