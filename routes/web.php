@@ -24,7 +24,7 @@ Route::get('/reservation/bookingform', function(){
     return view('reservation.booking-form');
 });
 Route::post('/reservationinput/bookingform', 'FormController@store1');
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::get('/home', 'HomeController@index');
 
 Route::get('/admin', 'AdminController@index');

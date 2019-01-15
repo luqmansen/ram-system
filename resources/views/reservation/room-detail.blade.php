@@ -1,5 +1,5 @@
-<h1>room detail</h1>
-<h2>fetch data dari database</h2>
+<h1 style="text-align:center">Detail Ruangan Tanggal {{$day}} - {{$month}} - {{$year}}  </h1>
+
 
 <style>
     table {
@@ -24,34 +24,33 @@ tr:nth-child(even) {
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
-
-
-<h2>Filterable Table</h2>
-<p>Type something in the input field to search the table for first names, last names or emails:</p>  
-<input id="myInput" type="text" placeholder="Search..">
 <br><br>
-
-<table>
-  <thead>
-    <tr>
-      <th>Ruangan</th>
-      <th>Waktu Mulai</th>
-      <th>Waktu Selesai</th>
-    </tr>
-  </thead>
-  <tbody id="myTable">
-    @foreach ($reservations as $reserv)
-    <tr>
-        <td> {{$reserv->id_room}} </td>
-        <td> {{$reserv->start_hour}} </td>
-        <td> {{$reserv->end_hour}} </td>
-    </tr>
+@if (count($reservations)> 0)
+    <table>
+        <thead>
+        <tr>
+            <th>Ruangan</th>
+            <th>Waktu Mulai</th>
+            <th>Waktu Selesai</th>
+            <th>Deskripsi</th>
+        </tr>
+        </thead>
+        <tbody id="myTable">
+        @foreach ($reservations as $reserv)
+        <tr>
+            <td> {{$reserv->id_room}} </td>
+            <td> {{$reserv->start_hour}} </td>
+            <td> {{$reserv->end_hour}} </td>
+            <td> {{$reserv->description}} </td>
+        </tr>
+        
+        @endforeach
+        
+    </tbody>
+    </table>
     
-    @endforeach
-    
-</tbody>
-</table>
+@else
+    <h2 style="text-align:center">Ruangan Belum Dipesan</h2>
+@endif
 
-
-<p>Note that we start the search in tbody, to prevent filtering the table headers.</p>
-<a class="btn btn-primary" href="/reservation/customerform" role="button">Reservasi Tempat</a>
+<a class="btn btn-primary" style="float:right; margin-right:18%; margin-bottom:10%; margin-top:10px" href="/reservation/customerform" role="button">Reservasi Tempat</a>

@@ -21,12 +21,13 @@ class FormController extends Controller
     
     public function roomdetail($day, $month, $year) //buat filter event yang ditampilkan pada tanggal spesifik
     {
-        $reservations =  Reservation::select('date')->where(date($year-$month-$day));
+        $date = "$year-$month-$day";
+        $reservations =  Reservation::select('*')->where('date', '=', $date)->get();
         // dd($year,$month, $day);
         
         
 
-        return view('reservation.room-detail')->with('reservations',$reservations)->with( 'day', $day);
+        return view('reservation.room-detail')->with('reservations',$reservations)->with('day', $day)->with('month', $month)->with('year', $year);
     }
 
 
@@ -114,7 +115,7 @@ class FormController extends Controller
         $reservations->file_name = $fileNameToStore;
         $reservations->save();
 
-        return view('reservation.room-detail')->with('success', 'Peminjaman Telah Disimpan');
+        return view('index')->with('success', 'Peminjaman Telah Disimpan');
     }
 
   
