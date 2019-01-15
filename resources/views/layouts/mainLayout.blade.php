@@ -30,6 +30,7 @@
 <!-- opening tag <body> nya belom ada jadi harus di deklarasi lagi di view yang meng-extends layout ini -->
   @section('bodyWrapper')
     <body>
+      @yield('content')
   @show
 
   <!--
