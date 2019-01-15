@@ -1,51 +1,69 @@
-@extends('layouts.NoScriptLayout')
+@extends('inc.navbar')
+
+@section('title')
+    Form Peminjaman Ruangan
+@endsection
 
 @section('content')
-    <h1>Create Post</h1>
+    
     
     {!! Form::open(['action' => 'FormController@store1', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
     {{-- this action is where our form is submitting to --}}
+    
+            <div class="form-group">
+                    <div class='row'>
+                        <div class="col">
+                                {{Form::label('date', 'Tanggal Peminjaman ')}}
+                                {{Form::date('date', '',['class' => 'form-control', 'style' => 'width:80%'])}}
+                        </div>
+                        <div class='col'>
+                                 {{Form::label('id_room', 'Ruangan ')}}
+                                <div class="dropdown">
+                                        @php
+                                            $room = []
+                                        @endphp
+                                        {{Form::select('id_room', ['502' => '502', '503' => '503', '504' => '504'],'', ['class'=>"btn btn-secondary dropdown-toggle", 'type'=>"button" ,'id'=>"dropdownMenuButton" ,'data-toggle'=>"dropdown" ,'aria-haspopup'=>"true", 'aria-expanded'=>"true"])}}
+                                </div>
+                        </div>
+                </div>
+            </div>
 
             <div class="form-group">
-                {{Form::label('date', 'Tanggal Peminjaman: ',['class' => 'col-lg-2 control-label'])}}
-                {{Form::date('date', '',['class' => 'form-control'])}}
+                
                     
             </div>
-
-            <div class="form-group">
-                {{Form::label('id_room', 'Ruangan: ',['class' => 'col-lg-2 control-label'])}}
-                {{Form::select('id_room', ['502' => '502', '503' => '503', '504' => '504'])}}
-                    
-            </div>
+            <div class="row">
+                <div class="col">
+                        <div class="form-group">
+                                {{Form::label('start_hour', ' Mulai : ')}}
+                                {{Form::time('start_hour', '',['class' => 'form-control'])}}
+                        </div>
+                </div>
+                <div class="col">
+                        <div class="form-group">
+                                {{Form::label('end_hour', ' Selesai : ')}}
+                                {{Form::time('end_hour', '',['class' => 'form-control'] )}}
+                        </div>
+                </div>
+             </div>
             
             <div class="form-group">
-                    {{Form::label('start_hour', 'Waktu Mulai Peminjaman: ',['class' => 'col-lg-2 control-label'])}}
-                    {{Form::time('start_hour', '')}}
-            </div>
-
-            <div class="form-group">
-                    {{Form::label('end_hour', 'Waktu Selesai Peminjaman: ',['class' => 'col-lg-2 control-label'])}}
-                    {{Form::time('end_hour', '')}}
-            </div>
-            
-            
-            <div class="form-group">
-                    {{Form::label('description', 'Deskripsi Singkat: ',['class' => 'col-lg-2 control-label'])}}
+                    {{Form::label('description', 'Deskripsi Singkat Acara  ')}}
                     {{Form::text('description', '',['class' => 'form-control', 'placeholder' => 'Diskripsi Singkat '])}}
             </div>
             
             <div class="form-group">
-                    {{Form::label('note', 'Catatan : ',['class' => 'col-lg-2 control-label'])}}
+                    {{Form::label('note', 'Catatan  ')}}
                     {{Form::text('note', '',['class' => 'form-control', 'placeholder' => 'Diskripsi Singkat '])}}
             </div>
 
             <div>
                     
-                {{Form::label('file_name', 'Surat Peminjaman : ',['class' => 'col-lg-2 control-label'])}}
-                {{Form::file('file_name')}}
+                {{Form::label('file_name', 'Surat Peminjaman (PDF atau Gambar) ')}}
+                {{Form::file('file_name', ['class' => 'form-control'])}}
             </div>
 
-            {{Form::submit('Submit', ['class' => 'btn btn-primary', 'style' => 'float :right;'])}}
+            {{Form::submit('Submit', ['class' => 'btn btn-primary', 'style' => 'margin: 10px'])}}
     {!! Form::close() !!}
 
 @endsection    

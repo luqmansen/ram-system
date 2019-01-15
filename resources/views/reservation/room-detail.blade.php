@@ -1,4 +1,4 @@
-<h1 style="text-align:center">Detail Ruangan Tanggal {{$day}} - {{$month}} - {{$year}}  </h1>
+@extends('inc.navbar')
 
 
 <style>
@@ -23,6 +23,8 @@ tr:nth-child(even) {
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
+@section('content')
+<h1 style="text-align:center">Detail Ruangan Tanggal {{$day}} - {{$month}} - {{$year}}  </h1>
 
 <br><br>
 @if (count($reservations)> 0)
@@ -53,4 +55,5 @@ tr:nth-child(even) {
     <h2 style="text-align:center">Ruangan Belum Dipesan</h2>
 @endif
 
-<a class="btn btn-primary" style="float:right; margin-right:18%; margin-bottom:10%; margin-top:10px" href="/reservation/customerform" role="button">Reservasi Tempat</a>
+<a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform" role="button">Reservasi Tempat</a>
+@endsection
