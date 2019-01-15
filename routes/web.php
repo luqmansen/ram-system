@@ -15,15 +15,14 @@ Route::get('/', 'FormController@index'); // this return calendar as index
 
 Route::get('/reservation/{day}/{month}/{year}', 'FormController@roomdetail');
 
-Route::get('/reservation/customerform', function(){
-    return view('reservation.customer-input');
-});
+Route::get('/reservation/customerform', 'FormController@create');  // function disini untuk display customer input dengan method create
+    
 Route::post('/reservationinput/customerform', 'FormController@store');
 
-Route::get('/reservation/bookingform', function(){
-    return view('reservation.booking-form');
-});
+Route::get('/reservation/bookingform', 'Formcontroller@create1');
+
 Route::post('/reservationinput/bookingform', 'FormController@store1');
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::get('/home', 'HomeController@index');
 
