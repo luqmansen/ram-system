@@ -25,11 +25,6 @@ tr:nth-child(even) {
 <!------ Include the above in your HEAD tag ---------->
 
 
-@php
-    
-    $reservations = DB::select('SELECT * FROM reservations');  
-    // dd($reservations);
-@endphp
 
 <h2>Filterable Table</h2>
 <p>Type something in the input field to search the table for first names, last names or emails:</p>  

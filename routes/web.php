@@ -11,12 +11,9 @@
 |
 */
 
-Route::get('/', function    () {
-    return view('index');
-});
+Route::get('/', 'FormController@index'); // this return calendar as index
 
-
-Route::get('/reservation/{date}', 'FormController@index');
+Route::get('/reservation/{day}/{month}/{year}', 'FormController@roomdetail');
 
 Route::get('/reservation/customerform', function(){
     return view('reservation.customer-input');
@@ -27,12 +24,6 @@ Route::get('/reservation/bookingform', function(){
     return view('reservation.booking-form');
 });
 Route::post('/reservationinput/bookingform', 'FormController@store1');
-
-
-Route::get('/coba', function(){
-    $name = DB::table('reservations')->select('id')->orderBy('created_at', 'desc')->first();
-    return $customers->id;
-});
 
 Route::get('/home', 'HomeController@index');
 
@@ -51,11 +42,5 @@ Route::get('/manageCostumers','ManageCostumersController@index');
 Route::get('/manageReservations','ManageReservationsController@index');
 
 Route::get('/history','HistoryController@index');
-
-//cuma untuk nyoba---
-Route::get('/user', function    () {
-    return view('calendar');
-});
-//----
 
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');

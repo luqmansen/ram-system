@@ -58,43 +58,27 @@
 		
 		
 	   $('#calendar').fullCalendar({
-			dayClick: function(date, jsEvent, view) { 
-			$date = date.getDate()+date.getMonth()+date.getFullYear();
-            // alert($date);
-			
-			// $.ajax({
-			// 			url: '/roomsDelete/',
-			// 			type:"GET",
-			// 			data: 'ids='+join_selected_values,
-			// 			dataType:"json",
-			// 			success:function(data) {
-			// 				$("input[name=selectdata]:checked").each(function() { 
-			// 					var val=$(this).val();
-			// 					var tr="#tablerow"+val;
-			// 					// console.log(tr);
-			// 					$('#table-example').dataTable().fnDeleteRow($(tr)[0]);
-			// 				});					   						      
-			// 				$("#delete-selected").attr('class','modal fade').modal('hide');
-			// 				}
-			// 			});
-					
-	// 		function postName(e){
-	// 			e.preventDefault();
+		   	dayClick: function(date, jsEvent, view) { 
+			var hari = date.getDate();
+			m = String(hari);
+			//Fungsi agar hari formatnya jadi 2 digit, soalnya formatting ikut di dokumentasinya ribet 
+			if (m < 2){
+				$day = '0'+ hari; 
+			} else {
+				$day = hari;
+			};
 
-	// 			var name = $date;
-	// 			var params = "name="+name;
-
-	// 			var xhr = new XMLHttpRequest();
-	// 			xhr.open('POST', 'room-detail.php', true);
-	// 			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-	// 			xhr.onload = function(){
-	// 				console.log(this.responseText);
-	// 			}
-
-    //   xhr.send(params);
-    // }
-			$url = "/reservation/"+$date;
+			var bulan = date.getMonth() +1;
+			n = String(bulan);
+			//Ini juga
+			if (n < 2){
+				$month = '0'+ bulan; 
+			} else {
+				$month = bulan;
+			};
+			$year = date.getFullYear();
+            
+			$url = "/reservation/"+$day+'/'+$month+'/'+$year;
 			window.location.href= $url;  
         },
 			
@@ -105,7 +89,10 @@
 			},
 			editable: true,
             droppable: true,
-            selectable: true, 
+            selectable: true,
+			height :650, 
+			contentHeight : 650,
+			aspectRatio:1.5,
 			
 			drop: function(date, allDay) { 
                         var  copiedEventObject = {

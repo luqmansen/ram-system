@@ -14,19 +14,22 @@ class FormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($date)
+    public function index()
     {
-        $data = $date;
-        dd($data);
-        $reservations =  Reservation::all();
-        return view('reservation.room-detail')->with('reservations',$reservations);
+        return view('index');
     }
     
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function roomdetail($day, $month, $year) //buat filter event yang ditampilkan pada tanggal spesifik
+    {
+        $reservations =  Reservation::select('date')->where(date($year-$month-$day));
+        // dd($year,$month, $day);
+        
+        
+
+        return view('reservation.room-detail')->with('reservations',$reservations)->with( 'day', $day);
+    }
+
+
     public function create()
     {
         return view('reservation.customer-input');
