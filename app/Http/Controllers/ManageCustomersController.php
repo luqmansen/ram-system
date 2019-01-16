@@ -59,4 +59,12 @@ class ManageCustomersController extends Controller
         return $pdf->download('CustomersTable.pdf');
         // return view('exportRoomsDocs',$data);
     }
+
+    public function detail(Request $request)
+    {
+        $id = $request->id;
+        $response =Customer::where('id',$id)->get();
+        return Response::json($response);
+
+    }
 }
