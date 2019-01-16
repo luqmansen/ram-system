@@ -1,7 +1,7 @@
 @extends('layouts.mainLayout')
 
 @section('title')
-<title>Manage Customers | Room Reservation & Monitoring System</title>
+<title>History | Room Reservation & Monitoring System</title>
 @endsection
 
 @section('customStyle')
@@ -96,7 +96,7 @@
 								<div class="col-lg-12">
 										<section class="panel">
 												<header class="panel-heading">
-														<h2><strong>Manage</strong> Customers </h2>
+														<h2><strong>HISTORY</strong></h2>
 												</header>
 												<div class="panel-tools fully color" align="right" data-toolscolor="#6CC3A0">
 														<ul class="tooltip-area">
@@ -123,24 +123,29 @@
 																		<thead>
 																				<tr>
 																				<th class="center unclickable" align="center">	</th>
-                                                                                <th  class="text-center " >ID <i class="fa fa-sort-amount-asc"></i></th>
-                                                                                <th class="text-center ">Name <i class="fa fa-sort"></i></th>
-                                                                                <th class="text-center ">Telephone<i class="fa fa-sort"></i></th>
-                                                                                <th class="text-center ">Email<i class="fa fa-sort"></i></th>
+                                                                                <th  class="text-center " >Name<i class="fa fa-sort-amount-asc"></i></th>
+                                                                                <th class="text-center ">Room<i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Date<i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Start Hour<i class="fa fa-sort"></i></th>
+																				<th class="text-center ">End Hour<i class="fa fa-sort"></i></th>
+																				<th class="text-center ">Description<i class="fa fa-sort"></i></th>
+																				<th class="text-center ">Note<i class="fa fa-sort"></i></th>
                                                                                 <th class="text-center  unclickable">Action</th>
 																				</tr>
 																		</thead>
 																		<tbody align="center">
-																			@foreach($customers as $row)
+																			@foreach($history as $row)
 																			<tr  id="tablerow{{$row->id}}">
 																				<td><input name="selectdata" type="checkbox" value="{{$row->id}}"></td>
-                                                                                <td>{{$row->id}}</td>
-                                                                                <td id="item{{$row->id}}">{{$row->name}}</td>
-                                                                                <td>{{$row->telephone}}</td>
-                                                                                <td>{{$row->email}}</td>
+                                                                                <td>{{$row->id_customer}}</td>
+                                                                                <td>{{$row->id_room}}</td>
+                                                                                <td>{{$row->date}}</td>
+                                                                                <td>{{$row->start_hour}}</td>
+																				<td>{{$row->end_hour}}</td>
+																				<td>{{$row->description}}</td>
+																				<td>{{$row->note}}</td>
                                                                                 <td class="center">
-                                                                                    <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Detail" class="btn btn-success detail-button" data-effect="md-scale"><i class="fa fa-search"></i></button>
-                                                                                    <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Delete" class="btn btn-danger md-effect" data-effect="md-scale"><i class="fa fa-trash-o"></i></button>
+                                                                                    <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Detail" class="btn btn-success edit-button" data-effect="md-scale"><i class="fa fa-search"></i></button>
                                                                                 </td>
 																			</tr>
 																			@endforeach
@@ -164,54 +169,6 @@
 																					<!-- //modal-body-->
 																			</div>
 																			<!-- //modal-->
-
-																			<!--
-																			////////////////////////////////////////////////////////////////////////
-																			//////////     MODAL DETAIL   //////////
-																			//////////////////////////////////////////////////////////////////////
-																			-->
-																			<div id="md-detail" class=" modal fade">
-																				<div class="modal-header bg-success bd-success-darken ">
-																						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-																						<h4 class="modal-title">Detail Customer</h4>
-																				</div>
-																				<!-- //modal-header-->
-																				<div class="modal-body">
-																					<form role="form">
-																						{{ csrf_field() }}
-																								<div class="form-group">
-																										<label>ID</label>
-																										<h5 id="detail-id">-</h5>
-																								</div>
-																								<div class="form-group">
-																										<label>Name</label>
-																										<h5 id="detail-name">-</h5>
-																								</div>
-																								<div class="form-group">
-																										<label>Telephone</label>
-																										<h5 id="detail-telephone">-</h5>
-																								</div>
-																								<div class="form-group">
-																										<label>Email</label>
-																										<h5 id="detail-email">-</h5>
-																								</div>
-																								<div class="form-group">
-																										<label>Created at</label>
-																										<h5 id="detail-created-at">-</h5>
-																								</div>
-																								<div class="form-group">
-																										<label>Updated at</label>
-																										<h5 id="detail-updated-at">-</h5>
-																								</div>
-																								
-																							<div class="modal-footer" style="padding-bottom:0px">
-																									<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-																							</div>
-																						</form>
-																				</div>
-																				<!-- //modal-body-->
-																		</div>
-																		<!-- //modal-->
 
 																			<!--
 																			////////////////////////////////////////////////////////////////////////
@@ -370,37 +327,7 @@
 									}
 								}
 							);
-				});
-
-					//SCRIPT EDIT
-	$(".detail-button").click(function(event){
-			event.preventDefault();
-			//SHOW DELETE MODAL
-			var id=$(this).val();
-			var data=$(this).data();
-			//AJAX SCRIPT
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				}
-			});
-			$.ajax({
-				url: '/customerDetail',
-				type:"POST",
-				data: {id:id},
-				dataType:"json",
-				success:function(data) {
-					console.log(data);
-					$('#detail-id').html(data[0].id);
-					$('#detail-name').html(data[0].name);
-					$('#detail-telephone').html(data[0].telephone);
-					$('#detail-email').html(data[0].email);
-					$('#detail-created-at').html(data[0].created_at);
-					$('#detail-updated-at').html(data[0].updated_at);
-					$('#md-detail').attr('class','modal fade').addClass(data.effect).modal('show');
-				}
-			});
-	}); 
+						})
 
 				$(".delete-selected").click(function(event){
 						event.preventDefault();

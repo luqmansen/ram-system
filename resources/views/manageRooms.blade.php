@@ -170,7 +170,7 @@
 																		//////////////////////////////////////////////////////////////////////
 																		-->
 																		<div id="modal-edit" class=" modal fade container">
-																				<div class="modal-header bg-warning-darken">
+																				<div class="modal-header bg-warning bd-warning-darken">
 																						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
 																						<h4 class="modal-title">Edit Room (id room = <strong id="edit-item-id"></strong>)</h4>
 																				</div>
@@ -229,7 +229,7 @@
 																		//////////////////////////////////////////////////////////////////////
 																		-->
 																		<div id="modal-add" class=" modal fade container">
-																				<div class="modal-header bg-primary">
+																				<div class="modal-header bg-primary bd-primary-darken">
 																						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
 																						<h4 class="modal-title">Add Room</h4>
 																				</div>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Reservation;
+use DB;
 
 class HistoryController extends Controller
 {
@@ -23,8 +25,12 @@ class HistoryController extends Controller
      */
     public function index()
     {
-        $rooms= Room::get()->all();
-        dd($rooms);
-        return view('manageRooms');
+        // $data['history']= Reservation::get()->all();
+        $data['history'] = DB::table('reservations')
+                ->join('rooms', 'reservations.id_room','=','rooms.id')
+                ->join('customers','reservations.id_customer','=','customers.id')
+                ->get()->all();
+        // dd($data);
+        return view('history', $data);
     }
 }
