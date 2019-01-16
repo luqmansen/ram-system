@@ -39,9 +39,7 @@ Auth::routes();
 Route::get('/sudosu', function(){
     return view('auth.login');
 });
-Route::get('/adminPanel', function(){
-   return view('adminPanel') ;
-});
+Route::get('/adminPanel', 'AdminPanelController@index');
 
 // Route::get('/manageReservations','ManageReservationsController@index');
 
