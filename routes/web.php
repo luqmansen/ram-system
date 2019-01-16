@@ -54,3 +54,6 @@ Route::post('/customerDelete', 'ManageCustomersController@delete');
 Route::post('/customersDelete', 'ManageCustomersController@deletes');
 Route::get('/exportCustomersTable', 'ManageCustomersController@exportXls');
 Route::get('/exportCustomersPdf', 'ManageCustomersController@exportPdf');
+
+//History
+Route::get('/history','HistoryController@index');
