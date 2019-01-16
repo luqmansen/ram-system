@@ -10,8 +10,6 @@
         "laravel/tinker": "~1.0",
 
         "laravelcollective/html": "^5.4.0",
-        "orangehill/iseed": "dev-master"
-
         "orangehill/iseed": "dev-master",
         "barryvdh/laravel-dompdf": "^0.8.0",
         "dompdf/dompdf": "0.8.0 as 0.6.2"
