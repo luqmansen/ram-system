@@ -36,7 +36,12 @@ Route::get('/admin/history', 'AdminController@history');
 
 Auth::routes();
 
-Route::get('/sudosu', 'HomeController@index')->name('home');
+Route::get('/sudosu', function(){
+    return view('auth.login');
+});
+Route::get('/adminPanel', function(){
+   return view('adminPanel') ;
+});
 
 // Route::get('/manageReservations','ManageReservationsController@index');
 
@@ -65,8 +70,5 @@ Route::post('/customersDelete', 'ManageCustomersController@deletes');
 Route::get('/exportCustomersTable', 'ManageCustomersController@exportXls');
 Route::get('/exportCustomersPdf', 'ManageCustomersController@exportPdf');
 
-<<<<<<< HEAD
 //History
 Route::get('/history','HistoryController@index');
-=======
->>>>>>> 50959d4404993152cf569070f3fe8a2f99d5dc00
