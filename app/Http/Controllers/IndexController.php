@@ -10,7 +10,7 @@ class IndexController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            return redirect('/sudosu');
+            return redirect('/adminPanel');
         }
         else{
             return view('index');

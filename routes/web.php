@@ -36,7 +36,10 @@ Route::get('/admin/history', 'AdminController@history');
 
 Auth::routes();
 
-Route::get('/sudosu', 'HomeController@index')->name('home');
+Route::get('/sudosu', function(){
+    return view('auth.login');
+});
+Route::get('/adminPanel', 'AdminPanelController@index');
 
 // Route::get('/manageReservations','ManageReservationsController@index');
 
