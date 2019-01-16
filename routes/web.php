@@ -11,7 +11,7 @@
 |
 */
 
-
+Route::get('/try', 'CalendarController@index');
 Route::get('/calendar', 'FormController@index'); // this return calendar as index
 
 Route::get('/', 'IndexController@index');
@@ -65,8 +65,5 @@ Route::post('/customersDelete', 'ManageCustomersController@deletes');
 Route::get('/exportCustomersTable', 'ManageCustomersController@exportXls');
 Route::get('/exportCustomersPdf', 'ManageCustomersController@exportPdf');
 
-<<<<<<< HEAD
 //History
 Route::get('/history','HistoryController@index');
-=======
->>>>>>> 50959d4404993152cf569070f3fe8a2f99d5dc00
