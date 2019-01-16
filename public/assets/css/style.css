@@ -1,5 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300,800);
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300,800);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,700);
 @import url(../plugins/form/icheck/skins/all.css);
 @import url(../plugins/form/switch/switch.css);
 @import url(../plugins/datetime/datetime.css);
@@ -85,7 +85,7 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
 
 #header {
   background: white;
-  border-bottom: 5px #0aa699 solid;
+  border-bottom: 5px #005b9f solid;
   height: 55px;
   left: 0;
   position: absolute;
@@ -124,7 +124,7 @@ textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[ty
   top: 19px;
 }
 #header .tools-bar a.icon-toolsbar {
-  color: #08897e;
+  color: #FFFFFF;
   font-size: 21px;
   padding: 0 25px;
 }
@@ -435,12 +435,25 @@ a.logo {
   height: 50px;
   position: relative;
 }
-
 body.leftMenu {
-  background: url(../img/logo_white_icon.png) no-repeat;
-  background-position: 11px 10px;
-  background-color: #262a33;
+  background: url(../img/logo_.png) no-repeat;
+  background-position: 11px 8px;
+  background-color: #FFFFFF;
+  background-size: 130px 40px;
 }
+@media screen and (max-width: 991px) {
+  body.leftMenu {
+    background: url(../img/logo_2.png) no-repeat;
+    background-position: 5px 15px;
+    background-color: #FFFFFF;
+    background-size:42px 20px;
+  }
+}
+@media screen and (min-width: 991px) {
+  .icon-toolsbar {
+    visibility:hidden !important;
+  }
+}	
 body.leftMenu:after {
   content: "";
   position: absolute;

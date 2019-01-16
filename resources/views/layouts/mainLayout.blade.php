@@ -4,9 +4,10 @@
   <!-- Meta information -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<meta name="csrf-token" content="{{csrf_token()}}">
 <!-- Title-->
 @section('title')
-<<title>Room Reservation & Monitoring System</title>
+<title>Room Reservation & Monitoring System</title>
 @show
 <!-- Favicons -->
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{asset('assets/ico/apple-touch-icon-144-precomposed.png')}}">
@@ -62,6 +63,8 @@
 <script type="text/javascript" src="{{asset('assets/plugins/miscellaneous/miscellaneous.js')}}"></script>
 <!-- Library Themes Customize-->
 <script type="text/javascript" src="{{asset('assets/js/caplet.custom.js')}}"></script>
+<!-- Sweet Alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.33.1/dist/sweetalert2.all.min.js"></script>
 @show
 
   @yield('customScript')
