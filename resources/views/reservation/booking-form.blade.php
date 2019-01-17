@@ -105,12 +105,14 @@
 <script>
         $('#timeOnlyExample .time').timepicker({
         'showDuration': true,
-        'timeFormat': 'g:ia',
         'disableTextInput' : true,
         'disableTouchKeyboard' : true,
-        'minTime' : '7:00am',
-        'maxTime' : '5:00pm',
-        'disableTimeRanges' : [['12:00 am', '7:00am'], ['5:30pm', '11:30pm']]
+        'show24' : true,
+        'timeFormat' :'G:ia',
+        'lang' : {am:"", pm:''},
+        'minTime' : '7:00',
+        'maxTime' : '17:00',
+        // 'disableTimeRanges' : [['12:00 am', '7:00am'], ['5:30pm', '11:30pm']]
         });
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
