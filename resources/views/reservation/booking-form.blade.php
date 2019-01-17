@@ -39,7 +39,7 @@
                         <div id='dateOnlyExample'class="col">
                                 {{Form::label('date', 'Tanggal Peminjaman ')}}
                                 <p id="dateOnly">
-                                {{Form::text('date', '',['class' => 'date start readonlyjm form-control', 'style' => 'width:80%'])}}
+                                {{Form::text('date', '',['id' => 'datepicker','class' => 'date start readonlyjm form-control', 'style' => 'width:80%'])}}
                                 </p>                     
                         </div>
                         <div class='col'>
@@ -95,6 +95,9 @@
 @endsection    
 
 @section('jquery-datepicker')
+{{-- J --}}
+<script src="{{URL::asset('https://code.jquery.com/jquery-1.10.2.js')}}"></script>
+<script src="{{URL::asset('https://code.jquery.com/ui/1.11.2/jquery-ui.js')}}"></script>
 
 {{-- Jquery- Date & Time Picker (integrated) --}}
 <script type="text/javascript" src="{{URL::asset('js/jquery.min.js')}}"></script>
@@ -118,10 +121,10 @@
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
         var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);
 
-        $('#dateOnlyExample .date').datepicker({
-        'format': 'd - MM - yyyy',
-        'autoclose': true,
-        });
+        // $('#dateOnlyExample .date').datepicker({
+        //  'format' : 'dd  MM  yyyy',
+        // 'autoclose': true,
+        // });
 
         //for disable datepicker textinput
         $('.readonlyjm').on('focus',function(){
@@ -131,28 +134,26 @@
         var dateOnlyExampleEl = document.getElementById('dateOnlyExample');
         var dateOnlyDatepair = new Datepair(dateOnlyExampleEl);
         
-</script>
 
-{{-- 
-<script>
         var div = document.getElementById("dom-target");
         var forbidden_date = div.textContent;
-        // console.log(forbidden_date);
+        console.log(forbidden_date);
+
         $(function() 
         {
                 $("#datepicker" ).datepicker(
                         {
-                                dateFormat: 'dd MM yy',
+                                dateFormat: 'dd -MM- yy',
                                 readonly:'readonly',    
-                                beforeShowDay: function(date)
-                                {
-                                        var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-                                        return [ forbidden_date.indexOf(string) == -1 ]
-                                }
+                                // beforeShowDay: function(date)
+                                // {
+                                //         var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                                //         return [ forbidden_date.indexOf(string) == -1 ]
+                                // }
                         });
                         
                 });
                 
                 
-</script> --}}
+</script>
 @endsection

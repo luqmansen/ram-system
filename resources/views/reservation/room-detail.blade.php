@@ -23,8 +23,12 @@ tr:nth-child(even) {
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
+<title>Sistem Reservasi UCCP </title>
+@section('title')
+<h2 style="text-align:center">Detail Ruangan Tanggal {{$day}} - {{$month}} - {{$year}}  </h2>
+    
+@endsection
 @section('content')
-<h1 style="text-align:center">Detail Ruangan Tanggal {{$day}} - {{$month}} - {{$year}}  </h1>
 
 <br><br>
 @if (count($reservations)> 0)
@@ -47,13 +51,19 @@ tr:nth-child(even) {
         </tr>
         
         @endforeach
-        
+        <a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform" role="button">Reservasi Tempat</a>
     </tbody>
     </table>
     
 @else
-    <h2 style="text-align:center">Ruangan Belum Dipesan</h2>
+<div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Ruangan Belum Dipesan </h5>
+          <p class="card-text">Segera reservasi sekarang.</p>
+          <a  href="/reservation/customerform" role="button" class="btn btn-primary">Reservasi Tempat</a>
+        </div>
+      </div>
 @endif
 
-<a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform" role="button">Reservasi Tempat</a>
+
 @endsection
