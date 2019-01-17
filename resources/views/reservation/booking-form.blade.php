@@ -108,7 +108,9 @@
         'timeFormat': 'g:ia',
         'disableTextInput' : true,
         'disableTouchKeyboard' : true,
-        'disableTimeRanges' : [['12:00am', '7:00am'], ['5:30pm', '11:30pm']]
+        'minTime' : '7:00am',
+        'maxTime' : '5:00pm',
+        'disableTimeRanges' : [['12:00 am', '7:00am'], ['5:30pm', '11:30pm']]
         });
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
