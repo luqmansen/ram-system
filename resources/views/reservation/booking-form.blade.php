@@ -39,7 +39,7 @@
                         <div id='dateOnlyExample'class="col">
                                 {{Form::label('date', 'Tanggal Peminjaman ')}}
                                 <p id="dateOnly">
-                                {{Form::text('date', '',['class' => 'date start form-control', 'style' => 'width:80%'])}}
+                                {{Form::text('date', '',['class' => 'date start readonlyjm form-control', 'style' => 'width:80%'])}}
                                 </p>                     
                         </div>
                         <div class='col'>
@@ -105,7 +105,9 @@
 <script>
         $('#timeOnlyExample .time').timepicker({
         'showDuration': true,
-        'timeFormat': 'g:ia'
+        'timeFormat': 'g:ia',
+        'disableTextInput' : true,
+        'disableTouchKeyboard' : true,
         });
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
@@ -113,7 +115,12 @@
 
         $('#dateOnlyExample .date').datepicker({
         'format': 'd - MM - yyyy',
-        'autoclose': true
+        'autoclose': true,
+        });
+
+        //for disable datepicker textinput
+        $('.readonlyjm').on('focus',function(){
+        $(this).trigger('blur');
         });
 
         var dateOnlyExampleEl = document.getElementById('dateOnlyExample');
