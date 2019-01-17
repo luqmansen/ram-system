@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="jquery.timepicker.css">
+    <link rel="stylesheet" href="lib/bootstrap-datepicker.css">
+    <link rel="styleshee" type="text/css" href="jquery.timepicker.css" />
+    <link rel="stylesheet" type="text/css" href="bootstrap-datepicker.css" />
+
+</head>
+<body>
+    <p id="basicExample">
+        <input type="text" class="date start" />
+        <input type="text" class="time start" /> to
+        <input type="text" class="time end" />
+        <input type="text" class="date end" />
+    </p>
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="jquery.timepicker.min.js"></script>
+    <script type="text/javascript" src="jquery.datepair.min.js"></script>
+    
+        <script>
+        // initialize input widgets first
+        $('#basicExample .time').timepicker({
+            'showDuration': true,
+            'timeFormat': 'g:ia'
+        });
+    
+        $('#basicExample .date').datepicker({
+            'format': 'm/d/yyyy',
+            'autoclose': true
+        });
+    
+        // initialize datepair
+        var basicExampleEl = document.getElementById('basicExample');
+        var datepair = new Datepair(basicExampleEl);
+    </script>
+    
+
+ 
+</body>
+</html>
