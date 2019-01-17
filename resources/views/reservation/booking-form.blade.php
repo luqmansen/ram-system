@@ -4,11 +4,29 @@
     Form Peminjaman Ruangan
 @endsection
 
+@section('customstyle')
+<style type="text/css">
+.input-group {
+         width: 110px;
+         margin-bottom: 10px;
+ }
+</style>    
+<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="dist/bootstrap-clockpicker.min.css">
+<link rel="stylesheet" type="text/css" href="assets/css/github.min.css">
+
+@endsection
+
 @section('content')
-    {{-- @php
-        echo json_encode($rest);
-    @endphp --}}
-    
+
+
+<div id="dom-target" style="display: none">
+        <?php
+                $forbidden_date = json_encode($rest);
+                echo htmlspecialchars($forbidden_date);
+        ?>
+</div>
+
     {!! Form::open(['action' => 'FormController@store1', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
     {{-- this action is where our form is submitting to --}}
     
@@ -40,13 +58,13 @@
                 <div class="col">
                         <div class="form-group">
                                 {{Form::label('start_hour', ' Mulai : ')}}
-                                {{Form::time('start_hour', '',['class' => 'form-control'])}}
+                                {{Form::text('start_hour', '',['class' => 'clockpicker  form-control'])}}                            
                         </div>
                 </div>
                 <div class="col">
                         <div class="form-group">
                                 {{Form::label('end_hour', ' Selesai : ')}}
-                                {{Form::time('end_hour', '',['class' => 'form-control'] )}}
+                                {{Form::time('end_hour', '',['class' => 'clockpicker form-control'] )}}
                         </div>
                 </div>
              </div>
@@ -73,27 +91,46 @@
 @endsection    
 
 @section('jquery-datepicker')
+
+{{-- Jquery- Clock Picker  --}}
+{{-- <script type="text/javascript" href="assets/js/jquery.min.js"></script>
+<script type="text/javascript" href="assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="dist/bootstrap-clockpicker.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.js"></script>
+<link rel="stylesheet" href="https://weareoutman.github.io/clockpicker/dist/jquery-clockpicker.min.css"> 
+
+
+<script type="text/javascript">
+        $('.clockpicker').clockpicker({
+            placement: 'bottom',
+            align: 'left',
+            autoclose: 'true'
+        });
+        </script>
+
+{{-- Jquery for DATEPICKER --}}
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
 <script>
-        // var array = ['2019-01-17'];
-        var forbidden_date = <?php echo json_encode($rest); ?>
-        
-        console.log(forbidden_date)
-         $(function() 
+        var div = document.getElementById("dom-target");
+        var forbidden_date = div.textContent;
+        // console.log(forbidden_date);
+        $(function() 
         {
                 $("#datepicker" ).datepicker(
-                {
-                        dateFormat: 'dd MM yy',
-                        beforeShowDay: function(date)
                         {
-                                var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-                                return [ forbidden_date.indexOf(string) == -1 ]
-                        }
+                                dateFormat: 'dd MM yy',
+                                beforeShowDay: function(date)
+                                {
+                                        var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                                        return [ forbidden_date.indexOf(string) == -1 ]
+                                }
+                        });
+                        
                 });
                 
-        });
                 
-
 </script>
+
 @endsection
