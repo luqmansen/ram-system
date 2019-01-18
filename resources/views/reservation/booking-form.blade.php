@@ -11,9 +11,6 @@
          margin-bottom: 10px;
  }
 </style>    
-{{-- <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="dist/bootstrap-clockpicker.min.css">
-<link rel="stylesheet" type="text/css" href="assets/css/github.min.css"> --}}
 
 {{-- Stylesheet for jquery date & timepicker --}}
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('jquerytimepicker/jquery.timepicker.css')}}" />
@@ -38,7 +35,7 @@
                     <div class='row'>
                         <div class="col">
                                 {{Form::label('date', 'Tanggal Peminjaman ')}}
-                                {{Form::text('date', '',['id' => 'datepicker','class' => 'form-control', 'style' => 'width:80%'])}}
+                                {{Form::text('date', '',['id' => 'datepicker','class' => ' readonly form-control', 'style' => 'width:80%'])}}
                                                      
                         </div>
                         <div class='col'>
@@ -95,14 +92,13 @@
 
 @section('jquery-datepicker')
 
-{{-- Jquery- Date & Time Picker (integrated) --}}
+{{-- Jquery- Time Picker --}}
 <script type="text/javascript" src="{{URL::asset('js/jquery.min.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('assets/js/jquery.min.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+{{-- <script type="text/javascript" src="{{URL::asset('assets/js/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{URL::asset('assets/js/bootstrap.bundle.min.js')}}"></script> --}}
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.datepair.min.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/lib/bootstrap-datepicker.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.timepicker.js')}}"></script>
-{{-- J --}}
 <script>
         $('#timeOnlyExample .time').timepicker({
         'showDuration': true,
@@ -120,12 +116,12 @@
         var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);
 
         //for disable datepicker textinput
-        $('.readonlyjm').on('focus',function(){
+        $('.readonly').on('focus',function(){
         $(this).trigger('blur');
-        });
-            
+        });            
 </script>
 
+{{-- Script untuk Date Picker --}}
 <script type="text/javascript" src="{{URL::asset('https://code.jquery.com/jquery-1.10.2.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('https://code.jquery.com/ui/1.11.2/jquery-ui.js')}}"></script>
 <script>
@@ -146,6 +142,4 @@
                         
                 });                
 </script>
-
-
 @endsection
