@@ -36,11 +36,10 @@
     
             <div class="form-group">
                     <div class='row'>
-                        <div id='dateOnlyExample'class="col">
+                        <div class="col">
                                 {{Form::label('date', 'Tanggal Peminjaman ')}}
-                                <p id="dateOnly">
-                                {{Form::text('date', '',['id' => 'datepicker','class' => 'date start readonlyjm form-control', 'style' => 'width:80%'])}}
-                                </p>                     
+                                {{Form::text('date', '',['id' => 'datepicker','class' => 'form-control', 'style' => 'width:80%'])}}
+                                                     
                         </div>
                         <div class='col'>
                                  {{Form::label('id_room', 'Ruangan ')}}
@@ -95,16 +94,15 @@
 @endsection    
 
 @section('jquery-datepicker')
-{{-- J --}}
-<script src="{{URL::asset('https://code.jquery.com/jquery-1.10.2.js')}}"></script>
-<script src="{{URL::asset('https://code.jquery.com/ui/1.11.2/jquery-ui.js')}}"></script>
 
 {{-- Jquery- Date & Time Picker (integrated) --}}
 <script type="text/javascript" src="{{URL::asset('js/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{URL::asset('assets/js/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{URL::asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+<script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.datepair.min.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/lib/bootstrap-datepicker.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.timepicker.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.datepair.min.js')}}"></script>
-
+{{-- J --}}
 <script>
         $('#timeOnlyExample .time').timepicker({
         'showDuration': true,
@@ -121,39 +119,33 @@
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
         var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);
 
-        // $('#dateOnlyExample .date').datepicker({
-        //  'format' : 'dd  MM  yyyy',
-        // 'autoclose': true,
-        // });
-
         //for disable datepicker textinput
         $('.readonlyjm').on('focus',function(){
         $(this).trigger('blur');
         });
+            
+</script>
 
-        var dateOnlyExampleEl = document.getElementById('dateOnlyExample');
-        var dateOnlyDatepair = new Datepair(dateOnlyExampleEl);
-        
-
+<script type="text/javascript" src="{{URL::asset('https://code.jquery.com/jquery-1.10.2.js')}}"></script>
+<script type="text/javascript" src="{{URL::asset('https://code.jquery.com/ui/1.11.2/jquery-ui.js')}}"></script>
+<script>
         var div = document.getElementById("dom-target");
         var forbidden_date = div.textContent;
-        console.log(forbidden_date);
-
+        // console.log(forbidden_date);
         $(function() 
         {
                 $("#datepicker" ).datepicker(
                         {
-                                dateFormat: 'dd -MM- yy',
-                                readonly:'readonly',    
-                                // beforeShowDay: function(date)
-                                // {
-                                //         var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-                                //         return [ forbidden_date.indexOf(string) == -1 ]
-                                // }
+                                dateFormat: 'dd MM yy',
+                                beforeShowDay: function(date)
+                                {
+                                        var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                                        return [ forbidden_date.indexOf(string) == -1 ]
+                                }
                         });
                         
-                });
-                
-                
+                });                
 </script>
+
+
 @endsection
