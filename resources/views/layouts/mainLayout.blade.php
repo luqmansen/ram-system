@@ -65,12 +65,12 @@
 <script type="text/javascript" src="{{asset('assets/js/caplet.custom.js')}}"></script>
 <!-- Sweet Alert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.33.1/dist/sweetalert2.all.min.js"></script>
-{{-- <script>
+<script>
 $( window ).resize(function() {
 		if($(window).width() > 990 ){
 			$('nav#menu').trigger( 'close.mm' );
 	}	
-	}); --}}
+	});
 </script>
 @show
 

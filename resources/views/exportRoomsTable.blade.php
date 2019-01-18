@@ -15,7 +15,7 @@
                 @foreach($rooms as $room)
                 <tr id="tablerow{{$room->id}}">
                         <td>{{$room->id}}</td>
-                        <td>{{$room->name}}</td>
+                        <td>{{$room->room_name}}</td>
                         <td>{{$room->table_capacity}}</td>
                         <td>{{$room->chair_capacity}}</td>
                 </tr>	   

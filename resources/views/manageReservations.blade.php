@@ -1,7 +1,7 @@
 @extends('layouts.mainLayout')
 
 @section('title')
-<title>History | Room Reservation & Monitoring System</title>
+<title>Manage Reservations | Room Reservation & Monitoring System</title>
 @endsection
 
 @section('customStyle')
@@ -100,64 +100,47 @@
 								<div class="col-lg-12">
 										<section class="panel">
 												<header class="panel-heading">
-														<h2><strong>HISTORY</strong></h2>
+														<h2><strong>Manage</strong> Reservations</h2>
 												</header>
 												<div class="panel-tools fully color" align="right" data-toolscolor="#6CC3A0">
 												</div>
 												<div class="panel-body">
 														<form>
 															{{ csrf_field() }}
-															<ul style="padding-bottom:10px">
-		                                                    <button  type="button" id="export-excel-button" class="btn btn-success "><i class="fa fa-external-link-square"></i> Export .xls</button>
-		                                                    <a type="button" id="export-pdf-button" class="btn btn-danger"><i class="fa fa-external-link-square"></i> Export .pdf</a>
+                                                            <ul style="padding-bottom:10px">
+                                                                <h4><strong>Pending</strong> Reservation</h4>
+		                                                    {{-- <button  type="button" id="export-excel-button" class="btn btn-success "><i class="fa fa-external-link-square"></i> Export .xls</button>
+		                                                    <a type="button" id="export-pdf-button" class="btn btn-danger"><i class="fa fa-external-link-square"></i> Export .pdf</a> --}}
 															</ul>
-																<table class="table table-striped table-responsive"  id="table-customers">
+																<table class="table table-striped table-responsive"  id="table-reservations">
 																		<thead>
 																				<tr>
-																				<th class="center unclickable" align="center">	</th>
 																				{{-- <th  class="text-center " >ID <i class="fa fa-sort-amount-desc"></i></th> --}}
                                                                                 <th  class="text-center " >Name <i class="fa fa-sort"></i></th>
                                                                                 <th class="text-center ">Room <i class="fa fa-sort"></i></th>
                                                                                 <th class="text-center ">Date <i class="fa fa-sort-amount-desc"></i></th>
-																				<th class="text-center ">Status <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Start Hour<i class="fa fa-sort"></i></th>
+																				<th class="text-center ">End Hour <i class="fa fa-sort"></i></th>
 																				<th class="text-center unclickable">Action </th>
 																				
 																				</tr>
 																		</thead>
 																		<tbody align="center">
-																			@foreach($history as $row)
+																			@foreach($reservations as $row)
 																			<tr  id="tablerow{{$row->id}}">
-																				<td><input name="selectdata" type="checkbox" value="{{$row->id}}"></td>
 																				{{-- <td>{{$row->id}}</td> --}}
-																				<td>{{$row->name	}}</td>
+																				<td>{{$row->name}}</td>
                                                                                 <td>{{$row->room_name}}</td>
                                                                                 <td>{{$row->date}}</td>
-																				<td>{{$row->status}}</td>
+                                                                                <td>{{$row->start_hour}}</td>
+                                                                                <td>{{$row->end_hour}}</td>
 																				<td class="center">
                                                                                     <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Detail" class="btn btn-success detail-button" data-effect="md-scale"><i class="fa fa-search"></i></button>
+                                                                                    <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Approve" class="btn btn-primary approve-button" data-effect="md-scale"><i class="fa fa-check"></i></button>
+                                                                                    <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Cancel" class="btn btn-danger cancel-button" data-effect="md-scale"><i class="fa fa-times"></i></button>
                                                                                 </td>
 																			</tr>
 																			@endforeach
-																			<!--
-																			////////////////////////////////////////////////////////////////////////
-																			//////////     MODAL DELETE    //////////
-																			//////////////////////////////////////////////////////////////////////
-																			-->
-																			<div id="md-effect" class="modal fade" tabindex="-1" data-width="450">
-																					<div class="modal-header bg-theme bd-theme-darken">
-																							<h4 class="modal-title">Confirmation</h4>
-																					</div>
-																					<!-- //modal-header-->
-																					<div class="modal-body">
-																						<p>Are you sure you want to delete customer <strong id="delete-item"></strong>?</p>
-																						<div class="modal-footer">
-																								<button type="button" id="cancel-delete-btn" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																								<button type="button" id="delete-btn" class="btn btn-danger">Yes</button>
-																						</div>
-																					</div>
-																					<!-- //modal-body-->
-																			</div>
-																			<!-- //modal-->
 
 																			<!--
 																			////////////////////////////////////////////////////////////////////////
@@ -167,7 +150,7 @@
 																			<div id="md-detail" class=" modal fade">
 																				<div class="modal-header bg-success bd-success-darken ">
 																						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-																						<h4 class="modal-title">Detail Customer</h4>
+																						<h4 class="modal-title">Reservation Detail</h4>
 																				</div>
 																				<!-- //modal-header-->
 																				<div class="modal-body">
@@ -238,85 +221,89 @@
 																				<!-- //modal-body-->
 																			</div>
 																			<!-- //modal-->
-
-																			<!--
-																			////////////////////////////////////////////////////////////////////////
-																			//////////     MODAL DELETE SELECTED   //////////
-																			//////////////////////////////////////////////////////////////////////
-																			-->
-																			<div id="delete-selected" class=" modal fade" tabindex="-1" data-width="450" data-header-color="#736086">
-																					<div class="modal-header bg-theme bd-theme-darken">
-																							<h4 class="modal-title">Confirmation</h4>
-																					</div>
-																					<!-- //modal-header-->
-																					<div class="modal-body">
-																						<p>Are you sure you want to delete selected customer?</p>
-																						<div class="modal-footer">
-																								<button type="button" id="cancel-delete-btn" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																								
-																								<button type="button" id="delete-selected-confirmation" value="" class="btn btn-danger">Yes</button>
-																						</div>
-																					</div>
-																					<!-- //modal-body-->
-																			</div>
-																			<!-- //modal-->
-																			<!--
-																			////////////////////////////////////////////////////////////////////////
-																			//////////     MODAL EXPORT  EXCEL //////////
-																			//////////////////////////////////////////////////////////////////////
-																			-->
-																			<div id="md-export" class=" modal fade" tabindex="-1" data-width="450" data-header-color="#736086">
-																				<div class="modal-header bg-success bd-success-darken">
-																						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-																						<h4 class="modal-title">Export Data</h4>
-																				</div>
-																				<!-- //modal-header-->
-																				<div class="modal-body">
-																					<select name="export-select" class="selectpicker form-control">
-																						<option disabled selected>--------------------Select Data-------------------------</option>
-																						<option value="cancelled">Cancelled Reservation</option>
-																						<option value="completed">Completed Reservation</option>
-																						<option value="active">Active Reservation</option>
-																						<option value="pending">Pending Reservation</option>
-																						<option value="all">All Reservation</option>
-																					</select>
-																					<div class="modal-footer">																						
-																							<button type="button" id="md-export-button" class="btn bg-success">Export</button>
-																					</div>
-																				</div>
-																				<!-- //modal-body-->
-																			</div>
-																			<!-- //modal-->
-																			<!--
-																			////////////////////////////////////////////////////////////////////////
-																			//////////     MODAL EXPORT  PDF //////////
-																			//////////////////////////////////////////////////////////////////////
-																			-->
-																			<div id="md-export-pdf" class=" modal fade" tabindex="-1" data-width="450" data-header-color="#736086">
-																					<div class="modal-header bg-theme bd-theme-darken">
-																							<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-																							<h4 class="modal-title">Export Data</h4>
-																					</div>
-																					<!-- //modal-header-->
-																					<div class="modal-body">
-																						<select name="export-select-pdf" class="selectpicker form-control">
-																							<option disabled selected>--------------------Select Data-------------------------</option>
-																							<option value="cancelled">Cancelled Reservation</option>
-																							<option value="completed">Completed Reservation</option>
-																							<option value="active">Active Reservation</option>
-																							<option value="pending">Pending Reservation</option>
-																							<option value="all">All Reservation</option>
-																						</select>
-																						<div class="modal-footer">																						
-																								<button type="button" id="md-export-button-pdf" class="btn bg-theme">Export</button>
-																						</div>
-																					</div>
-																					<!-- //modal-body-->
-																				</div>
-																				<!-- //modal-->
-
 																			
-
+																		</tbody>
+																</table>
+														</form>
+                                                </div>
+                                                <hr>
+                                                <div class="panel-body" style="margin-top:30px">
+														<form>
+															{{ csrf_field() }}
+                                                            <ul style="padding-bottom:10px">
+                                                                <h4><strong>Active</strong> Reservation</h4>
+		                                                    {{-- <button  type="button" id="export-excel-button" class="btn btn-success "><i class="fa fa-external-link-square"></i> Export .xls</button>
+		                                                    <a type="button" id="export-pdf-button" class="btn btn-danger"><i class="fa fa-external-link-square"></i> Export .pdf</a> --}}
+															</ul>
+																<table class="table table-striped table-responsive"  id="table-areservations">
+																		<thead>
+																				<tr>
+																				{{-- <th  class="text-center " >ID <i class="fa fa-sort-amount-desc"></i></th> --}}
+                                                                                <th  class="text-center " >Name <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Room <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Date <i class="fa fa-sort-amount-desc"></i></th>
+                                                                                <th class="text-center ">Start Hour<i class="fa fa-sort"></i></th>
+																				<th class="text-center ">End Hour <i class="fa fa-sort"></i></th>
+																				<th class="text-center unclickable">Action </th>
+																				
+																				</tr>
+																		</thead>
+																		<tbody align="center">
+																			@foreach($areservations as $row)
+																			<tr  id="tablerow{{$row->id}}">
+																				{{-- <td>{{$row->id}}</td> --}}
+																				<td>{{$row->name}}</td>
+                                                                                <td>{{$row->room_name}}</td>
+                                                                                <td>{{$row->date}}</td>
+                                                                                <td>{{$row->start_hour}}</td>
+                                                                                <td>{{$row->end_hour}}</td>
+																				<td class="center">
+                                                                                    <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Detail" class="btn btn-success detail-button" data-effect="md-scale"><i class="fa fa-search"></i></button>
+                                                                                    <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Cancel" class="btn btn-danger cancel-button" data-effect="md-scale"><i class="fa fa-times"></i></button>
+                                                                                </td>
+																			</tr>
+																			@endforeach																			
+																		</tbody>
+																</table>
+														</form>
+												</div>
+                                                <hr>
+                                                <div class="panel-body" style="margin-top:30px">
+														<form>
+															{{ csrf_field() }}
+                                                            <ul style="padding-bottom:10px">
+                                                                <h4><strong>Cancelled</strong> Reservation</h4>
+		                                                    {{-- <button  type="button" id="export-excel-button" class="btn btn-success "><i class="fa fa-external-link-square"></i> Export .xls</button>
+		                                                    <a type="button" id="export-pdf-button" class="btn btn-danger"><i class="fa fa-external-link-square"></i> Export .pdf</a> --}}
+															</ul>
+																<table class="table table-striped table-responsive"  id="table-creservations">
+																		<thead>
+																				<tr>
+																				{{-- <th  class="text-center " >ID <i class="fa fa-sort-amount-desc"></i></th> --}}
+                                                                                <th  class="text-center " >Name <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Room <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Date <i class="fa fa-sort-amount-desc"></i></th>
+                                                                                <th class="text-center ">Start Hour<i class="fa fa-sort"></i></th>
+																				<th class="text-center ">End Hour <i class="fa fa-sort"></i></th>
+																				<th class="text-center unclickable">Action </th>
+																				
+																				</tr>
+																		</thead>
+																		<tbody align="center">
+																			@foreach($creservations as $row)
+																			<tr  id="tablerow{{$row->id}}">
+																				{{-- <td>{{$row->id}}</td> --}}
+																				<td>{{$row->name}}</td>
+                                                                                <td>{{$row->room_name}}</td>
+                                                                                <td>{{$row->date}}</td>
+                                                                                <td>{{$row->start_hour}}</td>
+                                                                                <td>{{$row->end_hour}}</td>
+																				<td class="center">
+                                                                                    <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Detail" class="btn btn-success detail-button" data-effect="md-scale"><i class="fa fa-search"></i></button>
+                                                                                    <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Revive" class="btn btn-primary revive-button" data-effect="md-scale"><i class="fa fa-repeat"></i></button>
+                                                                                </td>
+																			</tr>
+																			@endforeach																			
 																		</tbody>
 																</table>
 														</form>
@@ -395,8 +382,16 @@
 	$(function() {
 
 		// Call dataTable in this page only
-		var table = $('#table-customers').dataTable();
-		table.fnSort([[3,'desc']]);
+		var table = $('#table-reservations').dataTable();
+		table.fnSort([[2,'desc']]);
+        $('table[data-provide="data-table"]').dataTable();
+
+        var table1 = $('#table-creservations').dataTable();
+		table.fnSort([[2,'desc']]);
+        $('table[data-provide="data-table"]').dataTable();
+        
+        var table2 = $('#table-areservations').dataTable();
+		table.fnSort([[2,'desc']]);
 		$('table[data-provide="data-table"]').dataTable();
 
 		$('th').click(function(){
@@ -417,43 +412,6 @@
 <!-- Script Modal -->
 <script type="text/javascript">
 	$(function() {
-				//SCRIPT DELETE
-				$(".md-effect").click(function(event){
-						event.preventDefault();
-						//SHOW DELETE MODAL
-						var id,tr = undefined;
-						id=$(this).val();
-						var itemid='#item'+id;
-						var item=$(itemid).html();
-						var data=$(this).data();
-						$('#delete-item').text(item);
-						$('#delete-btn').val(id);
-						$('#md-effect').attr('class','modal fade').addClass(data.effect).modal('show');
-				});
-				//SEND DELETE QUERY THROUGH AJAX
-				$('#delete-btn').click(function(){
-							id=$(this).val();
-							tr="#tablerow"+id;
-							$.ajaxSetup({
-								headers: {
-									'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-								}
-							});
-							$.ajax({
-								url: '/customerDelete',
-								type:"POST",
-								dataType:"json",
-								data:{id:id},
-								success:function(data) {
-									//HIDE DELETE QUERY ON DELETION SUCCESS
-									$('#table-customers').dataTable().fnDeleteRow($(tr)[0]);
-									$('#table-customers').dataTable().fnDraw();
-									$('#md-effect').attr('class','modal fade container').modal('hide');					   						
-									}
-								}
-							);
-						});
-				
 				//SCRIPT DETAIL
 				$("tbody").on('click', '.detail-button',function(event){
 						event.preventDefault();
@@ -467,7 +425,7 @@
 							}
 						})
 						$.ajax({
-							url: '/historyDetail',
+							url: '/reservationDetail',
 							type:"POST",
 							data: {id:id},
 							dataType:"json",
@@ -491,107 +449,112 @@
 								$('#md-detail').attr('class','modal fade').addClass(data.effect).modal('show');
 							}
 						});
-				}); 
-
-				$(".delete-selected").click(function(event){
+                }); 
+                //SCRIPT APPROVE
+				$("tbody").on('click', '.approve-button',function(event){
 						event.preventDefault();
+						//SHOW DETAIL MODAL
+						var id=$(this).val();
 						var data=$(this).data();
-						var allVals = []; 
-						$("input[name='selectdata']:checked").each(function() { 
-							allVals.push($(this).val());
-						});
-						if(allVals.length > 0){
-							$('#delete-selected').attr('class','modal fade').addClass(data.effect).modal('show');
-						}
-				});
-
-				// $('#cancel-delete-btn').click(function(){
-				// 	$("#md-effect").attr('class','modal fade').addClass(data.effect).modal('hide')
-				// })
-				
-				$.ajaxSetup ({
-					// Disable caching of AJAX responses
-					cache: false
-				});
-				var $modal = $('#md-ajax');
-				$('.md-ajax-load').on('click', function(){
-					$('body').modalmanager('loading');
-					setTimeout(function(){
-						$modal.find(".modal-body").load('data/md-ajax-load.html', '', function(){
-						$modal.modal();
-						});
-					}, 2000);
-				});
-
-				// AJAX Script
-				$(".delete-yes").click(function(event){
-					event.preventDefault();
-					var id=$(this).val();
-					
-					
-				});
-
-				//Select All Script
-				$('#selectall').click(function() {    
-					$('input[name=selectdata]').prop('checked', this.checked);    
-				});
-
-				//Delete Selected Script
-				$("#delete-selected-button").click(function(){
-					var allVals = []; 
-					$("input[name='selectdata']:checked").each(function() { 
-						allVals.push($(this).val());
-					});
-					$("#delete-selected-confirmation").click(function(){
-						var join_selected_values = allVals.join(",");
+						//AJAX SCRIPT
 						$.ajaxSetup({
 							headers: {
 								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 							}
-						});
+						})
 						$.ajax({
-						url: '/customersDelete',
-						type:"POST",
-						data: 'ids='+join_selected_values,
-						dataType:"json",
-						success:function(data) {
-							$("input[name=selectdata]:checked").each(function() { 
-								var val=$(this).val();
-								var tr="#tablerow"+val;
-								// console.log(tr);
-								$('#table-customers').dataTable().fnDeleteRow($(tr)[0]);
-							});					   						
-							$("#delete-selected").attr('class','modal fade').modal('hide');
+							url: '/reservationApprove',
+							type:"POST",
+							data: {id:id},
+							dataType:"json",
+							success:function(data) {
+                                var row='#tablerow'+id;
+                                var table = $('#table-reservations').dataTable();
+                                table.fnDeleteRow($(row)[0]);
+                                Swal({
+                                    type: 'success',
+                                    title: 'Success',
+                                    text: 'Reservation approved!',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                setTimeout(function(){
+                                    location.reload();
+                                },1500);
+                                
 							}
 						});
-					});
-				});
-		});
-</script>
-<script>
-	$('#export-excel-button').click(function(){
-		$('#md-export').attr('class','modal fade').modal('show');
-	});
-	$('#md-export-button').click(function(){
-			var value = $('select[name=export-select').val()
-			if (value){
-				var url = "/exportLog/"+value;
-				window.location.href=url;
-				$('#md-export').modal('hide');
-			}
-				
-	});
-	$('#export-pdf-button').click(function(){
-		$('#md-export-pdf').attr('class','modal fade').modal('show');
-	});
-	$('#md-export-button-pdf').click(function(){
-			var value = $('select[name=export-select-pdf').val()
-			if (value){
-				var url = "/exportLogDocs/"+value;
-				window.location.href=url;
-				$('#md-export-pdf').modal('hide');	
-			}
-			
-	});
+                }); 
+                //SCRIPT CANCEL
+				$("tbody").on('click', '.cancel-button',function(event){
+						event.preventDefault();
+						//SHOW DETAIL MODAL
+						var id=$(this).val();
+						var data=$(this).data();
+						//AJAX SCRIPT
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+							}
+						})
+						$.ajax({
+							url: '/reservationCancel',
+							type:"POST",
+							data: {id:id},
+							dataType:"json",
+							success:function(data) {
+                                var row='#tablerow'+id;
+                                var table = $('#table-reservations').dataTable();
+                                table.fnDeleteRow($(row)[0]);
+                                Swal({
+                                    type: 'success',
+                                    title: 'Success',
+                                    text: 'Reservation Canceled!',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                setTimeout(function(){
+                                    location.reload();
+                                },1500);
+                                
+							}
+						});
+                });
+                 //SCRIPT REVIVE
+				$("tbody").on('click', '.revive-button',function(event){
+						event.preventDefault();
+						//SHOW DETAIL MODAL
+						var id=$(this).val();
+						var data=$(this).data();
+						//AJAX SCRIPT
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+							}
+						})
+						$.ajax({
+							url: '/reservationRevive',
+							type:"POST",
+							data: {id:id},
+							dataType:"json",
+							success:function(data) {
+                                var row='#tablerow'+id;
+                                var table = $('#table-creservations').dataTable();
+                                table.fnDeleteRow($(row)[0]);
+                                Swal({
+                                    type: 'success',
+                                    title: 'Success',
+                                    text: 'Reservation Revived!',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                setTimeout(function(){
+                                    location.reload();
+                                },1500);
+                                
+							}
+						});
+				}); 
+    });
 </script>
 @endsection

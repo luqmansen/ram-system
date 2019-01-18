@@ -135,7 +135,7 @@
                                                                         <tr  id="tablerow{{$room->id}}">
 																				<td><input name="selectdata" type="checkbox" value="{{$room->id}}"></td>
                                                                                 <td>{{$room->id}}</td>
-                                                                                <td id="item{{$room->id}}">{{$room->name}}</td>
+                                                                                <td id="item{{$room->id}}">{{$room->room_name}}</td>
                                                                                 <td>{{$room->table_capacity}}</td>
                                                                                 <td>{{$room->chair_capacity}}</td>
                                                                                 <td class="center">
@@ -181,16 +181,16 @@
 																				{{ csrf_field() }}
 																						<div class="form-group">
 																								<label>Room Name</label>
-																										<input autofocus type="text" class="form-control rounded inputEdit" placeholder="{{$room->name}}" id="nameEdit">
+																										<input autofocus type="text" class="form-control rounded inputEdit" id="nameEdit">
 																						</div>
 																						<div class="form-group">
 																								<label>Capacity With Table</label>
-																										<input autofocus type="number" class="form-control rounded inputEdit" placeholder="{{$room->table_capacity}}" id="table_capacityEdit">
+																										<input autofocus type="number" class="form-control rounded inputEdit"  id="table_capacityEdit">
 																										<p class="help-block">number of maximum capacity which room could served with a pair of table and chair.</p>
 																						</div>
 																						<div class="form-group">
 																								<label>Capacity Without Table</label>
-																										<input autofocus type="number" class="form-control rounded inputEdit" placeholder="{{$room->chair_capacity}}" id="chair_capacityEdit">
+																										<input autofocus type="number" class="form-control rounded inputEdit"  id="chair_capacityEdit">
 																										<p class="help-block">number of maximum capacity which room could served with only chair.(exclude capacity with table)</p>
 																						</div>
 																					<div class="modal-footer">
@@ -254,7 +254,7 @@
 																						</div>
 																					<div class="modal-footer">
 																							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-																							<button type="button" id="add-btn"  class="btn btn-primary">Update Data</button>
+																							<button type="button" id="add-btn"  class="btn btn-primary">Add Data</button>
 																					</div>
 																				</form>
 																				</div>
@@ -357,7 +357,7 @@
 <!-- Script Modal -->
 <script type="text/javascript">
 	//SCRIPT DELETE
-	$(".md-effect").click(function(event){
+	$("tbody").on('click', '.md-effect',function(event){
 			event.preventDefault();
 			//SHOW DELETE MODAL
 			var id,tr = undefined;
@@ -394,7 +394,7 @@
 			})
 
 	//SCRIPT EDIT
-	$(".edit-button").click(function(event){
+	$("tbody").on('click', '.edit-button',function(event){
 			event.preventDefault();
 			//SHOW DELETE MODAL
 			var id=$(this).val();
@@ -411,7 +411,7 @@
 					return false;
 				}
 			});
-			//SEND DELETE QUERY THROUGH AJAX
+			//SEND EDIT QUERY THROUGH AJAX
 			$('#edit-btn').click(function(event){
 				var name = $('#nameEdit').val();
 				var table_capacity = $('#table_capacityEdit').val();
@@ -448,9 +448,6 @@
 						table.fnUpdate(name,$(tr)[0],2);
 						table.fnUpdate(table_capacity,$(tr)[0],3);
 						table.fnUpdate(chair_capacity,$(tr)[0],4);
-						$('#nameEdit').attr("placeholder",name);
-						$('#table_capacityEdit').attr("placeholder",table_capacity);
-						$('#chair_capacityEdit').attr("placeholder",chair_capacity);
 						$('#nameEdit, #table_capacityEdit, #chair_capacityEdit').removeAttr("value");
 						var modal ="#modal-edit";
 						$(modal).modal('hide');
@@ -572,8 +569,21 @@
 			data: {name:name, table_capacity:table_capacity, chair_capacity:chair_capacity},
 			dataType:"json",
 			success:function(data) {
+				var newRow = $('#table-example').dataTable().fnAddData( [
+					'<input name="selectdata" type="checkbox" value="'+ data +'">',
+					data,
+					name,
+					table_capacity,
+					chair_capacity,
+					'<button type="button" value="'+ data +'" data-toggle="tooltip" title="Edit" class="btn btn-warning edit-button" data-effect="md-scale"><i class="fa fa-edit"></i></button> '+
+					'<button type="button" value="'+ data +'" data-toggle="tooltip" title="Delete" class="btn btn-danger md-effect" data-effect="md-scale"><i class="fa fa-trash-o"></i></button>'
+					]);
+				var trid = 'tablerow'+data;
+				$('#table-example tr:last').attr('id',trid);
+				var tdid = "item"+data
+				$('#table-example tr:last td:nth-child(3)').attr('id',tdid);
+				$('input[name=name], input[name=table_capacity], input[name=chair_capacity]').val('');
 				$("#modal-add").modal('hide');
-				window.location.href="{{url('/manageRooms')}}"
 			}
 		});
 	});

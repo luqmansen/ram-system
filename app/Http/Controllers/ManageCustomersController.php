@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+
 use Illuminate\Http\Request;
 use App\Customer;
+use App\Reservation;
 use Response;
+use DB;
 use PDF;
 
 class ManageCustomersController extends Controller
@@ -26,6 +30,15 @@ class ManageCustomersController extends Controller
      */
     public function index()
     {
+        $date = Carbon::now()->format("Y-m-d");
+        $datas = Reservation::get()->where('status','active')->all();
+        foreach ($datas as $data){
+            if($data->date < $date){
+                $data->status = "completed";
+                $data->save();
+            }
+        }
+        
         $data['customers']=Customer::get()->all();
         return view('manageCustomers',$data);
     }
