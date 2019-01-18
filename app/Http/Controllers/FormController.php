@@ -38,8 +38,20 @@ class FormController extends Controller
 
     public function create1()
     {
-        return view('reservation.booking-form');
+        
         // Buat Constraint untuk return max dan min di form calender dan time
+
+        //fungsi untuk return array untuk restriction di date`
+        $restriction =  Reservation::select('*')->get();
+
+        $rest = array();
+        
+        foreach ($restriction as $row)
+        {
+            $dat = $row->date;
+            $rest[] =$dat;
+        }
+        return view('reservation.booking-form')->with('rest', $rest);
     }
 
 

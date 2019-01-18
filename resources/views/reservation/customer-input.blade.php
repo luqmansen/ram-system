@@ -1,7 +1,9 @@
 @extends('inc.navbar')
 
+@section('title')
+    Form Data Peminjam
+@endsection
 @section('content')
-    <h1>Data Peminjam</h1>
     
     {!! Form::open(['action' => 'FormController@store', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
     {{-- this action is where our form is submitting to --}}

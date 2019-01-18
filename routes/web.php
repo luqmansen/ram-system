@@ -11,7 +11,7 @@
 |
 */
 
-
+Route::get('/try', 'CalendarController@index');
 Route::get('/calendar', 'FormController@index'); // this return calendar as index
 
 Route::get('/', 'IndexController@index');
