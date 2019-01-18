@@ -50,27 +50,25 @@ class FormController extends Controller
             $dat = $row->date;
             $rest[] =$dat;
         }
-      
-
-
+        
         if($request->ajax())
         {
-        $originalDate = $request->date;
-        $newDate = date("Y-m-d", strtotime($originalDate));
-        $timerange = Reservation::select('start_hour', 'end_hour')->where('date', '=', $newDate)->get();
-        
-        
-        $disab = array();
-        foreach ($timerange as $time) {
-            $disabledTime[] = array(
-                $disab[] = $time->start_hour,
-                $disab[] = $time->end_hour
-            );
+            $originalDate = $request->date;
+            $newDate = date("Y-m-d", strtotime($originalDate));
+            $timerange = Reservation::select('start_hour', 'end_hour')->where('date', '=', $newDate)->get();
+    
+            $disab = array();
+            foreach ($timerange as $time) 
+            {
+                $disabledTime[] = array(
+                    $disab[] = $time->start_hour,
+                    $disab[] = $time->end_hour
+                );
+            }
+            $disabledRange = json_encode($disabledTime);
+            return Response($disabledRange);
         }
-        $disabledRange = json_encode($disabledTime);
-        dd($disabledRange);
-        return Response($disabledRange);
-        }
+
                 
 
         return view('reservation.booking-form')->with('rest', $rest);

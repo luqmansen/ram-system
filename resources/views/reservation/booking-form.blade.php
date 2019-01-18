@@ -34,12 +34,8 @@
                 echo htmlspecialchars($forbidden_date);
         ?>
 </div>
-<div id="disabledTime" >
-        {{-- @php
-            echo htmlspecialchars($);
-        @endphp --}}
-</div>
-
+<div id="disabledTime" ></div>
+<br><br>
     {!! Form::open(['action' => 'FormController@store1', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
     {{-- this action is where our form is submitting to --}}
     
@@ -112,6 +108,8 @@
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.timepicker.js')}}"></script>
 {{-- J --}}
 <script>
+        ajaxResult =[];
+
         $('#timeOnlyExample .time').timepicker({
         'showDuration': true,
         'disableTextInput' : true,
@@ -121,7 +119,7 @@
         'lang' : {am:"", pm:''},
         'minTime' : '7:00',
         'maxTime' : '17:00',
-        // 'disableTimeRanges' : [['12:00 am', '7:00am'], ['5:30pm', '11:30pm']]
+        'disableTimeRanges' : ajaxResult,
         });
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
@@ -168,12 +166,13 @@
                 type : 'get',
                 url : '/reservation/bookingform',
                 data:{'date':$value},
-                success:function(data){
-                $('#disabledTime').html(data);
+                success:function(data)
+                {
+                        $('#disabledTime').html(data);  
+                        ajaxResult.push(data);      
                 }
             });
-         }
+        }
+        console.log(ajaxResult);
 </script>
-
-
 @endsection
