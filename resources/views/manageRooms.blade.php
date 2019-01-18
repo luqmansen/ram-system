@@ -104,6 +104,10 @@
                                                 </ul>
                                         </div>
                                         <div class="panel-body">
+												<textarea class="form-control" id="sms"  rows="5" style="display:none">
+														There's one new reservation!<br>
+														Please navigate to Manage Reservations page to see it. 
+												</textarea>
                                                 <form>
 												{{ csrf_field() }}
 													<ul style="padding-bottom:10px">
@@ -272,7 +276,11 @@
                 <!-- //content > row-->
                 
         </div>
-        <!-- //content-->
+		<!-- //content-->
+		<button style="visibility:hidden" id="notification-button" type="button" class="btn btn-default notific" data-theme="theme-inverse" data-sticky="true">theme-inverse</button>
+		<audio style="visibility:hidden" id="notification-sound">
+				<source src="{{asset('notification.mp3')}}" type="audio/mpeg">
+		</audio>
 		
 		
 		<!--
@@ -586,6 +594,33 @@
 				$("#modal-add").modal('hide');
 			}
 		});
+	});
+</script>
+<script>
+	setInterval(function(){
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		$.ajax({
+			url: '/notif',
+			type:"POST",
+			dataType:"json",
+			success:function(data) {
+				if(data=='ok'){
+					$('#notification-button').click();
+					$('#notification-sound').get(0).play();		
+				}
+			}
+		});
+
+	}, 5000);
+	$(".notific").on('click',function(){
+		var nclick=$(this), data=nclick.data();
+		data.verticalEdge=data.vertical || 'right';
+		data.horizontalEdge=data.horizontal  || 'top';
+		$.notific8($("#sms").val(), data)	;
 	});
 </script>
 @endsection

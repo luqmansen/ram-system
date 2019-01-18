@@ -47,6 +47,7 @@ Route::get('/hoobla',function(){
     return view('hoobla');
 });
 
+
 //Manage Rooms
 Route::get('/manageRooms','ManageRoomsController@index');
 Route::post('/roomDelete', 'ManageRoomsController@delete');
@@ -76,3 +77,6 @@ Route::post('/reservationDetail','ManageReservationsController@detail');
 Route::post('/reservationApprove','ManageReservationsController@approve');
 Route::post('/reservationCancel','ManageReservationsController@cancel');
 Route::post('/reservationRevive','ManageReservationsController@revive');
+
+//Notifications
+Route::post('/notif','NotificationsController@notif');
