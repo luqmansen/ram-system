@@ -36,9 +36,8 @@ class FormController extends Controller
         return view('reservation.customer-input');
     }
 
-    public function create1()
+    public function create1(Request $request)
     {
-        
         // Buat Constraint untuk return max dan min di form calender dan time
 
         //fungsi untuk return array untuk restriction di date`
@@ -51,9 +50,21 @@ class FormController extends Controller
             $dat = $row->date;
             $rest[] =$dat;
         }
+      
+
+
+        if($request->ajax())
+        {
+        dd($request->date);
+        
+        return Response($output);
+        }
+                
+
         return view('reservation.booking-form')->with('rest', $rest);
     }
 
+    
 
     public function store(Request $request) //Method untuk store form data peminjam (orang)
     {
@@ -110,18 +121,17 @@ class FormController extends Controller
             $fileNameToStore = 'file.ext';
         }
 
-        // $name = DB::table('reservations')->select('id')->orderBy('created_at', 'desc')->first();
-        
-        // $user = json_decode(json_decode($name), true);
-
-        $name =  Customer::select('id')->orderBy('created_at','desc')->first();
+       $name =  Customer::select('id')->orderBy('created_at','desc')->first();
       
+        // fungsi ubah format date //ke 2019-01-17
+        $originalDate = $request->input('date');
+        $newDate = date("Y-m-d", strtotime($originalDate));
+        
         $reservations = new Reservation;
         $reservations->id_customer = $name->id;
-        // dd($reservations);
         $reservations->id_room = $request->input('id_room');
         $reservations->note = $request->input('note');
-        $reservations->date = $request->input('date');
+        $reservations->date = $newDate;
         $reservations->start_hour = $request->input('start_hour');
         $reservations->end_hour = $request->input('end_hour');
         $reservations->description = $request->input('description');

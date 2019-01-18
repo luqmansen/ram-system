@@ -4,6 +4,10 @@
     Form Peminjaman Ruangan
 @endsection
 
+@section('somethingUneedInHead')
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('customstyle')
 <style type="text/css">
 .input-group {
@@ -30,6 +34,11 @@
                 echo htmlspecialchars($forbidden_date);
         ?>
 </div>
+<div id="disabledTime" >
+        {{-- @php
+            echo htmlspecialchars($);
+        @endphp --}}
+</div>
 
     {!! Form::open(['action' => 'FormController@store1', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
     {{-- this action is where our form is submitting to --}}
@@ -38,8 +47,7 @@
                     <div class='row'>
                         <div class="col">
                                 {{Form::label('date', 'Tanggal Peminjaman ')}}
-                                {{Form::text('date', '',['id' => 'datepicker','class' => 'form-control', 'style' => 'width:80%'])}}
-                                                     
+                                {{Form::text('date', '',['id' => 'datepicker','class' => 'form-control', 'style' => 'width:80%'])}}                                                     
                         </div>
                         <div class='col'>
                                  {{Form::label('id_room', 'Ruangan ')}}
@@ -132,11 +140,15 @@
         var div = document.getElementById("dom-target");
         var forbidden_date = div.textContent;
         // console.log(forbidden_date);
+        
         $(function() 
         {
                 $("#datepicker" ).datepicker(
                         {
                                 dateFormat: 'dd MM yy',
+                                onSelect: function(){
+                                        getDate()
+                                },
                                 beforeShowDay: function(date)
                                 {
                                         var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
@@ -145,6 +157,22 @@
                         });
                         
                 });                
+        
+                $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+        
+        // fungsi untuk buat ajax request ketika user pilih tanggal tertentu
+        function getDate() 
+        {
+                $value=$('#datepicker').val();
+                $.ajax({
+                type : 'get',
+                url : '/reservation/bookingform',
+                data:{'date':$value},
+                success:function(data){
+                $('#disabledTime').html(data);
+                }
+            });
+         }
 </script>
 
 

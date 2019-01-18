@@ -51,9 +51,9 @@ tr:nth-child(even) {
         </tr>
         
         @endforeach
-        <a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform" role="button">Reservasi Tempat</a>
     </tbody>
-    </table>
+</table>
+<a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform" role="button">Reservasi Tempat</a>
     
 @else
 <div class="card text-center">
