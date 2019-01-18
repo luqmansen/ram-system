@@ -43,7 +43,7 @@
                     <div class='row'>
                         <div class="col">
                                 {{Form::label('date', 'Tanggal Peminjaman ')}}
-                                {{Form::text('date', '',['id' => 'datepicker','class' => 'form-control', 'style' => 'width:80%'])}}                                                     
+                                {{Form::text('date', '',['id' => 'datepicker','class' => 'readonly form-control', 'style' => 'width:80%'])}}                                                     
                         </div>
                         <div class='col'>
                                  {{Form::label('id_room', 'Ruangan ')}}
@@ -124,12 +124,6 @@
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
         var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);
-
-        //for disable datepicker textinput
-        $('.readonlyjm').on('focus',function(){
-        $(this).trigger('blur');
-        });
-            
 </script>
 
 <script type="text/javascript" src="{{URL::asset('https://code.jquery.com/jquery-1.10.2.js')}}"></script>
@@ -156,7 +150,13 @@
                         
                 });                
         
-                $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+        //for disable datepicker textinput
+        $('.readonly').on('focus',function()
+        {
+                $(this).trigger('blur');
+        });
+
+        $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
         
         // fungsi untuk buat ajax request ketika user pilih tanggal tertentu
         function getDate() 
