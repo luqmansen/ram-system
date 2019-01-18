@@ -149,11 +149,11 @@
                                 onSelect: function(){
                                         getDate()
                                 },
-                                beforeShowDay: function(date)
-                                {
-                                        var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-                                        return [ forbidden_date.indexOf(string) == -1 ]
-                                }
+                                // beforeShowDay: function(date)
+                                // {
+                                //         var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                                //         return [ forbidden_date.indexOf(string) == -1 ]
+                                // }
                         });
                         
                 });                

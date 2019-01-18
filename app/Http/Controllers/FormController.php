@@ -55,9 +55,21 @@ class FormController extends Controller
 
         if($request->ajax())
         {
-        dd($request->date);
+        $originalDate = $request->date;
+        $newDate = date("Y-m-d", strtotime($originalDate));
+        $timerange = Reservation::select('start_hour', 'end_hour')->where('date', '=', $newDate)->get();
         
-        return Response($output);
+        
+        $disab = array();
+        foreach ($timerange as $time) {
+            $disabledTime[] = array(
+                $disab[] = $time->start_hour,
+                $disab[] = $time->end_hour
+            );
+        }
+        $disabledRange = json_encode($disabledTime);
+        dd($disabledRange);
+        return Response($disabledRange);
         }
                 
 
