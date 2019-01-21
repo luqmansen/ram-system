@@ -36,47 +36,50 @@ class FormController extends Controller
         return view('reservation.customer-input')->with('day', $day)->with('month', $month)->with('year', $year);
     }
 
-    public function create1(Request $request, $day, $year, $month)
+    public function create1($day, $month, $year)
     {
-        // Buat Constraint untuk return max dan min di form calender dan time
-
-        //fungsi untuk return array untuk restriction di date`
+        //fungsi untuk return array untuk restriction di date
         $restriction =  Reservation::select('*')->get();
+        $date = "$day-$month-$year";
 
-        $rest = array();
+        $dateISO = "$year-$month-$day";
         
-        foreach ($restriction as $row)
+        $timerange = Reservation::select('start_hour', 'end_hour')->where('date', '=', $dateISO)->get();
+
+        $disab = array();
+        foreach ($timerange as $time) 
         {
-            $dat = $row->date;
-            $rest[] =$dat;
+            $disabledTime[] = array(
+                $disab[] = $time->start_hour,
+                $disab[] = $time->end_hour
+            );
         }
+        $disabledRange = json_encode($disabledTime);
         
-        if($request->ajax())
-        {
-            $originalDate = $request->date;
-            $newDate = date("Y-m-d", strtotime($originalDate));
-            $timerange = Reservation::select('start_hour', 'end_hour')->where('date', '=', $newDate)->get();
+        // if($request->ajax())
+        // {
+        //     $originalDate = $request->date;
+        //     $newDate = date("Y-m-d", strtotime($originalDate));
+        //     $timerange = Reservation::select('start_hour', 'end_hour')->where('date', '=', $newDate)->get();
     
-            $disab = array();
-            foreach ($timerange as $time) 
-            {
-                $disabledTime[] = array(
-                    $disab[] = $time->start_hour,
-                    $disab[] = $time->end_hour
-                );
-            }
-            $disabledRange = json_encode($disabledTime);
-            return Response($disabledRange);
-        }
+        //     $disab = array();
+        //     foreach ($timerange as $time) 
+        //     {
+        //         $disabledTime[] = array(
+        //             $disab[] = $time->start_hour,
+        //             $disab[] = $time->end_hour
+        //         );
+        //     }
+        //     $disabledRange = json_encode($disabledTime);
+        //     return Response($disabledRange);
+        // }
 
-        dd($day);
-
-        return view('reservation.booking-form')->with('rest', $rest)->with('day', $day)->with('month', $month)->with('year', $year);
+        return view('reservation.booking-form')->with('disabledRange', $disabledRange)->with('day', $day)->with('month', $month)->with('year', $year)->with('date', $date);
     }
 
     
 
-    public function store(Request $request, $day, $month, $year) //Method untuk store form data peminjam (orang)
+    public function store(Request $request ) //Method untuk store form data peminjam (orang)
     {
         $this->validate($request, [
             'name' => 'required',
@@ -92,8 +95,11 @@ class FormController extends Controller
         $customers->telephone = $request->input('telephone');
         $customers->email = $request->input('email');
         $customers->save();
-
-        return redirect('/reservation/bookingform/{day}/{month}/{year}')->with('success', 'Data Input Success', $name)->with('day', $day)->with('month', $month)->with('year', $year);;
+        
+        $day = $request->input('day');
+        $month = $request->input('month');
+        $year = $request->input('year');
+        return redirect('/reservation/bookingform/'.$day.'/'.$month.'/'.$year.'')->with('day', $day)->with('month', $month)->with('year', $year);;
     }
 
 

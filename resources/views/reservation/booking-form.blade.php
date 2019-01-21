@@ -3,10 +3,13 @@
 @section('title')
     Form Peminjaman Ruangan
 @endsection
-
 @section('somethingUneedInHead')
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endsection
+
+@php
+//     dd($disabledRange);
+@endphp
 
 @section('customstyle')
 <style type="text/css">
@@ -27,12 +30,14 @@
 @endsection
 
 @section('content')                  
-
-<div id="dom-target" style="display: none">
+<div id="dom-target" style="">
         <?php
-                $forbidden_date = json_encode($rest);
-                echo htmlspecialchars($forbidden_date);
+                // $forbidden_date = json_encode($rest);
+                // echo htmlspecialchars($forbidden_date);
         ?>
+        @php
+            echo htmlspecialchars($disabledRange);
+        @endphp
 </div>
 <div id="disabledTime" ></div>
 <br><br>
@@ -43,7 +48,11 @@
                     <div class='row'>
                         <div class="col">
                                 {{Form::label('date', 'Tanggal Peminjaman ')}}
-                                {{Form::text('date', '',['id' => 'datepicker','class' => 'readonly form-control', 'style' => 'width:80%'])}}                                                     
+                                @php
+                                        $newDate = date("d-F-Y", strtotime($date));
+                                @endphp 
+                                {{Form::text('date', $newDate,['id' => 'datepicker','class' => 'readonly form-control', 'style' => 'width:80%', 'disabled'])}}                                                     
+                                
                         </div>
                         <div class='col'>
                                  {{Form::label('id_room', 'Ruangan ')}}
@@ -119,57 +128,14 @@
         'lang' : {am:"", pm:''},
         'minTime' : '7:00',
         'maxTime' : '17:00',
-        'disableTimeRanges' : function()
-        {
-                $value=$('#disabledTime').val();
-                $.ajax({
-                type : 'get',
-                data:{'date':$value},
-                success:function(data)
-                {
-                        $('#disabledTime').html(data);  
-                        // ajaxResult.push(data); 
-                        return data;     
-                        console.log(data); 
-                }
-            });
-        }
+        'disableTimeRanges' : 
 });
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
         var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);
 </script>
 
-<script type="text/javascript" src="{{URL::asset('https://code.jquery.com/jquery-1.10.2.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('https://code.jquery.com/ui/1.11.2/jquery-ui.js')}}"></script>
 <script>
-        var div = document.getElementById("dom-target");
-        var forbidden_date = div.textContent;
-        // console.log(forbidden_date);
-        
-        $(function() 
-        {
-                $("#datepicker" ).datepicker(
-                        {
-                                dateFormat: 'dd MM yy',
-                                onSelect: function(){
-                                        getDate();
-                                },
-                                // beforeShowDay: function(date)
-                                // {
-                                //         var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-                                //         return [ forbidden_date.indexOf(string) == -1 ]
-                                // }
-                        });
-                        
-                });                
-        
-        //for disable datepicker textinput
-        $('.readonly').on('focus',function()
-        {
-                $(this).trigger('blur');
-        });
-
         $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
         
         // fungsi untuk buat ajax request ketika user pilih tanggal tertentu
