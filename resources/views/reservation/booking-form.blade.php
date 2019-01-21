@@ -119,8 +119,22 @@
         'lang' : {am:"", pm:''},
         'minTime' : '7:00',
         'maxTime' : '17:00',
-        'disableTimeRanges' : ajaxResult,
-        });
+        'disableTimeRanges' : function()
+        {
+                $value=$('#disabledTime').val();
+                $.ajax({
+                type : 'get',
+                data:{'date':$value},
+                success:function(data)
+                {
+                        $('#disabledTime').html(data);  
+                        // ajaxResult.push(data); 
+                        return data;     
+                        console.log(data);
+                }
+            });
+        }
+});
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
         var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);
@@ -139,7 +153,7 @@
                         {
                                 dateFormat: 'dd MM yy',
                                 onSelect: function(){
-                                        getDate()
+                                        getDate();
                                 },
                                 // beforeShowDay: function(date)
                                 // {
@@ -169,7 +183,8 @@
                 success:function(data)
                 {
                         $('#disabledTime').html(data);  
-                        ajaxResult.push(data);      
+                        ajaxResult.push(data); 
+                        return data;     
                 }
             });
         }
