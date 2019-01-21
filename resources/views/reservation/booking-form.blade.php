@@ -3,13 +3,10 @@
 @section('title')
     Form Peminjaman Ruangan
 @endsection
+
 @section('somethingUneedInHead')
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endsection
-
-@php
-//     dd($disabledRange);
-@endphp
 
 @section('customstyle')
 <style type="text/css">
@@ -18,9 +15,6 @@
          margin-bottom: 10px;
  }
 </style>    
-{{-- <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="dist/bootstrap-clockpicker.min.css">
-<link rel="stylesheet" type="text/css" href="assets/css/github.min.css"> --}}
 
 {{-- Stylesheet for jquery date & timepicker --}}
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('jquerytimepicker/jquery.timepicker.css')}}" />
