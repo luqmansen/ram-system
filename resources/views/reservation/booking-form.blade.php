@@ -30,11 +30,7 @@
 @endsection
 
 @section('content')                  
-<div id="dom-target" style="">
-        <?php
-                // $forbidden_date = json_encode($rest);
-                // echo htmlspecialchars($forbidden_date);
-        ?>
+<div id="dom-target" style="display:none">
         @php
             echo htmlspecialchars($disabledRange);
         @endphp
@@ -117,8 +113,12 @@
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.timepicker.js')}}"></script>
 {{-- J --}}
 <script>
-        ajaxResult =[];
-
+        var div = document.getElementById("dom-target");
+        var disabledRanges = div.textContent;
+        var myRanges = JSON.parse(disabledRanges);
+        console.log(disabledRanges);
+        
+        
         $('#timeOnlyExample .time').timepicker({
         'showDuration': true,
         'disableTextInput' : true,
@@ -128,32 +128,10 @@
         'lang' : {am:"", pm:''},
         'minTime' : '7:00',
         'maxTime' : '17:00',
-        'disableTimeRanges' : 
+        'disableTimeRanges' : myRanges
 });
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
-        var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);
-</script>
-
-<script>
-        $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-        
-        // fungsi untuk buat ajax request ketika user pilih tanggal tertentu
-        function getDate() 
-        {
-                $value=$('#datepicker').val();
-                $.ajax({
-                type : 'get',
-                url : '/reservation/bookingform',
-                data:{'date':$value},
-                success:function(data)
-                {
-                        $('#disabledTime').html(data);  
-                        ajaxResult.push(data); 
-                        return data;     
-                }
-            });
-        }
-        console.log(ajaxResult);
+        var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);  
 </script>
 @endsection
