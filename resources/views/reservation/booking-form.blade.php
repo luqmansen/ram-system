@@ -130,7 +130,7 @@
                         $('#disabledTime').html(data);  
                         // ajaxResult.push(data); 
                         return data;     
-                        console.log(data);
+                        console.log(data); 
                 }
             });
         }

@@ -31,12 +31,12 @@ class FormController extends Controller
     }
 
 
-    public function create()
+    public function create($day, $month, $year)
     {
-        return view('reservation.customer-input');
+        return view('reservation.customer-input')->with('day', $day)->with('month', $month)->with('year', $year);
     }
 
-    public function create1(Request $request)
+    public function create1(Request $request, $day, $year, $month)
     {
         // Buat Constraint untuk return max dan min di form calender dan time
 
@@ -69,14 +69,14 @@ class FormController extends Controller
             return Response($disabledRange);
         }
 
-                
+        dd($day);
 
-        return view('reservation.booking-form')->with('rest', $rest);
+        return view('reservation.booking-form')->with('rest', $rest)->with('day', $day)->with('month', $month)->with('year', $year);
     }
 
     
 
-    public function store(Request $request) //Method untuk store form data peminjam (orang)
+    public function store(Request $request, $day, $month, $year) //Method untuk store form data peminjam (orang)
     {
         $this->validate($request, [
             'name' => 'required',
@@ -93,7 +93,7 @@ class FormController extends Controller
         $customers->email = $request->input('email');
         $customers->save();
 
-        return redirect('/reservation/bookingform')->with('success', 'Data Input Success', $name);
+        return redirect('/reservation/bookingform/{day}/{month}/{year}')->with('success', 'Data Input Success', $name)->with('day', $day)->with('month', $month)->with('year', $year);;
     }
 
 
