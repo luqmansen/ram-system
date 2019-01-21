@@ -87,7 +87,7 @@
 				center: '',
 				right: ''
 			},
-			editable: true,
+			editable: false,
             droppable: true,
             selectable: true,
 			height :650, 
