@@ -45,7 +45,7 @@ class FormController extends Controller
         $dateISO = "$year-$month-$day";
         
         $timerange = Reservation::select('start_hour', 'end_hour')->where('date', '=', $dateISO)->get();
-
+        $disabledTime = array();
         $disab = array();
         foreach ($timerange as $time) 
         {
@@ -56,24 +56,6 @@ class FormController extends Controller
         }
         $disabledRange = json_encode($disabledTime);
         
-        // if($request->ajax())
-        // {
-        //     $originalDate = $request->date;
-        //     $newDate = date("Y-m-d", strtotime($originalDate));
-        //     $timerange = Reservation::select('start_hour', 'end_hour')->where('date', '=', $newDate)->get();
-    
-        //     $disab = array();
-        //     foreach ($timerange as $time) 
-        //     {
-        //         $disabledTime[] = array(
-        //             $disab[] = $time->start_hour,
-        //             $disab[] = $time->end_hour
-        //         );
-        //     }
-        //     $disabledRange = json_encode($disabledTime);
-        //     return Response($disabledRange);
-        // }
-
         return view('reservation.booking-form')->with('disabledRange', $disabledRange)->with('day', $day)->with('month', $month)->with('year', $year)->with('date', $date);
     }
 
@@ -106,11 +88,10 @@ class FormController extends Controller
     public function store1(Request $request) //Method untuk store form data peminjaman
     {
         $this->validate($request, [
-            'date' => 'required',
             'start_hour' => 'required',
             'end_hour' => 'required',
             'description' => 'required',
-            'file_name' => 'file | nullable | max: 1999'
+            'file_name' => 'file | nullable | max: 1999 | mimes:pdf, jpg, jpeg'
         ]);
         
             
@@ -118,10 +99,7 @@ class FormController extends Controller
             // Get File Name with extension
 
             $filenameWithExt = $request->file('file_name')->getClientOriginalName();
-            //kalo gini doang, nanti semisal 2 orang yg upload dengan nama 
-            // file yang sama, nanti bakal jadi masalah, jadi buat fungsi 
-            // untuk misahin 
-            
+                       
             //get just file name
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
 

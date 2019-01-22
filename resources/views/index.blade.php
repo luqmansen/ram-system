@@ -20,11 +20,13 @@
 			<div id="main">
 				<ul class="nav nav-tabs" data-provide="tabdrop">
 									<li><a href="#" class="change" data-change="prev"><i class="fa fa-chevron-left"></i></a></li>
-									<li><a href="#" class="change" data-change="next"><i class="fa fa-chevron-right"></i></a></li>
-									<li class="active"><a href="#" data-view="month" data-toggle="tab" class="change-view">Month</a></li>
-									<li><a href="#" data-view="agendaWeek" data-toggle="tab" class="change-view">Week</a></li>
-									<li><a href="#" data-view="agendaDay" data-toggle="tab" class="change-view">Day</a></li>
-									<li><a href="#" class="change-today">Today</a></li>
+                                    <li><a href="#" class="change" data-change="next"><i class="fa fa-chevron-right"></i></a></li>
+                                    @if (!Auth::guest())
+                                        <li class="active"><a href="#" data-view="month" data-toggle="tab" class="change-view">Month</a></li>
+                                        <li><a href="#" data-view="agendaWeek" data-toggle="tab" class="change-view">Week</a></li>
+                                        <li><a href="#" data-view="agendaDay" data-toggle="tab" class="change-view">Day</a></li>
+                                        <li><a href="#" class="change-today">Today</a></li>
+                                    @endif
 							</ul>
 					<div class="tabbable">
 						
@@ -77,8 +79,7 @@
 				$month = bulan;
 			};
 			$year = date.getFullYear();
-            
-			$url = "/reservation/"+$day+'/'+$month+'/'+$year;
+            $url = "/reservation/"+$day+'/'+$month+'/'+$year;
 			window.location.href= $url;  
         },
 			
@@ -95,18 +96,10 @@
 			aspectRatio:1.5,
             events: [
             {
-            title  : 'event1',
+            title  : 'Ruang A Penuh',
             start  : '2019-01-7'
-            },
-            {
-            title  : 'event2',
-            start  : '2019-01-05',
-            },
-            {
-            title  : 'event3',
-            start  : '2019-01-09',
             }
-        ]
+                    ]
 			});
 		$(".change-view").click(function(){
 			 var data=$(this).data();
