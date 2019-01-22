@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/try', 'CalendarController@index');
+Route::get('/try', function(){
+    return view('reservation.modal');});
+
 Route::get('/calendar', 'FormController@index'); // this return calendar as index
 
 Route::get('/', 'IndexController@index');

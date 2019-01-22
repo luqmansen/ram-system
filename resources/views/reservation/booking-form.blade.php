@@ -20,7 +20,34 @@
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('jquerytimepicker/jquery.timepicker.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('jquerytimepicker/lib/bootstrap-datepicker.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jquery-ui.css')}}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 
+<style>
+ /* The Modal (background) */
+/* Modal Header */
+.modal-header {
+  padding: 2px 16px;
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+/* Modal Body */
+.modal-body {padding: 2px 16px;}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 40%;
+  height: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  
+}
+</style>
 @endsection
 
 @section('content')                  
@@ -30,9 +57,25 @@
         @endphp
 </div>
 <div id="disabledTime" ></div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                        <div class="modal-header">
+                        <span class="close">&times;</span>
+                        <h2>Modal Header</h2>
+                        </div>
+                        <div class="modal-body">
+                        <p>Some text in the Modal Body</p>
+                        <p>Some other text...</p>
+                        </div>
+                </div>
+                </div>
 <br><br>
+
     {!! Form::open(['action' => 'FormController@store1', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
-    {{-- this action is where our form is submitting to --}}
     
             <div class="form-group">
                     <div class='row'>
@@ -47,11 +90,12 @@
                         <div class='col'>
                                  {{Form::label('id_room', 'Ruangan ')}}
                                 <div class="dropdown">
-                                        @php
-                                            $room = []
-                                        @endphp
-                                        {{Form::select('id_room', ['1' => '502', '2' => '503', '3' => '504'],'', ['class'=>"btn btn-secondary dropdown-toggle", 'type'=>"button" ,'id'=>"dropdownMenuButton" ,'data-toggle'=>"dropdown" ,'aria-haspopup'=>"true", 'aria-expanded'=>"true"])}}
+                                        {{Form::select('id_room', ['1' => '502 ', '2' => '503', '3' => '504'],'', ['class'=>"btn btn-secondary dropdown-toggle", 'type'=>"button" ,'id'=>"dropdownMenuButton" ,'data-toggle'=>"dropdown" ,'aria-haspopup'=>"true", 'aria-expanded'=>"true"])}}
+                                        <button id="myBtn" type="button" class="btn btn-info" style="font-weight: bold">i</button>
+                                       
+
                                 </div>
+                                
                         </div>
                 </div>
             </div>
@@ -100,6 +144,7 @@
 
 {{-- Jquery- Date & Time Picker (integrated) --}}
 <script type="text/javascript" src="{{URL::asset('js/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{URL::asset('js/modal.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('assets/js/jquery.min.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('assets/js/bootstrap.bundle.min.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.datepair.min.js')}}"></script>
@@ -125,5 +170,8 @@
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
         var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);  
-</script>
+
+ </script>
+
+
 @endsection
