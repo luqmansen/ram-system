@@ -4,6 +4,10 @@
     Form Peminjaman Ruangan
 @endsection
 
+@section('somethingUneedInHead')
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('customstyle')
 <style type="text/css">
 .input-group {
@@ -20,14 +24,13 @@
 @endsection
 
 @section('content')                  
-
-<div id="dom-target" style="display: none">
-        <?php
-                $forbidden_date = json_encode($rest);
-                echo htmlspecialchars($forbidden_date);
-        ?>
+<div id="dom-target" style="display:none">
+        @php
+            echo htmlspecialchars($disabledRange);
+        @endphp
 </div>
-
+<div id="disabledTime" ></div>
+<br><br>
     {!! Form::open(['action' => 'FormController@store1', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
     {{-- this action is where our form is submitting to --}}
     
@@ -35,8 +38,11 @@
                     <div class='row'>
                         <div class="col">
                                 {{Form::label('date', 'Tanggal Peminjaman ')}}
-                                {{Form::text('date', '',['id' => 'datepicker','class' => ' readonly form-control', 'style' => 'width:80%'])}}
-                                                     
+                                @php
+                                        $newDate = date("d-F-Y", strtotime($date));
+                                @endphp 
+                                {{Form::text('date', $newDate,['id' => 'datepicker','class' => 'readonly form-control', 'style' => 'width:80%', 'disabled'])}}                                                     
+                                
                         </div>
                         <div class='col'>
                                  {{Form::label('id_room', 'Ruangan ')}}
@@ -100,6 +106,10 @@
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/lib/bootstrap-datepicker.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.timepicker.js')}}"></script>
 <script>
+        var div = document.getElementById("dom-target");
+        var disabledRanges = div.textContent;
+        var myRanges = JSON.parse(disabledRanges);
+        
         $('#timeOnlyExample .time').timepicker({
         'showDuration': true,
         'disableTextInput' : true,
@@ -109,10 +119,11 @@
         'lang' : {am:"", pm:''},
         'minTime' : '7:00',
         'maxTime' : '17:00',
-        // 'disableTimeRanges' : [['12:00 am', '7:00am'], ['5:30pm', '11:30pm']]
-        });
+        'disableTimeRanges' : myRanges
+});
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
+<<<<<<< HEAD
         var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);
 
         //for disable datepicker textinput
@@ -142,4 +153,8 @@
                         
                 });                
 </script>
+=======
+        var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);  
+</script>
+>>>>>>> calendar_view2
 @endsection

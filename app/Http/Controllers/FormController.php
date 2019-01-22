@@ -31,31 +31,37 @@ class FormController extends Controller
     }
 
 
-    public function create()
+    public function create($day, $month, $year)
     {
-        return view('reservation.customer-input');
+        return view('reservation.customer-input')->with('day', $day)->with('month', $month)->with('year', $year);
     }
 
-    public function create1()
+    public function create1($day, $month, $year)
     {
-        
-        // Buat Constraint untuk return max dan min di form calender dan time
-
-        //fungsi untuk return array untuk restriction di date`
+        //fungsi untuk return array untuk restriction di date
         $restriction =  Reservation::select('*')->get();
+        $date = "$day-$month-$year";
 
-        $rest = array();
+        $dateISO = "$year-$month-$day";
         
-        foreach ($restriction as $row)
+        $timerange = Reservation::select('start_hour', 'end_hour')->where('date', '=', $dateISO)->get();
+        $disabledTime = array();
+        $disab = array();
+        foreach ($timerange as $time) 
         {
-            $dat = $row->date;
-            $rest[] =$dat;
+            $disabledTime[] = array(
+                $disab[] = $time->start_hour,
+                $disab[] = $time->end_hour
+            );
         }
-        return view('reservation.booking-form')->with('rest', $rest);
+        $disabledRange = json_encode($disabledTime);
+        
+        return view('reservation.booking-form')->with('disabledRange', $disabledRange)->with('day', $day)->with('month', $month)->with('year', $year)->with('date', $date);
     }
 
+    
 
-    public function store(Request $request) //Method untuk store form data peminjam (orang)
+    public function store(Request $request ) //Method untuk store form data peminjam (orang)
     {
         $this->validate($request, [
             'name' => 'required',
@@ -71,19 +77,21 @@ class FormController extends Controller
         $customers->telephone = $request->input('telephone');
         $customers->email = $request->input('email');
         $customers->save();
-
-        return redirect('/reservation/bookingform')->with('success', 'Data Input Success', $name);
+        
+        $day = $request->input('day');
+        $month = $request->input('month');
+        $year = $request->input('year');
+        return redirect('/reservation/bookingform/'.$day.'/'.$month.'/'.$year.'')->with('day', $day)->with('month', $month)->with('year', $year);;
     }
 
 
     public function store1(Request $request) //Method untuk store form data peminjaman
     {
         $this->validate($request, [
-            'date' => 'required',
             'start_hour' => 'required',
             'end_hour' => 'required',
             'description' => 'required',
-            'file_name' => 'file | nullable | max: 1999'
+            'file_name' => 'file | nullable | max: 1999 | mimes:pdf, jpg, jpeg'
         ]);
         
             
@@ -91,10 +99,7 @@ class FormController extends Controller
             // Get File Name with extension
 
             $filenameWithExt = $request->file('file_name')->getClientOriginalName();
-            //kalo gini doang, nanti semisal 2 orang yg upload dengan nama 
-            // file yang sama, nanti bakal jadi masalah, jadi buat fungsi 
-            // untuk misahin 
-            
+                       
             //get just file name
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
 
@@ -110,18 +115,17 @@ class FormController extends Controller
             $fileNameToStore = 'file.ext';
         }
 
-        // $name = DB::table('reservations')->select('id')->orderBy('created_at', 'desc')->first();
-        
-        // $user = json_decode(json_decode($name), true);
-
-        $name =  Customer::select('id')->orderBy('created_at','desc')->first();
+       $name =  Customer::select('id')->orderBy('created_at','desc')->first();
       
+        // fungsi ubah format date //ke 2019-01-17
+        $originalDate = $request->input('date');
+        $newDate = date("Y-m-d", strtotime($originalDate));
+        
         $reservations = new Reservation;
         $reservations->id_customer = $name->id;
-        // dd($reservations);
         $reservations->id_room = $request->input('id_room');
         $reservations->note = $request->input('note');
-        $reservations->date = $request->input('date');
+        $reservations->date = $newDate;
         $reservations->start_hour = $request->input('start_hour');
         $reservations->end_hour = $request->input('end_hour');
         $reservations->description = $request->input('description');

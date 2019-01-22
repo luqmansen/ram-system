@@ -51,16 +51,16 @@ tr:nth-child(even) {
         </tr>
         
         @endforeach
-        <a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform" role="button">Reservasi Tempat</a>
     </tbody>
-    </table>
+</table>
+<a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button">Reservasi Tempat</a>
     
 @else
 <div class="card text-center">
         <div class="card-body">
           <h5 class="card-title">Ruangan Belum Dipesan </h5>
           <p class="card-text">Segera reservasi sekarang.</p>
-          <a  href="/reservation/customerform" role="button" class="btn btn-primary">Reservasi Tempat</a>
+        <a  href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button" class="btn btn-primary">Reservasi Tempat</a>
         </div>
       </div>
 @endif

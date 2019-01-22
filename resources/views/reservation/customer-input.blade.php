@@ -22,8 +22,11 @@
             <div class="form-group">
                     {{Form::label('email', 'Email')}}
                     {{Form::text('email', '',['class' => 'form-control', 'placeholder' => 'contoh@contoh.com'])}}
-                        
+                    {{Form::hidden('day', $day)}}
+                    {{Form::hidden('month', $month)}}
+                    {{Form::hidden('year', $year)}}
             </div>
+
             
             {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
     {!! Form::close() !!} 
