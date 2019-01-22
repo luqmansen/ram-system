@@ -123,38 +123,6 @@
 });
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
-<<<<<<< HEAD
-        var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);
-
-        //for disable datepicker textinput
-        $('.readonly').on('focus',function(){
-        $(this).trigger('blur');
-        });            
-</script>
-
-{{-- Script untuk Date Picker --}}
-<script type="text/javascript" src="{{URL::asset('https://code.jquery.com/jquery-1.10.2.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('https://code.jquery.com/ui/1.11.2/jquery-ui.js')}}"></script>
-<script>
-        var div = document.getElementById("dom-target");
-        var forbidden_date = div.textContent;
-        // console.log(forbidden_date);
-        $(function() 
-        {
-                $("#datepicker" ).datepicker(
-                        {
-                                dateFormat: 'dd MM yy',
-                                beforeShowDay: function(date)
-                                {
-                                        var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-                                        return [ forbidden_date.indexOf(string) == -1 ]
-                                }
-                        });
-                        
-                });                
-</script>
-=======
         var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);  
 </script>
->>>>>>> calendar_view2
 @endsection
