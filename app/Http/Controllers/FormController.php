@@ -16,7 +16,19 @@ class FormController extends Controller
      */
     public function index(Request $request)
     {
-        
+        if ($request->ajax()) 
+        {
+            // $someDate = $request->date;
+            // $reservations =  Reservation::select('*')->where('date', '=', $someDate)->get();
+            // $reservations = 'YES MAN';
+            // return Response($reservations);
+
+            // $response = array(
+            //     'status' => 'success',
+            //     'msg' => $request->message,
+            // );
+            // return response()->json($response); 
+        }
         // $date = "$year-$month-$day";
         // $reservations =  Reservation::select('*')->where('date', '=', $date)->get();
         return view('index');

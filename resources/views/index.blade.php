@@ -50,6 +50,7 @@
 
 @section('bodyWrapper')
 <body class="full-lg">
+		<button id="clickme"> henlo there</button>
 <div id="wrapper" style="margin-left:0px">
 	<div id="main">
 			<div id="main">
@@ -94,14 +95,22 @@
 				</div>
 	
 		
+				
 </div>
 <!-- //wrapper-->
 @endsection
 
 @section('customScript')
+
 <script>
+	var henlo = document.getElementById('clickme');
+	henlo.onclick = function () {
+		getDate();
+	};
+
 	var modal = document.getElementById('myModal');
 	var span = document.getElementsByClassName("close")[0];
+	var modal = document.getElementById('myModal');
 	span.onclick = function() {
 	modal.style.display = "none";
 	}
@@ -144,10 +153,8 @@
             // $url = "/reservation/"+$day+'/'+$month+'/'+$year;
 			// window.location.href= $url;
 			$date =   $year + '-' + $month + '-' + $day;
-			console.log($date);
+			// console.log($date);
 			getDate($date);
-			var modal = document.getElementById('myModal');
-			modal.style.display = "block";
             },
 			
             header: {
@@ -196,18 +203,20 @@
 
 	$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
         
-	// fungsi untuk buat ajax request ketika user pilih tanggal tertentu
-	function getDate($date) 
+	function getDate(date) 
 	{
+			$value = date;
 			$.ajax({
-			type : 'get',
+			type : 'POST',
 			url : '/',
-			data:{'date':$date},
+			data:{'date':$value},
+			// data:{_token: CSRF_TOKEN, message:$value},
 			success:function(data)
 			{
-					// $('#disabledTime').html(data);  
+					// $('.modal-body > p').html(data);  
 					// ajaxResult.push(data); 
-					alert(data);
+					console.log(data.msg);
+					modal.style.display = "block";
 					return data;     
 			}
 		});
