@@ -51,9 +51,7 @@
 @section('bodyWrapper')
 <body class="full-lg">
 <div id="wrapper" style="margin-left:0px">
-
-		
-		<div id="main">
+	<div id="main">
 			<div id="main">
 				<ul class="nav nav-tabs" data-provide="tabdrop">
 								@if (!Auth::guest())
@@ -71,15 +69,14 @@
 								
 										<div id="calendar" ></div>
 									<div class="row">
-										   <div class="col-lg-8" >
-													
+										   <div class="col-lg-8" >		
 											</div>
 									</div>
 							</div>
 					</div>
-		</div>
+				</div>
+				
 		<div id="myModal" class="modal">
-
 				<!-- Modal content -->
 			<div class="modal-content">
 					<div class="modal-header">
@@ -103,10 +100,17 @@
 
 @section('customScript')
 <script>
+	var modal = document.getElementById('myModal');
 	var span = document.getElementsByClassName("close")[0];
-	// When the user clicks on <span> (x), close the modal
 	span.onclick = function() {
 	modal.style.display = "none";
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+	if (event.target == modal) {
+		modal.style.display = "none";
+		}
 	}
 	$(document).ready(function() {	
 
@@ -115,8 +119,7 @@
 		var m = date.getMonth();
 		var y = date.getFullYear();
 
-		
-		
+	
 	   $('#calendar').fullCalendar({
 		   	dayClick: function(date, jsEvent, view) { 
 			var hari = date.getDate();
@@ -144,8 +147,8 @@
             },
 			
             header: {
-				left: 'title',
-				center: 'agendaDay,agendaWeek,month',
+				left: '',
+				center: 'title',
 				right: 'prev,next today'
 			},
 			editable: false,
