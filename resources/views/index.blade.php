@@ -124,7 +124,7 @@
 		   	dayClick: function(date, jsEvent, view) { 
 			var hari = date.getDate();
 			m = String(hari);
-			//Fungsi agar hari formatnya jadi 2 digit, soalnya formatting ikut di dokumentasinya ribet 
+			//Fungsi agar hari formatnya jadi 2 digit
 			if (m < 2){
 				$day = '0'+ hari; 
 			} else {
@@ -133,15 +133,19 @@
 
 			var bulan = date.getMonth() +1;
 			n = String(bulan);
-			//Ini juga
+			
 			if (n < 2){
 				$month = '0'+ bulan; 
 			} else {
 				$month = bulan;
 			};
+
 			$year = date.getFullYear();
-            $url = "/reservation/"+$day+'/'+$month+'/'+$year;
-			// window.location.href= $url;  
+            // $url = "/reservation/"+$day+'/'+$month+'/'+$year;
+			// window.location.href= $url;
+			$date =   $year + '-' + $month + '-' + $day;
+			console.log($date);
+			getDate($date);
 			var modal = document.getElementById('myModal');
 			modal.style.display = "block";
             },
@@ -189,6 +193,26 @@
 		});
 		
 	});
+
+	$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+        
+	// fungsi untuk buat ajax request ketika user pilih tanggal tertentu
+	function getDate($date) 
+	{
+			$.ajax({
+			type : 'get',
+			url : '/',
+			data:{'date':$date},
+			success:function(data)
+			{
+					// $('#disabledTime').html(data);  
+					// ajaxResult.push(data); 
+					alert(data);
+					return data;     
+			}
+		});
+	}
+
 
 </script>
 <script>

@@ -14,8 +14,11 @@ class FormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        
+        // $date = "$year-$month-$day";
+        // $reservations =  Reservation::select('*')->where('date', '=', $date)->get();
         return view('index');
     }
     
