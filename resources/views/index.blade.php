@@ -6,7 +6,45 @@
 @section('customStyle')
 <link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
 <style>
-</style>
+	
+   /* Modal Header */
+	.modal-header {
+	padding: 2px 16px;
+	background-color: #5cb85c;
+	color: white;
+	}
+
+	/* Modal Body */
+	.modal-body {padding: 2px 2px;}
+
+	/* Modal Footer */
+	.modal-footer {
+	padding: 2px 16px;
+	background-color: #5cb85c;
+	color: white;
+	}
+
+	/* Modal Content */
+	.modal-content {
+	position: relative;
+	background-color: #fefefe;
+	margin: auto;
+	padding: 0;
+	border: 1px solid #888;
+	width: 100%;
+	height: 200%;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+	animation-name: animatetop;
+	animation-duration: 0.1s
+	}
+
+	/* Add Animation */
+	@keyframes animatetop {
+	from {top: -300px; opacity: 0}
+	to {top: 0; opacity: 1}
+	}
+   </style>
+
 
 @endsection
 
@@ -18,9 +56,9 @@
 		<div id="main">
 			<div id="main">
 				<ul class="nav nav-tabs" data-provide="tabdrop">
+								@if (!Auth::guest())
 									<li><a href="#" class="change" data-change="prev"><i class="fa fa-chevron-left"></i></a></li>
                                     <li><a href="#" class="change" data-change="next"><i class="fa fa-chevron-right"></i></a></li>
-                                    @if (!Auth::guest())
                                         <li class="active"><a href="#" data-view="month" data-toggle="tab" class="change-view">Month</a></li>
                                         <li><a href="#" data-view="agendaWeek" data-toggle="tab" class="change-view">Week</a></li>
                                         <li><a href="#" data-view="agendaDay" data-toggle="tab" class="change-view">Day</a></li>
@@ -40,7 +78,23 @@
 							</div>
 					</div>
 		</div>
-        
+		<div id="myModal" class="modal">
+
+				<!-- Modal content -->
+			<div class="modal-content">
+					<div class="modal-header">
+					  <span class="close">&times;</span>
+					  <h2>Modal Header</h2>
+					</div>
+					<div class="modal-body">
+					  <p>Some text in the Modal Body</p>
+					  <p>Some other text...</p>
+					</div>
+					<div class="modal-footer">
+					  <h3>Modal Footer</h3>
+					</div>
+				  </div>
+				</div>
 	
 		
 </div>
@@ -49,6 +103,11 @@
 
 @section('customScript')
 <script>
+	var span = document.getElementsByClassName("close")[0];
+	// When the user clicks on <span> (x), close the modal
+	span.onclick = function() {
+	modal.style.display = "none";
+	}
 	$(document).ready(function() {	
 
 		var date = new Date();
@@ -79,7 +138,9 @@
 			};
 			$year = date.getFullYear();
             $url = "/reservation/"+$day+'/'+$month+'/'+$year;
-			window.location.href= $url;  
+			// window.location.href= $url;  
+			var modal = document.getElementById('myModal');
+			modal.style.display = "block";
             },
 			
             header: {
