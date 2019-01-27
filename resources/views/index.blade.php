@@ -50,7 +50,7 @@
 
 @section('bodyWrapper')
 <body class="full-lg">
-		<button id="clickme"> henlo there</button>
+		
 <div id="wrapper" style="margin-left:0px">
 	<div id="main">
 			<div id="main">
@@ -82,14 +82,48 @@
 			<div class="modal-content">
 					<div class="modal-header">
 					  <span class="close">&times;</span>
-					  <h2>Modal Header</h2>
+					  <h2>Detail Ruangan</h2>
 					</div>
 					<div class="modal-body">
-					  <p>Some text in the Modal Body</p>
-					  <p>Some other text...</p>
+						@php
+							$events =[];
+						@endphp
+						@if (count($events)> 0)
+						<table>
+							<thead>
+							<tr>
+								<th>Ruangan</th>
+								<th>Waktu Mulai</th>
+								<th>Waktu Selesai</th>
+								<th>Deskripsi</th>
+							</tr>
+							</thead>
+							<tbody id="myTable">
+							@foreach ($events as $reserv)
+							<tr>
+								<td> {{$reserv->id_room}} </td>
+								<td> {{$reserv->start_hour}} </td>
+								<td> {{$reserv->end_hour}} </td>
+								<td> {{$reserv->description}} </td>
+							</tr>
+							
+							@endforeach
+						</tbody>
+					</table>
+					<a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button">Reservasi Tempat</a>
+						
+					@else
+					<div class="card text-center">
+							<div class="card-body">
+							  <h5 class="card-title">Ruangan Belum Dipesan </h5>
+							  <p class="card-text">Segera reservasi sekarang.</p>
+							{{-- <a  href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button" class="btn btn-primary">Reservasi Tempat</a> --}}
+							</div>
+						  </div>
+					@endif
 					</div>
 					<div class="modal-footer">
-					  <h3>Modal Footer</h3>
+					  <h4> Footer</h4>
 					</div>
 				  </div>
 				</div>
@@ -103,24 +137,39 @@
 @section('customScript')
 
 <script>
-	var henlo = document.getElementById('clickme');
-	henlo.onclick = function () {
-		getDate();
-	};
+	
 
 	var modal = document.getElementById('myModal');
 	var span = document.getElementsByClassName("close")[0];
 	var modal = document.getElementById('myModal');
 	span.onclick = function() {
 	modal.style.display = "none";
-	}
+	};
 
 	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
 	if (event.target == modal) {
 		modal.style.display = "none";
 		}
-	}
+	};
+
+	$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+        
+	function getDate(date) 
+	{
+		$.ajax({
+			type: 'POST',
+			url: "/",
+			data:{date:date},
+			success: function (data) {
+				// var jsonData = JSON.parse(data);
+				console.log(data);
+				// console.log(data.start_hour);
+				modal.style.display = "block";
+			}
+		});
+	};
+
 	$(document).ready(function() {	
 
 		var date = new Date();
@@ -201,26 +250,7 @@
 		
 	});
 
-	$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-        
-	function getDate(date) 
-	{
-			$value = date;
-			$.ajax({
-			type : 'POST',
-			url : '/',
-			data:{'date':$value},
-			// data:{_token: CSRF_TOKEN, message:$value},
-			success:function(data)
-			{
-					// $('.modal-body > p').html(data);  
-					// ajaxResult.push(data); 
-					console.log(data.msg);
-					modal.style.display = "block";
-					return data;     
-			}
-		});
-	}
+	
 
 
 </script>

@@ -10,14 +10,19 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('ajaxRequest', 'IndexController@cobaAjax');
+Route::post('ajaxRequest', 'IndexController@cobaAjaxPost');
+
 
 Route::get('/try', function(){
     return view('reservation.modal');});
 
 Route::get('/calendar', 'FormController@index'); // this return calendar as index
 
-Route::get('/', 'IndexController@index');
+// Route::match(['get','post'],'/', 'IndexController@index');
 
+Route::get('/', 'IndexController@index');
+Route::post('/', 'IndexController@modalpost');
 
 Route::get('/reservation/{day}/{month}/{year}', 'FormController@roomdetail');
 ///////////////////////////////// Customer Form //////////////////////////////
