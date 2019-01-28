@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Reservation;
+use Response;
 
 class IndexController extends Controller
 {
@@ -34,7 +35,9 @@ class IndexController extends Controller
             // foreach ($events as $event) {
             //     $date[] = $event->date;
             // }
-            return response(json_encode($events));
+
+            
+            return Response::json($events);
     }
 
     public function cobaAjax()

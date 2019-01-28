@@ -43,7 +43,27 @@
 	from {top: -300px; opacity: 0}
 	to {top: 0; opacity: 1}
 	}
-   </style>
+
+	/* style for modal table */
+	<style>
+    table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+	td, th {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+	}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+
+   
 
 
 @endsection
@@ -85,42 +105,34 @@
 					  <h2>Detail Ruangan</h2>
 					</div>
 					<div class="modal-body">
-						@php
-							$events =[];
-						@endphp
-						@if (count($events)> 0)
+						{{-- @php --}}
+							{{-- $events =[]; --}}
+						{{-- @endphp --}}
+						{{-- @if (count($events)> 0) --}}
 						<table>
 							<thead>
 							<tr>
 								<th>Ruangan</th>
 								<th>Waktu Mulai</th>
 								<th>Waktu Selesai</th>
-								<th>Deskripsi</th>
+								
 							</tr>
 							</thead>
 							<tbody id="myTable">
-							@foreach ($events as $reserv)
-							<tr>
-								<td> {{$reserv->id_room}} </td>
-								<td> {{$reserv->start_hour}} </td>
-								<td> {{$reserv->end_hour}} </td>
-								<td> {{$reserv->description}} </td>
-							</tr>
-							
-							@endforeach
+
 						</tbody>
 					</table>
-					<a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button">Reservasi Tempat</a>
+					{{-- <a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button">Reservasi Tempat</a> --}}
 						
-					@else
+					{{-- @else
 					<div class="card text-center">
 							<div class="card-body">
 							  <h5 class="card-title">Ruangan Belum Dipesan </h5>
 							  <p class="card-text">Segera reservasi sekarang.</p>
-							{{-- <a  href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button" class="btn btn-primary">Reservasi Tempat</a> --}}
+							<a  href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button" class="btn btn-primary">Reservasi Tempat</a>
 							</div>
 						  </div>
-					@endif
+					@endif --}}
 					</div>
 					<div class="modal-footer">
 					  <h4> Footer</h4>
@@ -162,9 +174,25 @@
 			url: "/",
 			data:{date:date},
 			success: function (data) {
-				// var jsonData = JSON.parse(data);
-				console.log(data);
-				// console.log(data.start_hour);
+				
+				// console.log(data[0].date);
+				if(Array.isArray(data) && data.length){
+					for (i = 0; i< data.length; ++i)
+					{
+						console.log(data[i].date);
+						
+						$('#myTable').append($("<tr><td>"+ data[i].id_room + "</td>" +
+												"<td>" + data[i].start_hour + "</td>" + 
+												"<td>" + data[i].end_hour  + 
+												"</td> </tr>"));	
+					};
+				} 
+				else 
+				{
+					console.log('data exist\'nt');
+					$('.modal-body').text('Tidak Ada Pesanan');
+
+				}
 				modal.style.display = "block";
 			}
 		});
