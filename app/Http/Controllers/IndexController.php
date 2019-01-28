@@ -28,7 +28,7 @@ class IndexController extends Controller
     {
         $somedate = $request->date;
             
-            $events = Reservation::select('date', 'id_room','start_hour', 'end_hour')->where('date', '=', $somedate)->get();
+            $events = Reservation::select('description','date', 'id_room','start_hour', 'end_hour')->where('date', '=', $somedate)->get();
 
             // $reservations =  Reservation::select('*')->where('date', '=', $date)->get();
             

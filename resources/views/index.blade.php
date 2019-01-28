@@ -44,8 +44,28 @@
 	to {top: 0; opacity: 1}
 	}
 
+	.modal-body{
+	height:300px;
+	overflow-y:auto;
+	}
+
+	@-moz-document url-prefix() {
+	/*firefox*/
+	.modal-content {
+		overflow: hidden;
+	}
+	.modal-body{
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
+	}
+
+	.modal-body::-webkit-scrollbar {
+		/* width: 0px; */
+		background: transparent;
+	} 
 	/* style for modal table */
-	<style>
+	
     table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
@@ -166,16 +186,22 @@ tr:nth-child(even) {
 	};
 
 	$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-        
+
+	function clearModal()
+	{
+		$('#myTable').empty();
+	}
+
 	function getDate(date) 
 	{
 		$.ajax({
 			type: 'POST',
 			url: "/",
 			data:{date:date},
+			cache:false,
+			ifModified:true,
 			success: function (data) {
 				
-				// console.log(data[0].date);
 				if(Array.isArray(data) && data.length){
 					for (i = 0; i< data.length; ++i)
 					{
@@ -183,15 +209,14 @@ tr:nth-child(even) {
 						
 						$('#myTable').append($("<tr><td>"+ data[i].id_room + "</td>" +
 												"<td>" + data[i].start_hour + "</td>" + 
-												"<td>" + data[i].end_hour  + 
+												"<td>" + data[i].description  + 
 												"</td> </tr>"));	
 					};
 				} 
 				else 
 				{
-					console.log('data exist\'nt');
-					$('.modal-body').text('Tidak Ada Pesanan');
-
+					console.log('data not exist');
+					$('.modal-body').html('Tidak Ada Pesanan');
 				}
 				modal.style.display = "block";
 			}
@@ -231,7 +256,11 @@ tr:nth-child(even) {
 			// window.location.href= $url;
 			$date =   $year + '-' + $month + '-' + $day;
 			// console.log($date);
-			getDate($date);
+			
+			clearModal();
+			$(document).ready(function(){
+				getDate($date);
+				});
             },
 			
             header: {
@@ -257,12 +286,12 @@ tr:nth-child(even) {
                 week: "MMMM yyyy", // September 2009
                 day: 'MMMM yyyy'                  // Tuesday, Sep 8, 2009
             },
-            events: [
-            {
-            title  : 'Ruang A Penuh',
-            start  : '2019-01-7'
-            }
-                    ]
+            // events: [
+            // {
+            // title  : 'Ruang A Penuh',
+            // start  : '2019-01-7'
+            // }
+            //         ]
 			});
 		$(".change-view").click(function(){
 			 var data=$(this).data();
