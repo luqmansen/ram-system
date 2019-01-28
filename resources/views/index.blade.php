@@ -4,6 +4,7 @@
 @endsection
 
 @section('customStyle')
+<link href="{{URL::asset('maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')}}" rel="stylesheet" id="bootstrap-css">
 <link rel="stylesheet" href={{URL::asset('assets/css/style.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
 <style>
@@ -66,13 +67,8 @@ tr:nth-child(even) {
 @section('bodyWrapper')
 <body class="full-lg">
 		
-<div id="wrapper" style="margin-left:0px">
-		<h2>Centered Modal Example</h2>
-		<p>Center the modal vertically and horizontally within the page, with the .modal-dialog-centered class.</p>
-		<!-- Button to Open the Modal -->
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id='myButton'>
-		  Open modal
-		</button>
+<div id="wrapper" style="margin-left:0px">		
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id='myButton' style="display:none"></button>
 	<div id="main">
 			<div id="main">
 				<ul class="nav nav-tabs" data-provide="tabdrop">
@@ -85,15 +81,9 @@ tr:nth-child(even) {
                                         <li><a href="#" class="change-today">Today</a></li>
                                     @endif
 							</ul>
-					<div class="tabbable">
-						
+					<div class="tabbable">		
 							<div class="tab-content">
-								
-										<div id="calendar" ></div>
-									<div class="row">
-										   <div class="col-lg-8" >		
-											</div>
-									</div>
+										<div id="calendar" ></div>				
 							</div>
 					</div>
 				</div>
@@ -135,13 +125,15 @@ tr:nth-child(even) {
 			
 			  <!-- Modal Header -->
 			  <div class="modal-header">
-				<h4 class="modal-title">Detail Ruangan</h4>
+				<h1 class="modal-title">Detail Ruangan</h1>
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			  </div>
 			  
 			  <!-- Modal body -->
 			  <div class="modal-body">
-					<table>
+					<h2 class="card-title kosong" style='display:none'>Ruangan Belum Dipesan </h2>
+					<h3 class="card-text kosong" style='display:none;'>Segera reservasi sekarang.</h3>
+					<table class='ada' style='display:none'>
 							<thead>
 							<tr>
 								<th>Ruangan</th>
@@ -200,7 +192,8 @@ tr:nth-child(even) {
 					for (i = 0; i< data.length; ++i)
 					{
 						console.log(data[i].date);
-						
+						$('.kosong').attr('style', 'display:none');
+						$('.ada').attr('style', 'display:show');
 						$('#myTable').append($("<tr><td>"+ data[i].id_room + "</td>" +
 												"<td>" + data[i].start_hour + "</td>" + 
 												"<td>" + data[i].description  + 
@@ -210,10 +203,10 @@ tr:nth-child(even) {
 				else 
 				{
 					console.log('data not exist');
-					// $('.modal-body').text('Tidak Ada Pesanan');
-					
-					});
+					$('.ada').attr('style', 'display:none');
+					$('.kosong').attr('style', 'display:show');
 				}
+				$('#myButton').click();
 				
 			}
 		});

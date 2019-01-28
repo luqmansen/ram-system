@@ -5915,10 +5915,10 @@ body.leftMenu .mm-menu:not(.mm-right).mm-hassearch .mm-panel {
 }
 
 .animated {
-  -moz-animation-duration: 1s;
-  -o-animation-duration: 1s;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
+  -moz-animation-duration: 0.5s;
+  -o-animation-duration: 0.5s;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
   -webkit-animation-fill-mode: both;
   -moz-animation-fill-mode: both;
   -o-animation-fill-mode: both;
