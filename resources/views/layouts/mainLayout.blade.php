@@ -17,9 +17,9 @@
 <link rel="apple-touch-icon-precomposed" href="{{asset('assets/ico/apple-touch-icon-57-precomposed.png')}}">
 <link rel="shortcut icon" href="{{asset('assets/ico/favicon.ico')}}">
 <!-- CSS Stylesheet-->
-<link type="text/css" rel="stylesheet" href="{{asset('assets/css/bootstrap/bootstrap.min.css')}}" />
-<link type="text/css" rel="stylesheet" href="{{asset('assets/css/bootstrap/bootstrap-themes.css')}}" />
-<link type="text/css" rel="stylesheet" href="{{asset('assets/css/style.css')}}" />
+<link type="text/css" rel="stylesheet" href="{{URL::asset('assets/css/bootstrap/bootstrap.min.css')}}" />
+<link type="text/css" rel="stylesheet" href="{{URL::asset('assets/css/bootstrap/bootstrap-themes.css')}}" />
+{{-- <link type="text/css" rel="stylesheet" href="{{URL::asset('assets/css/style.css')}}" /> --}}
 
 <!-- Styleswitch if  you don't chang theme , you can delete -->
 <link type="text/css" rel="alternate stylesheet" media="screen" title="style1" href="{{asset('assets/css/styleTheme1.css')}}" />

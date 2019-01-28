@@ -4,47 +4,25 @@
 @endsection
 
 @section('customStyle')
+<link rel="stylesheet" href={{URL::asset('assets/css/style.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
 <style>
 	
-   /* Modal Header */
-	.modal-header {
-	padding: 2px 16px;
-	background-color: #5cb85c;
-	color: white;
-	}
-
-	/* Modal Body */
-	.modal-body {padding: 2px 2px;}
-
-	/* Modal Footer */
-	.modal-footer {
-	padding: 2px 16px;
-	background-color: #5cb85c;
-	color: white;
-	}
-
-	/* Modal Content */
-	.modal-content {
-	position: relative;
-	background-color: #fefefe;
-	margin: auto;
+	.modal {
+	background: none;
+	background-color: none;
+	background-clip: padding-box;
+	border-radius: 0;
+	bottom: auto;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	left: 50%;
+	margin-left: -250px;
 	padding: 0;
-	border: 1px solid #888;
-	width: 100%;
-	height: 200%;
-	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-	animation-name: animatetop;
-	animation-duration: 0.1s
+	right: auto;
+	width: 500px;
 	}
-
-	/* Add Animation */
-	@keyframes animatetop {
-	from {top: -300px; opacity: 0}
-	to {top: 0; opacity: 1}
-	}
-
-	.modal-body{
+   .modal-body{
 	height:300px;
 	overflow-y:auto;
 	}
@@ -83,15 +61,18 @@ tr:nth-child(even) {
 }
 </style>
 
-   
-
-
 @endsection
 
 @section('bodyWrapper')
 <body class="full-lg">
 		
 <div id="wrapper" style="margin-left:0px">
+		<h2>Centered Modal Example</h2>
+		<p>Center the modal vertically and horizontally within the page, with the .modal-dialog-centered class.</p>
+		<!-- Button to Open the Modal -->
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id='myButton'>
+		  Open modal
+		</button>
 	<div id="main">
 			<div id="main">
 				<ul class="nav nav-tabs" data-provide="tabdrop">
@@ -117,7 +98,7 @@ tr:nth-child(even) {
 					</div>
 				</div>
 				
-		<div id="myModal" class="modal">
+		{{-- <div id="myModal" class="modal">
 				<!-- Modal content -->
 			<div class="modal-content">
 					<div class="modal-header">
@@ -125,11 +106,42 @@ tr:nth-child(even) {
 					  <h2>Detail Ruangan</h2>
 					</div>
 					<div class="modal-body">
-						{{-- @php --}}
-							{{-- $events =[]; --}}
-						{{-- @endphp --}}
-						{{-- @if (count($events)> 0) --}}
-						<table>
+						 --}}
+						
+					{{-- <a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button">Reservasi Tempat</a> --}}
+						
+					{{-- @else
+					<div class="card text-center">
+							<div class="card-body">
+							  <h5 class="card-title">Ruangan Belum Dipesan </h5>
+							  <p class="card-text">Segera reservasi sekarang.</p>
+							<a  href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button" class="btn btn-primary">Reservasi Tempat</a>
+							</div>
+						  </div>
+					@endif --}}
+					{{-- </div>
+					<div class="modal-footer">
+					  <h4> Footer</h4>
+					</div>
+				  </div>
+				</div>
+	 --}}
+		
+
+		<!-- The Modal -->
+		<div class="modal fade" id="myModal">
+		  <div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+			
+			  <!-- Modal Header -->
+			  <div class="modal-header">
+				<h4 class="modal-title">Detail Ruangan</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			  </div>
+			  
+			  <!-- Modal body -->
+			  <div class="modal-body">
+					<table>
 							<thead>
 							<tr>
 								<th>Ruangan</th>
@@ -142,50 +154,31 @@ tr:nth-child(even) {
 
 						</tbody>
 					</table>
-					{{-- <a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button">Reservasi Tempat</a> --}}
-						
-					{{-- @else
-					<div class="card text-center">
-							<div class="card-body">
-							  <h5 class="card-title">Ruangan Belum Dipesan </h5>
-							  <p class="card-text">Segera reservasi sekarang.</p>
-							<a  href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button" class="btn btn-primary">Reservasi Tempat</a>
-							</div>
-						  </div>
-					@endif --}}
-					</div>
-					<div class="modal-footer">
-					  <h4> Footer</h4>
-					</div>
-				  </div>
-				</div>
-	
+			  </div>
+			  
+			  <!-- Modal footer -->
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  </div>
+			  
+			</div>
+		  </div>
+		</div>
 		
-				
-</div>
+	  </div>
+			
+
 <!-- //wrapper-->
 @endsection
 
 @section('customScript')
-
+{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+{{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script> --}}
 <script>
 	
 
-	var modal = document.getElementById('myModal');
-	var span = document.getElementsByClassName("close")[0];
-	var modal = document.getElementById('myModal');
-	span.onclick = function() 
-	{
-		modal.style.display = "none";
-	};
-
-	// When the user clicks anywhere outside of the modal, close it
-	window.onclick = function(event) {
-	if (event.target == modal) {
-		modal.style.display = "none";
-		}
-	};
-
+	
 	$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
 
 	function clearModal()
@@ -218,8 +211,10 @@ tr:nth-child(even) {
 				{
 					console.log('data not exist');
 					// $('.modal-body').text('Tidak Ada Pesanan');
+					
+					});
 				}
-				modal.style.display = "block";
+				
 			}
 		});
 	};
@@ -317,4 +312,5 @@ tr:nth-child(even) {
             $(".toggle-menu").remove();
         });    
 </script>
+
 @endsection
