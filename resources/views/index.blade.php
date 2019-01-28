@@ -174,8 +174,9 @@ tr:nth-child(even) {
 	var modal = document.getElementById('myModal');
 	var span = document.getElementsByClassName("close")[0];
 	var modal = document.getElementById('myModal');
-	span.onclick = function() {
-	modal.style.display = "none";
+	span.onclick = function() 
+	{
+		modal.style.display = "none";
 	};
 
 	// When the user clicks anywhere outside of the modal, close it
@@ -216,7 +217,7 @@ tr:nth-child(even) {
 				else 
 				{
 					console.log('data not exist');
-					$('.modal-body').html('Tidak Ada Pesanan');
+					// $('.modal-body').text('Tidak Ada Pesanan');
 				}
 				modal.style.display = "block";
 			}
