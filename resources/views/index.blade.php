@@ -152,7 +152,24 @@ tr:nth-child(even) {
 			  <div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			  </div>
-			  
+			  <table>
+					<thead>
+					<tr>
+						<th>Ruangan</th>
+						<th>Kapasitas (Kursi)</th>
+						<th>Kapasitas (Kursi+Meja)</th>
+					</tr>
+					</thead>
+					<tbody id="myTable">
+					@foreach ($room as $reserv)
+					<tr>
+						<td> {{$reserv->name}} </td>
+						<td> {{$reserv->chair_capacity}} </td>
+						<td> {{$reserv->table_capacity}} </td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
 			</div>
 		  </div>
 		</div>
