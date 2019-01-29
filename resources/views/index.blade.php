@@ -160,7 +160,7 @@ tr:nth-child(even) {
 								{{-- {!! Form::Label('id_room', 'Ruangan :', ['style'=>'float:left;']) !!} --}}
 							</div>
 							<div class="col-sm">
-								<select class="btn btn-secondary dropdown-toggle" style="margin 0 auto;float:center" name="id_room"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded='true'>
+								<select class="btn btn-secondary dropdown-toggle" style="margin -;float:center" name="id_room"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded='true'>
 									@foreach($room as $row)
 									<option value="{{$row->id}}">{{$row->name}}</option>
 									@endforeach
@@ -169,7 +169,8 @@ tr:nth-child(even) {
 						</div>
 					</div>
 				</div>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				{{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+				<a id='lanjutkan'  role="button" class="btn btn-primary" style="color:white">Lanjutkan</a>
 			  </div>
 			  {{-- <table>
 					<thead>
@@ -213,7 +214,8 @@ tr:nth-child(even) {
 	function clearModal()
 	{
 		$('#myTable').empty();
-	}
+	};
+
 
 	function getDate(date) 
 	{
@@ -244,7 +246,6 @@ tr:nth-child(even) {
 					$('.kosong').attr('style', 'display:show');
 				}
 				$('#myButton').click();
-				
 			}
 		});
 	};
@@ -278,8 +279,7 @@ tr:nth-child(even) {
 			};
 
 			$year = date.getFullYear();
-            // $url = "/reservation/"+$day+'/'+$month+'/'+$year;
-			// window.location.href= $url;
+            // window.location.href= $url;
 			$date =   $year + '-' + $month + '-' + $day;
 			// console.log($date);
 			
@@ -287,6 +287,10 @@ tr:nth-child(even) {
 			$(document).ready(function(){
 				getDate($date);
 				});
+			$('#lanjutkan').on('click',function(){
+				$url = "/reservation/customerform/"+$day+'/'+$month+'/'+$year;
+				window.location.href=$url;
+			});
             },
 			
             header: {

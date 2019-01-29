@@ -26,10 +26,10 @@ class IndexController extends Controller
     public function modalpost(Request $request)
     {
         $somedate = $request->date;
-            
-            $events = Reservation::select('description','date', 'id_room','start_hour', 'end_hour')->where('date', '=', $somedate)->get();
+        
+        $events = Reservation::select('description','date', 'id_room','start_hour', 'end_hour')->where('date', '=', $somedate)->get();
 
-            return Response::json($events);
+        return Response::json($events);
     }
 
 }
