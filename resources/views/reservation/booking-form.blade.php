@@ -91,7 +91,7 @@
                                  {{Form::label('id_room', 'Ruangan ')}}
                                 <div class="dropdown">
                                         {{Form::select('id_room', ['502' => '502 ', '503' => '503', '504' => '504'],'', ['class'=>"btn btn-secondary dropdown-toggle", 'type'=>"button" ,'id'=>"dropdownMenuButton" ,'data-toggle'=>"dropdown" ,'aria-haspopup'=>"true", 'aria-expanded'=>"true"])}}
-                                        <button id="myBtn" type="button" class="btn btn-info" style="font-weight: bold">i</button>
+                                        {{-- <button id="myBtn" type="button" class="btn btn-info" style="font-weight: bold">i</button> --}}
                                 </div>
                                 
                         </div>

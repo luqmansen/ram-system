@@ -4,7 +4,9 @@
 @endsection
 
 @section('customStyle')
-<link href="{{URL::asset('maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')}}" rel="stylesheet" id="bootstrap-css">
+<link href={{URL::asset('maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')}} rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jquery-ui.css')}}" />
+<link rel="stylesheet" href={{URL::asset("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css")}} integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 <link rel="stylesheet" href={{URL::asset('assets/css/style.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
 <style>
@@ -150,9 +152,26 @@ tr:nth-child(even) {
 			  
 			  <!-- Modal footer -->
 			  <div class="modal-footer">
+				<div class="form-group">
+					<div class="container">
+						<div class="row">
+							<div class="col-sm">
+								<h5 style="margin 0 auto ;float:left">Reservasi Ruangan : </h5>
+								{{-- {!! Form::Label('id_room', 'Ruangan :', ['style'=>'float:left;']) !!} --}}
+							</div>
+							<div class="col-sm">
+								<select class="btn btn-secondary dropdown-toggle" style="margin 0 auto;float:center" name="id_room"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded='true'>
+									@foreach($room as $row)
+									<option value="{{$row->id}}">{{$row->name}}</option>
+									@endforeach
+								</select>
+							</div>		  
+						</div>
+					</div>
+				</div>
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			  </div>
-			  <table>
+			  {{-- <table>
 					<thead>
 					<tr>
 						<th>Ruangan</th>
@@ -169,7 +188,7 @@ tr:nth-child(even) {
 					</tr>
 					@endforeach
 				</tbody>
-			</table>
+			</table> --}}
 			</div>
 		  </div>
 		</div>
@@ -184,6 +203,7 @@ tr:nth-child(even) {
 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
 {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script> --}}
+
 <script>
 	
 
