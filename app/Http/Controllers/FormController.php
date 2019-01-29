@@ -46,12 +46,12 @@ class FormController extends Controller
     }
 
 
-    public function create($day, $month, $year)
+    public function create($day, $month, $year, $room)
     {
-        return view('reservation.customer-input')->with('day', $day)->with('month', $month)->with('year', $year);
+        return view('reservation.customer-input')->with('day', $day)->with('month', $month)->with('year', $year)->with('room', $room);
     }
 
-    public function create1($day, $month, $year)
+    public function create1($day, $month, $year, $room)
     {
         //fungsi untuk return array untuk restriction di date
         $restriction =  Reservation::select('*')->get();
@@ -71,7 +71,7 @@ class FormController extends Controller
         }
         $disabledRange = json_encode($disabledTime);
         
-        return view('reservation.booking-form')->with('disabledRange', $disabledRange)->with('day', $day)->with('month', $month)->with('year', $year)->with('date', $date);
+        return view('reservation.booking-form')->with('disabledRange', $disabledRange)->with('day', $day)->with('month', $month)->with('year', $year)->with('date', $date)->with('room', $room);
     }
 
     
@@ -96,7 +96,8 @@ class FormController extends Controller
         $day = $request->input('day');
         $month = $request->input('month');
         $year = $request->input('year');
-        return redirect('/reservation/bookingform/'.$day.'/'.$month.'/'.$year.'')->with('day', $day)->with('month', $month)->with('year', $year);;
+        $room = $request->input('room');
+        return redirect('/reservation/bookingform/'.$day.'/'.$month.'/'.$year.'/'.$room.'')->with('day', $day)->with('month', $month)->with('year', $year)->with('room', $room);
     }
 
 

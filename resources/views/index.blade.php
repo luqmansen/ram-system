@@ -289,7 +289,7 @@ tr:nth-child(even) {
 				});
 			$('#lanjutkan').on('click',function(){
 				$room = $("#idDropDown").val();
-				$url = "/reservation/customerform/"+$day+'/'+$month+'/'+$year;
+				$url = "/reservation/customerform/"+$day+'/'+$month+'/'+$year+'/'+$room;
 				window.location.href=$url;
 			});
             },
