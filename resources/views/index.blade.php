@@ -160,7 +160,7 @@ tr:nth-child(even) {
 								{{-- {!! Form::Label('id_room', 'Ruangan :', ['style'=>'float:left;']) !!} --}}
 							</div>
 							<div class="col-sm">
-								<select class="btn btn-secondary dropdown-toggle" style="margin -;float:center" name="id_room"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded='true'>
+								<select class="btn btn-secondary dropdown-toggle" style="float:center" name="id_room"  id="idDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded='true'>
 									@foreach($room as $row)
 									<option value="{{$row->id}}">{{$row->name}}</option>
 									@endforeach
@@ -288,6 +288,7 @@ tr:nth-child(even) {
 				getDate($date);
 				});
 			$('#lanjutkan').on('click',function(){
+				$room = $("#idDropDown").val();
 				$url = "/reservation/customerform/"+$day+'/'+$month+'/'+$year;
 				window.location.href=$url;
 			});
