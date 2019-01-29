@@ -59,7 +59,7 @@ class FormController extends Controller
 
         $dateISO = "$year-$month-$day";
         
-        $timerange = Reservation::select('start_hour', 'end_hour')->where('date', '=', $dateISO)->get();
+        $timerange = Reservation::select('start_hour', 'end_hour')->where([['date', '=', $dateISO], ['id_room', '=', $room]])->get();
         $disabledTime = array();
         $disab = array();
         foreach ($timerange as $time) 
@@ -151,43 +151,4 @@ class FormController extends Controller
         return view('index')->with('success', 'Peminjaman Telah Disimpan');
     }
 
-  
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
