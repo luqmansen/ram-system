@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Customer;
+use App\Room;
 use App\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -14,34 +15,13 @@ class FormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-        if ($request->ajax()) 
-        {
-            // $someDate = $request->date;
-            // $reservations =  Reservation::select('*')->where('date', '=', $someDate)->get();
-            // $reservations = 'YES MAN';
-            // return Response($reservations);
-
-            // $response = array(
-            //     'status' => 'success',
-            //     'msg' => $request->message,
-            // );
-            // return response()->json($response); 
-        }
-        // $date = "$year-$month-$day";
-        // $reservations =  Reservation::select('*')->where('date', '=', $date)->get();
-        return view('index');
-    }
-    
+        
     public function roomdetail($day, $month, $year) //buat filter event yang ditampilkan pada tanggal spesifik
     {
         $date = "$year-$month-$day";
         $reservations =  Reservation::select('*')->where('date', '=', $date)->get();
         // dd($year,$month, $day);
         
-        
-
         return view('reservation.room-detail')->with('reservations',$reservations)->with('day', $day)->with('month', $month)->with('year', $year);
     }
 
@@ -56,7 +36,6 @@ class FormController extends Controller
         //fungsi untuk return array untuk restriction di date
         $restriction =  Reservation::select('*')->get();
         $date = "$day-$month-$year";
-
         $dateISO = "$year-$month-$day";
         
         $timerange = Reservation::select('start_hour', 'end_hour')->where([['date', '=', $dateISO], ['id_room', '=', $room]])->get();
@@ -70,8 +49,10 @@ class FormController extends Controller
             );
         }
         $disabledRange = json_encode($disabledTime);
+
+        $roomName = Room::select('name')->where('id', '=',$room)->first();
         
-        return view('reservation.booking-form')->with('disabledRange', $disabledRange)->with('day', $day)->with('month', $month)->with('year', $year)->with('date', $date)->with('room', $room);
+        return view('reservation.booking-form')->with('disabledRange', $disabledRange)->with('day', $day)->with('month', $month)->with('year', $year)->with('date', $date)->with('room', $room)->with('roomName', $roomName);
     }
 
     
@@ -106,6 +87,7 @@ class FormController extends Controller
         $this->validate($request, [
             'start_hour' => 'required',
             'end_hour' => 'required',
+            'id_room' => 'required',
             'description' => 'required',
             'file_name' => 'file | nullable | max: 1999 | mimes:pdf, jpg, jpeg'
         ]);
@@ -148,7 +130,8 @@ class FormController extends Controller
         $reservations->file_name = $fileNameToStore;
         $reservations->save();
 
-        return view('index')->with('success', 'Peminjaman Telah Disimpan');
+        $room = Room::all(['id', 'name','table_capacity','chair_capacity']);
+        return view('index')->with('success', 'Peminjaman Telah Disimpan')->with('room', $room);
     }
 
 }

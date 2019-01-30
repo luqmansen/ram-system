@@ -52,9 +52,7 @@
     border-collapse: collapse;
     width: 100%;
 }
-
 	td, th {
-		border: 1px solid #dddddd;
 		text-align: left;
 		padding: 8px;
 	}
@@ -90,36 +88,6 @@ tr:nth-child(even) {
 					</div>
 				</div>
 				
-		{{-- <div id="myModal" class="modal">
-				<!-- Modal content -->
-			<div class="modal-content">
-					<div class="modal-header">
-					  <span class="close">&times;</span>
-					  <h2>Detail Ruangan</h2>
-					</div>
-					<div class="modal-body">
-						 --}}
-						
-					{{-- <a class="btn btn-primary" style="float:right;  margin-bottom:10%; margin-top:10px" href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button">Reservasi Tempat</a> --}}
-						
-					{{-- @else
-					<div class="card text-center">
-							<div class="card-body">
-							  <h5 class="card-title">Ruangan Belum Dipesan </h5>
-							  <p class="card-text">Segera reservasi sekarang.</p>
-							<a  href="/reservation/customerform/{{$day}}/{{$month}}/{{$year}}" role="button" class="btn btn-primary">Reservasi Tempat</a>
-							</div>
-						  </div>
-					@endif --}}
-					{{-- </div>
-					<div class="modal-footer">
-					  <h4> Footer</h4>
-					</div>
-				  </div>
-				</div>
-	 --}}
-		
-
 		<!-- The Modal -->
 		<div class="modal fade" id="myModal">
 		  <div class="modal-dialog modal-dialog-centered">
@@ -297,9 +265,9 @@ tr:nth-child(even) {
 			editable: false,
             droppable: true,
             selectable: true,
-			height :650, 
-			contentHeight : 650,
-            aspectRatio:1.35,
+			contentHeight : 600,
+			height : 600, 
+            aspectRatio: 1.35,
             axisFormat: 'h:mm',
 			columnFormat: {
                 month: 'ddd',    // Mon
@@ -341,6 +309,7 @@ tr:nth-child(even) {
 			content: function() 
 				{
 				var id = $(this).attr('id')
+				
 				return $('#popover-content-' + id).html();
 				}
 		});

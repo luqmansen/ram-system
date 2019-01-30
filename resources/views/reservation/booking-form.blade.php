@@ -1,5 +1,5 @@
 @extends('inc.navbar')
-
+@include('inc.messages')
 @section('title')
     Form Peminjaman Ruangan
 @endsection
@@ -90,7 +90,8 @@
                         <div class='col'>
                                  {{Form::label('id_room', 'Ruangan ')}}
                                 <div class="dropdown">
-                                        {{Form::text('id_room', $room,['class' => 'readonly form-control', 'style' => 'text-align:center ;width:30%', 'disabled'])}}                                                     
+                                        {{Form::text('something', $roomName->name,['class' => 'readonly form-control', 'style' => 'text-align:center ;width:30%', 'disabled'])}}                                                     
+                                        {{Form::text('id_room', $room,['class' => 'readonly form-control', 'style' => 'text-align:center ;width:30%; display:none'])}}                                                     
                                 </div>
                                 
                         </div>
