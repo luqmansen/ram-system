@@ -127,8 +127,8 @@ tr:nth-child(even) {
 			
 			  <!-- Modal Header -->
 			  <div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h1 class="modal-title">Detail Ruangan</h1>
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			  </div>
 			  
 			  <!-- Modal body -->
