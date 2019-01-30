@@ -235,7 +235,7 @@ tr:nth-child(even) {
 						$('.ada').attr('style', 'display:show');
 						$('#myTable').append($("<tr><td>"+ data[i].id_room + "</td>" +
 												"<td>" + data[i].start_hour + "</td>" + 
-												"<td>" + data[i].description  + 
+												"<td>" + data[i].end_hour  + 
 												"</td> </tr>"));	
 					};
 				} 
