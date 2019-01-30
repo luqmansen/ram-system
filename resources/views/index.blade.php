@@ -69,7 +69,7 @@ tr:nth-child(even) {
 @section('bodyWrapper')
 <body class="full-lg">
 		
-<div id="wrapper" style="margin-left:0px">		
+<div id="wrapper" style="margin-left:0px">	
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id='myButton' style="display:none"></button>
 	<div id="main">
 			<div id="main">
@@ -160,11 +160,24 @@ tr:nth-child(even) {
 								{{-- {!! Form::Label('id_room', 'Ruangan :', ['style'=>'float:left;']) !!} --}}
 							</div>
 							<div class="col-sm">
-								<select class="btn btn-secondary dropdown-toggle" style="float:center" name="id_room"  id="idDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded='true'>
+								<select data-toggle="popover" class="btn btn-secondary dropdown-toggle"  data-container="body" data-html="true" style="float:center" name="id_room"  id="idDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded='true'>
 									@foreach($room as $row)
 									<option value="{{$row->id}}">{{$row->name}}</option>
 									@endforeach
 								</select>
+								<div id="popover-content-idDropDown" class="hide">
+										<div class="list-group" style="overflow-y:auto; margin:0; border:0">
+											@foreach ($room as $row)
+												<a  class="list-group-item list-group-item-action flex-column align-items-start" style="margin: 0" >
+													<div class=" ">
+														<p class="">Ruang {{$row->name}}</p>
+													</div>
+													<small class="">Kapasitas Hanya Kursi {{$row->chair_capacity}}.</small> <br>
+													<small class="">Kapasitas Kursi + Meja {{$row->table_capacity}}.</small>
+												</a>
+											@endforeach
+										</div>
+								</div>
 							</div>		  
 						</div>
 					</div>
@@ -172,24 +185,6 @@ tr:nth-child(even) {
 				{{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
 				<a id='lanjutkan'  role="button" class="btn btn-primary" style="color:white">Lanjutkan</a>
 			  </div>
-			  {{-- <table>
-					<thead>
-					<tr>
-						<th>Ruangan</th>
-						<th>Kapasitas (Kursi)</th>
-						<th>Kapasitas (Kursi+Meja)</th>
-					</tr>
-					</thead>
-					<tbody id="myTable">
-					@foreach ($room as $reserv)
-					<tr>
-						<td> {{$reserv->name}} </td>
-						<td> {{$reserv->chair_capacity}} </td>
-						<td> {{$reserv->table_capacity}} </td>
-					</tr>
-					@endforeach
-				</tbody>
-			</table> --}}
 			</div>
 		  </div>
 		</div>
@@ -337,7 +332,27 @@ tr:nth-child(even) {
 		});
 		
 	});
-
+	// Pop over ruangan detail
+	$("[data-toggle=popover]").each(function(i, obj) 
+	{
+		$(this).popover(
+		{
+			html: true,
+			content: function() 
+				{
+				var id = $(this).attr('id')
+				return $('#popover-content-' + id).html();
+				}
+		});
+	});
+// close popover when click anywhere on page
+	$('html').on('click', function(e) 
+	{
+		if (typeof $(e.target).data('original-title') == 'undefined') 
+		{
+    		$('[data-original-title]').popover('hide');
+  		}
+	});
 	
 
 
