@@ -233,7 +233,7 @@ tr:nth-child(even) {
 						console.log(data[i].date);
 						$('.kosong').attr('style', 'display:none');
 						$('.ada').attr('style', 'display:show');
-						$('#myTable').append($("<tr><td>"+ data[i].id_room + "</td>" +
+						$('#myTable').append($("<tr><td>"+ data[i].name + "</td>" +
 												"<td>" + data[i].start_hour + "</td>" + 
 												"<td>" + data[i].end_hour  + 
 												"</td> </tr>"));	
