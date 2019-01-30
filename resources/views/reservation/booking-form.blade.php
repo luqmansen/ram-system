@@ -83,15 +83,18 @@
                                 {{Form::label('date', 'Tanggal Peminjaman ')}}
                                 @php
                                         $newDate = date("d-F-Y", strtotime($date));
+                                        $inputDate = date("Y-m-d", strtotime($date));
+                                        // dd($inputDate);
                                 @endphp 
-                                {{Form::text('date', $newDate,['id' => 'datepicker','class' => 'readonly form-control', 'style' => 'width:80%', 'disabled'])}}                                                     
+                                {{Form::text('someDate', $newDate,['id' => 'datepicker','class' => 'readonly form-control', 'style' => 'width:80%', 'disabled'])}}                                                     
+                                {{Form::hidden('date', $inputDate)}}   
                                 
                         </div>
                         <div class='col'>
                                  {{Form::label('id_room', 'Ruangan ')}}
                                 <div class="dropdown">
                                         {{Form::text('something', $roomName->name,['class' => 'readonly form-control', 'style' => 'text-align:center ;width:30%', 'disabled'])}}                                                     
-                                        {{Form::text('id_room', $room,['class' => 'readonly form-control', 'style' => 'text-align:center ;width:30%; display:none'])}}                                                     
+                                        {{Form::hidden('id_room', $room)}}   
                                 </div>
                                 
                         </div>

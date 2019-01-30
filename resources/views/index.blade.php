@@ -65,6 +65,7 @@ tr:nth-child(even) {
 @endsection
 
 @section('bodyWrapper')
+@include('inc.messages')
 <body class="full-lg">
 		
 <div id="wrapper" style="margin-left:0px">	
