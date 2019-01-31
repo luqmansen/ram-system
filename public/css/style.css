@@ -9325,7 +9325,7 @@ footer#site-footer article p {
     right: 0;
   }
 }
-@media (max-width: 979px) {
+@media (max-width: 360px) {
   .modal-open.page-overflow .page-container .navbar-fixed-top, .modal-open.page-overflow .page-container .navbar-fixed-bottom {
     overflow-y: visible;
   }

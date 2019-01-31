@@ -4,63 +4,12 @@
 @endsection
 
 @section('customStyle')
-<link href={{URL::asset('maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')}} rel="stylesheet" id="bootstrap-css">
+{{-- <link href={{URL::asset('maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')}} rel="stylesheet" id="bootstrap-css"> --}}
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jquery-ui.css')}}" />
 <link rel="stylesheet" href={{URL::asset("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css")}} integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 <link rel="stylesheet" href={{URL::asset('assets/css/style.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
-<style>
-	
-	.modal {
-	background: none;
-	background-color: none;
-	background-clip: padding-box;
-	border-radius: 0;
-	bottom: auto;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-	left: 50%;
-	margin-left: -250px;
-	padding: 0;
-	right: auto;
-	width: 500px;
-	}
-   .modal-body{
-	height:300px;
-	overflow-y:auto;
-	}
-
-	@-moz-document url-prefix() {
-	/*firefox*/
-	.modal-content {
-		overflow: hidden;
-	}
-	.modal-body{
-		overflow-y: scroll;
-		overflow-x: hidden;
-	}
-	}
-
-	.modal-body::-webkit-scrollbar {
-		/* width: 0px; */
-		background: transparent;
-	} 
-	/* style for modal table */
-	
-    table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-	td, th {
-		text-align: left;
-		padding: 8px;
-	}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-</style>
+<link rel="stylesheet" href={{URL::asset('css/modal.css')}}>
 
 @endsection
 
@@ -101,10 +50,10 @@ tr:nth-child(even) {
 			  </div>
 			  
 			  <!-- Modal body -->
-			  <div class="modal-body">
-					<h2 class="card-title kosong" style='display:none'>Ruangan Belum Dipesan </h2>
-					<h3 class="card-text kosong" style='display:none;'>Segera reservasi sekarang.</h3>
-					<table class='ada' style='display:none'>
+			  <div class="modal-body" style="overflow-y: scroll">
+					<h3 class="card-title kosong" style='display:none'>Ruangan Belum Dipesan </h3>
+					<h4 class="card-text kosong" style='display:none;'>Segera reservasi sekarang.</h4>
+					<table class='ada' style='display:none; overflow-y:hidden'>
 							<thead>
 							<tr>
 								<th>Ruangan</th>
