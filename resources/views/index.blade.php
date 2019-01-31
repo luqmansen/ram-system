@@ -9,65 +9,39 @@
 <link rel="stylesheet" href={{URL::asset("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css")}} integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 <link rel="stylesheet" href={{URL::asset('assets/css/style.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
-<style>
-	
-	.modal {
-	background: none;
-	background-color: none;
-	background-clip: padding-box;
-	border-radius: 0;
-	bottom: auto;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-	left: 50%;
-	margin-left: -250px;
-	padding: 0;
-	right: auto;
-	width: 500px;
-	}
-   .modal-body{
-	height:300px;
-	overflow-y:auto;
-	}
-
-	@-moz-document url-prefix() {
-	/*firefox*/
-	.modal-content {
-		overflow: hidden;
-	}
-	.modal-body{
-		overflow-y: scroll;
-		overflow-x: hidden;
-	}
-	}
-
-	.modal-body::-webkit-scrollbar {
-		/* width: 0px; */
-		background: transparent;
-	} 
-	/* style for modal table */
-	
-    table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-	td, th {
-		text-align: left;
-		padding: 8px;
-	}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-</style>
+<link rel="stylesheet" href={{URL::asset('css/modal.css')}}>
 
 @endsection
 
-@section('bodyWrapper')
 @include('inc.messages')
+@section('bodyWrapper')
 <body class="full-lg">
-		
+ <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <header class="masthead mb-auto">
+        <div class="inner">
+          <h3 class="masthead-brand">Cover</h3>
+          <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link active" href="#">Home</a>
+            <a class="nav-link" href="#">Features</a>
+            <a class="nav-link" href="#">Contact</a>
+          </nav>
+        </div>
+      </header>
+
+      <main role="main" class="inner cover">
+        <h1 class="cover-heading">Cover your page.</h1>
+        <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+        <p class="lead">
+          <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
+        </p>
+      </main>
+
+      <footer class="mastfoot mt-auto">
+        <div class="inner">
+          <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+        </div>
+      </footer>
+    </div>		
 <div id="wrapper" style="margin-left:0px">	
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id='myButton' style="display:none"></button>
 	<div id="main">
