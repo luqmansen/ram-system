@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use App\Reservation;
 use App\Room;
 use DB;
@@ -36,6 +37,18 @@ class IndexController extends Controller
                         ->get();
         // dd($jointable);
         return Response::json($events);
+    }
+
+    public function getDate(Request $request)
+    {
+        $day = Crypt::encrypt($request->day);
+        $month = Crypt::encrypt($request->month);
+        $year = Crypt::encrypt($request->year);
+        $room = Crypt::encrypt($request->room);
+
+        $date = array($day,$month,$year,$room);
+
+        return Response::json($date);
     }
 
 }

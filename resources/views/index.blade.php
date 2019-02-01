@@ -207,9 +207,25 @@
 				});
 			$('#lanjutkan').on('click',function(){
 				$room = $("#idDropDown").val();
-				
-				$url = "/reservation/customerform/"+$day+'/'+$month+'/'+$year+'/'+$room;
-				window.location.href=$url;
+				$.ajax(
+					{
+						type: 'POST',
+						url: "/getDate",
+						data:{
+							day:$day,
+							month:$month,
+							year:$year,
+							room:$room
+							},
+						cache:false,
+						ifModified:true,
+						success: function (data) 
+						{
+							// console.log(data[0]);
+							$url = "/reservation/customerform/"+data[0]+'/'+data[1]+'/'+data[2]+'/'+data[3];
+							window.location.href=$url;
+						}
+					});
 			});
             },
 			
@@ -265,7 +281,6 @@
 			content: function() 
 				{
 				var id = $(this).attr('id')
-				
 				return $('#popover-content-' + id).html();
 				}
 		});

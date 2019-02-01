@@ -15,11 +15,12 @@
 
 Route::get('/', 'IndexController@index');
 Route::post('/', 'IndexController@modalpost');
+Route::post('/getDate', 'IndexController@getDate');
 
 // Route::get('/reservation/{day}/{month}/{year}', 'FormController@roomdetail');
 
 ///////////////////////////////// Customer Form //////////////////////////////
-Route::get('/reservation/customerform/{day}/{month}/{year}/{room}', 'FormController@create');  // function disini untuk display customer input dengan method create
+Route::get('/reservation/customerform/{day}/{month}/{year}/{room}', 'FormController@create');
 Route::post('/reservationinput/customerform', 'FormController@store');
 
 ///////////////////////////////// Booking Form //////////////////////////////
