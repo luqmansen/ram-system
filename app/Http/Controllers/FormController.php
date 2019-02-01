@@ -6,6 +6,9 @@ use App\Room;
 use App\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Crypt;
+use Session;
+use Redirect;
 use DB;
 
 class FormController extends Controller
@@ -16,23 +19,33 @@ class FormController extends Controller
      * @return \Illuminate\Http\Response
      */
         
-    public function roomdetail($day, $month, $year) //buat filter event yang ditampilkan pada tanggal spesifik
-    {
-        $date = "$year-$month-$day";
-        $reservations =  Reservation::select('*')->where('date', '=', $date)->get();
-        // dd($year,$month, $day);
+    // public function roomdetail($day, $month, $year) //buat filter event yang ditampilkan pada tanggal spesifik
+    // {
+    //     $date = "$year-$month-$day";
+    //     $reservations =  Reservation::select('*')->where('date', '=', $date)->get();
+    //     // dd($year,$month, $day);
         
-        return view('reservation.room-detail')->with('reservations',$reservations)->with('day', $day)->with('month', $month)->with('year', $year);
-    }
+    //     return view('reservation.room-detail')->with('reservations',$reservations)->with('day', $day)->with('month', $month)->with('year', $year);
+    // }
 
 
     public function create($day, $month, $year, $room)
     {
+        // dd(Session::all());
+        
         return view('reservation.customer-input')->with('day', $day)->with('month', $month)->with('year', $year)->with('room', $room);
     }
 
     public function create1($day, $month, $year, $room)
     {
+        $day = Crypt::decrypt($day);
+        $month = Crypt::decrypt($month);
+        $year = Crypt::decrypt($year);
+        $room = Crypt::decrypt($room);
+        
+        if(!Session::has('registration_step') || Session::get('registration_step') != 1) {
+            return Redirect::to('/reservation/customerform/'.$day.'/'.$month.'/'.$year.'/'.$room.'');
+        }
         //fungsi untuk return array untuk restriction di date
         $restriction =  Reservation::select('*')->get();
         $date = "$day-$month-$year";
@@ -59,6 +72,7 @@ class FormController extends Controller
 
     public function store(Request $request ) //Method untuk store form data peminjam (orang)
     {
+        Session::put('registration_step', 1);
         $this->validate($request, [
             'name' => 'required',
             'telephone' => 'required',
@@ -78,6 +92,11 @@ class FormController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
         $room = $request->input('room');
+
+        $day = Crypt::encrypt($day);
+        $month = Crypt::encrypt($month);
+        $year = Crypt::encrypt($year);
+        $room = Crypt::encrypt($room);
         return redirect('/reservation/bookingform/'.$day.'/'.$month.'/'.$year.'/'.$room.'')->with('day', $day)->with('month', $month)->with('year', $year)->with('room', $room);
     }
 
@@ -95,18 +114,13 @@ class FormController extends Controller
             
         if($request->hasFile('file_name')){
             // Get File Name with extension
-
             $filenameWithExt = $request->file('file_name')->getClientOriginalName();
-                       
             //get just file name
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
             //get just extension
             $extension = $request->file('file_name')->getClientOriginalExtension();
-            
             //filename to store
             $fileNameToStore = $filename.'_'.time().'.'.$extension;
-
             //upload the image
             $path = $request->file('file_name')->storeAs('public/file_name', $fileNameToStore);
         } else{

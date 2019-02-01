@@ -10,40 +10,28 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('ajaxRequest', 'IndexController@cobaAjax');
-Route::post('ajaxRequest', 'IndexController@cobaAjaxPost');
-
-
-Route::get('/try', function(){
-    return view('reservation.modal');});
-
-Route::get('/calendar', 'FormController@index'); // this return calendar as index
 
 // Route::match(['get','post'],'/', 'IndexController@index');
 
 Route::get('/', 'IndexController@index');
 Route::post('/', 'IndexController@modalpost');
 
-Route::get('/reservation/{day}/{month}/{year}', 'FormController@roomdetail');
+// Route::get('/reservation/{day}/{month}/{year}', 'FormController@roomdetail');
+
 ///////////////////////////////// Customer Form //////////////////////////////
 Route::get('/reservation/customerform/{day}/{month}/{year}/{room}', 'FormController@create');  // function disini untuk display customer input dengan method create
-    
 Route::post('/reservationinput/customerform', 'FormController@store');
 
 ///////////////////////////////// Booking Form //////////////////////////////
 Route::get('/reservation/bookingform/{day}/{month}/{year}/{room}', 'Formcontroller@create1');
-
 Route::post('/reservationinput/bookingform', 'FormController@store1');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::get('/home', 'HomeController@index');
-
 Route::get('/admin', 'AdminController@index');
-
 Route::get('/admin/history', 'AdminController@history');
 
 Auth::routes();
-
 Route::get('/sudosu', function(){
     return view('auth.login');
 });

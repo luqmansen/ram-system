@@ -19,6 +19,7 @@
 		
 <div id="wrapper" style="margin-left:0px">	
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id='myButton' style="display:none"></button>
+	<button type="button" class="btn btn-primary" onclick="CustomerPage(); return false" id='customerForm' style="display:none"></button>
 	<div id="main">
 			<div id="main">
 				<ul class="nav nav-tabs" data-provide="tabdrop">
@@ -129,6 +130,10 @@
 		$('#myTable').empty();
 	};
 
+	function CustomerPage()
+	{
+		alert('henlo');
+	}
 
 	function getDate(date) 
 	{
@@ -202,6 +207,7 @@
 				});
 			$('#lanjutkan').on('click',function(){
 				$room = $("#idDropDown").val();
+				
 				$url = "/reservation/customerform/"+$day+'/'+$month+'/'+$year+'/'+$room;
 				window.location.href=$url;
 			});
@@ -272,14 +278,14 @@
     		$('[data-original-title]').popover('hide');
   		}
 	});
+	// i dont know what is this, just leave it here
+	$(function()
+	{
+            $(".toggle-menu").remove();
+	});  
 	
 
+</script>
 
-</script>
-<script>
-        $(function() {
-            $(".toggle-menu").remove();
-        });    
-</script>
 
 @endsection

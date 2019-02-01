@@ -1,4 +1,5 @@
 @extends('inc.navbar')
+
 @php
     // dd($room);
 @endphp
