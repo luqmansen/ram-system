@@ -1,5 +1,8 @@
 @extends('inc.navbar')
 
+@php
+    // dd($room);
+@endphp
 @section('title')
     Form Data Peminjam
 @endsection
@@ -25,6 +28,7 @@
                     {{Form::hidden('day', $day)}}
                     {{Form::hidden('month', $month)}}
                     {{Form::hidden('year', $year)}}
+                    {{Form::hidden('room', $room)}}
             </div>
 
             

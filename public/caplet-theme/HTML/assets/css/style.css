@@ -5915,10 +5915,10 @@ body.leftMenu .mm-menu:not(.mm-right).mm-hassearch .mm-panel {
 }
 
 .animated {
-  -moz-animation-duration: 1s;
-  -o-animation-duration: 1s;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
+  -moz-animation-duration: 0.5s;
+  -o-animation-duration: 0.5s;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
   -webkit-animation-fill-mode: both;
   -moz-animation-fill-mode: both;
   -o-animation-fill-mode: both;
@@ -6075,12 +6075,12 @@ body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom
 }
 
 .modal {
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   background-clip: padding-box;
   border-radius: 0;
   bottom: auto;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  /* -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); */
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); */
   left: 50%;
   margin-left: -250px;
   padding: 0;

@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 use App\Customer;
+use App\Room;
 use App\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Crypt;
+use Session;
+use Redirect;
 use DB;
 
 class FormController extends Controller
@@ -14,37 +18,43 @@ class FormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('index');
-    }
-    
-    public function roomdetail($day, $month, $year) //buat filter event yang ditampilkan pada tanggal spesifik
-    {
-        $date = "$year-$month-$day";
-        $reservations =  Reservation::select('*')->where('date', '=', $date)->get();
-        // dd($year,$month, $day);
         
+    // public function roomdetail($day, $month, $year) //buat filter event yang ditampilkan pada tanggal spesifik
+    // {
+    //     $date = "$year-$month-$day";
+    //     $reservations =  Reservation::select('*')->where('date', '=', $date)->get();
+    //     // dd($year,$month, $day);
         
+    //     return view('reservation.room-detail')->with('reservations',$reservations)->with('day', $day)->with('month', $month)->with('year', $year);
+    // }
 
-        return view('reservation.room-detail')->with('reservations',$reservations)->with('day', $day)->with('month', $month)->with('year', $year);
+
+    public function create($day, $month, $year, $room)
+    {
+        // dd(Session::all());
+        $day = Crypt::decrypt($day);
+        $month = Crypt::decrypt($month);
+        $year = Crypt::decrypt($year);
+        $room = Crypt::decrypt($room);
+        return view('reservation.customer-input')->with('day', $day)->with('month', $month)->with('year', $year)->with('room', $room);
     }
 
-
-    public function create($day, $month, $year)
+    public function create1($day, $month, $year, $room)
     {
-        return view('reservation.customer-input')->with('day', $day)->with('month', $month)->with('year', $year);
-    }
-
-    public function create1($day, $month, $year)
-    {
+        $day = Crypt::decrypt($day);
+        $month = Crypt::decrypt($month);
+        $year = Crypt::decrypt($year);
+        $room = Crypt::decrypt($room);
+        
+        if(!Session::has('registration_step') || Session::get('registration_step') != 1) {
+            return Redirect::to('/reservation/customerform/'.$day.'/'.$month.'/'.$year.'/'.$room.'');
+        }
         //fungsi untuk return array untuk restriction di date
         $restriction =  Reservation::select('*')->get();
         $date = "$day-$month-$year";
-
         $dateISO = "$year-$month-$day";
         
-        $timerange = Reservation::select('start_hour', 'end_hour')->where('date', '=', $dateISO)->get();
+        $timerange = Reservation::select('start_hour', 'end_hour')->where([['date', '=', $dateISO], ['id_room', '=', $room]])->get();
         $disabledTime = array();
         $disab = array();
         foreach ($timerange as $time) 
@@ -55,14 +65,17 @@ class FormController extends Controller
             );
         }
         $disabledRange = json_encode($disabledTime);
+
+        $roomName = Room::select('name')->where('id', '=',$room)->first();
         
-        return view('reservation.booking-form')->with('disabledRange', $disabledRange)->with('day', $day)->with('month', $month)->with('year', $year)->with('date', $date);
+        return view('reservation.booking-form')->with('disabledRange', $disabledRange)->with('day', $day)->with('month', $month)->with('year', $year)->with('date', $date)->with('room', $room)->with('roomName', $roomName);
     }
 
     
 
     public function store(Request $request ) //Method untuk store form data peminjam (orang)
     {
+        Session::put('registration_step', 1);
         $this->validate($request, [
             'name' => 'required',
             'telephone' => 'required',
@@ -81,7 +94,13 @@ class FormController extends Controller
         $day = $request->input('day');
         $month = $request->input('month');
         $year = $request->input('year');
-        return redirect('/reservation/bookingform/'.$day.'/'.$month.'/'.$year.'')->with('day', $day)->with('month', $month)->with('year', $year);;
+        $room = $request->input('room');
+
+        $day = Crypt::encrypt($day);
+        $month = Crypt::encrypt($month);
+        $year = Crypt::encrypt($year);
+        $room = Crypt::encrypt($room);
+        return redirect('/reservation/bookingform/'.$day.'/'.$month.'/'.$year.'/'.$room.'')->with('day', $day)->with('month', $month)->with('year', $year)->with('room', $room);
     }
 
 
@@ -90,6 +109,7 @@ class FormController extends Controller
         $this->validate($request, [
             'start_hour' => 'required',
             'end_hour' => 'required',
+            'id_room' => 'required',
             'description' => 'required',
             'file_name' => 'file | nullable | max: 1999 | mimes:pdf, jpg, jpeg'
         ]);
@@ -97,18 +117,13 @@ class FormController extends Controller
             
         if($request->hasFile('file_name')){
             // Get File Name with extension
-
             $filenameWithExt = $request->file('file_name')->getClientOriginalName();
-                       
             //get just file name
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
             //get just extension
             $extension = $request->file('file_name')->getClientOriginalExtension();
-            
             //filename to store
             $fileNameToStore = $filename.'_'.time().'.'.$extension;
-
             //upload the image
             $path = $request->file('file_name')->storeAs('public/file_name', $fileNameToStore);
         } else{
@@ -132,46 +147,8 @@ class FormController extends Controller
         $reservations->file_name = $fileNameToStore;
         $reservations->save();
 
-        return view('index')->with('success', 'Peminjaman Telah Disimpan');
+        $room = Room::all(['id', 'name','table_capacity','chair_capacity']);
+        return view('index')->with('success', 'Peminjaman Telah Disimpan')->with('room', $room);
     }
 
-  
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

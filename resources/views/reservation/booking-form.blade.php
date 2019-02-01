@@ -1,5 +1,5 @@
 @extends('inc.navbar')
-
+@include('inc.messages')
 @section('title')
     Form Peminjaman Ruangan
 @endsection
@@ -20,6 +20,7 @@
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('jquerytimepicker/jquery.timepicker.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('jquerytimepicker/lib/bootstrap-datepicker.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jquery-ui.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{URL::asset('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css')}}" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 
 @endsection
 
@@ -30,9 +31,10 @@
         @endphp
 </div>
 <div id="disabledTime" ></div>
+
 <br><br>
+
     {!! Form::open(['action' => 'FormController@store1', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
-    {{-- this action is where our form is submitting to --}}
     
             <div class="form-group">
                     <div class='row'>
@@ -40,18 +42,20 @@
                                 {{Form::label('date', 'Tanggal Peminjaman ')}}
                                 @php
                                         $newDate = date("d-F-Y", strtotime($date));
+                                        $inputDate = date("Y-m-d", strtotime($date));
+                                        // dd($inputDate);
                                 @endphp 
-                                {{Form::text('date', $newDate,['id' => 'datepicker','class' => 'readonly form-control', 'style' => 'width:80%', 'disabled'])}}                                                     
+                                {{Form::text('someDate', $newDate,['id' => 'datepicker','class' => 'readonly form-control', 'style' => 'width:100%', 'disabled'])}}                                                     
+                                {{Form::hidden('date', $inputDate)}}   
                                 
                         </div>
                         <div class='col'>
                                  {{Form::label('id_room', 'Ruangan ')}}
                                 <div class="dropdown">
-                                        @php
-                                            $room = []
-                                        @endphp
-                                        {{Form::select('id_room', ['1' => '502', '2' => '503', '3' => '504'],'', ['class'=>"btn btn-secondary dropdown-toggle", 'type'=>"button" ,'id'=>"dropdownMenuButton" ,'data-toggle'=>"dropdown" ,'aria-haspopup'=>"true", 'aria-expanded'=>"true"])}}
+                                        {{Form::text('something', $roomName->name,['class' => 'readonly form-control', 'style' => 'text-align:center ;width:50%', 'disabled'])}}                                                     
+                                        {{Form::hidden('id_room', $room)}}   
                                 </div>
+                                
                         </div>
                 </div>
             </div>
@@ -120,9 +124,19 @@
         'minTime' : '7:00',
         'maxTime' : '17:00',
         'disableTimeRanges' : myRanges
-});
+        });
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
         var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);  
-</script>
+
+
+        // prevent user to close the tab, if it does, then make ajax request to delete last record in customer table
+
+        $(window).on('beforeunload', function() {
+                console.log('something here');
+                
+        });
+ </script>
+
+
 @endsection
