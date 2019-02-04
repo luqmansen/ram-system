@@ -11,6 +11,22 @@
 <link rel="stylesheet" href={{URL::asset('assets/css/style.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/modal.css')}}>
+
+<style>
+.more_info {
+  border-bottom: 1px dotted;
+  position: relative;
+}
+
+.more_info .title {
+  position: absolute;
+  top: 20px;
+  background: silver;
+  padding: 4px;
+  left: 0;
+  white-space: nowrap;
+}
+</style>
 @endsection
 
 @include('inc.messages')
@@ -22,14 +38,14 @@
 	<div id="main">
 			<div id="main">
 				<ul class="nav nav-tabs" data-provide="tabdrop">
-								@if (!Auth::guest())
+								{{-- @if (!Auth::guest())
 									<li><a href="#" class="change" data-change="prev"><i class="fa fa-chevron-left"></i></a></li>
                                     <li><a href="#" class="change" data-change="next"><i class="fa fa-chevron-right"></i></a></li>
                                         <li class="active"><a href="#" data-view="month" data-toggle="tab" class="change-view">Month</a></li>
                                         <li><a href="#" data-view="agendaWeek" data-toggle="tab" class="change-view">Week</a></li>
                                         <li><a href="#" data-view="agendaDay" data-toggle="tab" class="change-view">Day</a></li>
                                         <li><a href="#" class="change-today">Today</a></li>
-								@endif
+								@endif --}}
 							</ul>
 					<div class="tabbable">		
 							<div class="tab-content">
@@ -75,7 +91,7 @@
 							<h5 for="myID" style="float:left">Reservasi Ruangan : </h5>
 							<select class="form-control" name="id_room" id=idDropDown data-toggle="tooltip" data-placement="top" data-html="true">
 								@foreach ($room as $row)
-									<option value="{{$row->id}}" title="Kapastas {{$row->chair_capacity}} (hanya kursi), {{$row->table_capacity}} (Kursi + Meja)  ">{{$row->name}}</option>
+									<option class="more_info"value="{{$row->id}}" title="Kapasitas {{$row->chair_capacity}} (hanya kursi), {{$row->table_capacity}} (Kursi + Meja)  ">{{$row->name}}</option>
 								@endforeach
 							</select>
 						  </div>
@@ -100,7 +116,7 @@
 
 <script>
 	
-	
+
 	$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
 
 	function clearModal()
@@ -271,7 +287,7 @@
     		$('[data-original-title]').popover('hide');
   		}
 	});
-	// i dont know what is this, just leave it here
+	// i dont remember what is this, just leave it here
 	$(function()
 	{
             $(".toggle-menu").remove();
@@ -280,5 +296,15 @@
 
 </script>
 
-
+<script>
+	$("option[title]").click(function () {
+		var $title = $(this).find(".title");
+		if (!$title.length) {
+			$(this).append('<option class="title">' + $(this).attr("title") + '</option>');
+		} else {
+			$title.remove();
+		}
+		});​
+	
+</script>
 @endsection
