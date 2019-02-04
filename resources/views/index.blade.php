@@ -9,8 +9,8 @@
 <link rel="stylesheet" href={{URL::asset("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css")}} integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 
 <link rel="stylesheet" href={{URL::asset('assets/css/style.css')}}>
-<link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/modal.css')}}>
+<link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
 
 <style>
 .more_info {

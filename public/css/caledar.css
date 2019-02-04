@@ -17,7 +17,7 @@ td.fc-today {
 
 .fc-first th{
    font-family: 'Roboto', sans-serif;
-   background:#9675ce !important;
+   background:#5b09e6 !important;
    color:#FFF;
    font-size:14px !important;
    font-weight:500 !important;
@@ -170,7 +170,7 @@ html .fc,
 }
 
 .fc-state-highlight > div > div.fc-day-number{
-   background-color: #ff3b30;
+   background-color: blue;
    color: #FFFFFF;
    border-radius: 50%;
    margin: 4px;
@@ -478,7 +478,7 @@ table.fc-border-separate {
    }
    
 .fc-grid .fc-other-month .fc-day-number {
-   opacity: 0.3;
+   opacity: 0.6;
    filter: alpha(opacity=30); /* for IE */
    /* opacity with small font can sometimes look too faded
       might want to set the 'color' property instead
@@ -668,12 +668,12 @@ table.fc-header{
 
 .fc-week .fc-day > div .fc-day-number{
    font-size: 15px;
-   margin: 2px;
+   /* margin: 2px; */
    min-width: 19px;
-   padding: 6px;
+   /* padding: 6px; */
    text-align: center;
       width: 30px;
-   height: 30px;
+   /* height: 30px; */
 }
 .fc-sun, .fc-sat{
    color: #b8b8b8;
