@@ -7,7 +7,9 @@
 @section('somethingUneedInHead')
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endsection
-
+@php
+    
+@endphp
 @section('customstyle')
 <style type="text/css">
 .input-group {
@@ -43,7 +45,7 @@
                                 @php
                                         $newDate = date("d-F-Y", strtotime($date));
                                         $inputDate = date("Y-m-d", strtotime($date));
-                                        // dd($inputDate);
+                                        
                                 @endphp 
                                 {{Form::text('someDate', $newDate,['id' => 'datepicker','class' => 'readonly form-control', 'style' => 'width:100%', 'disabled'])}}                                                     
                                 {{Form::hidden('date', $inputDate)}}   

@@ -36,6 +36,7 @@ class FormController extends Controller
         $month = Crypt::decrypt($month);
         $year = Crypt::decrypt($year);
         $room = Crypt::decrypt($room);
+
         return view('reservation.customer-input')->with('day', $day)->with('month', $month)->with('year', $year)->with('room', $room);
     }
 

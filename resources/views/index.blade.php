@@ -7,41 +7,15 @@
 {{-- <link href={{URL::asset('maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')}} rel="stylesheet" id="bootstrap-css"> --}}
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jquery-ui.css')}}" />
 <link rel="stylesheet" href={{URL::asset("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css")}} integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+
 <link rel="stylesheet" href={{URL::asset('assets/css/style.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/modal.css')}}>
-
 @endsection
 
 @include('inc.messages')
 @section('bodyWrapper')
 <body class="full-lg">
- <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-      <header class="masthead mb-auto">
-        <div class="inner">
-          <h3 class="masthead-brand">Cover</h3>
-          <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link active" href="#">Home</a>
-            <a class="nav-link" href="#">Features</a>
-            <a class="nav-link" href="#">Contact</a>
-          </nav>
-        </div>
-      </header>
-
-      <main role="main" class="inner cover">
-        <h1 class="cover-heading">Cover your page.</h1>
-        <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
-        <p class="lead">
-          <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
-        </p>
-      </main>
-
-      <footer class="mastfoot mt-auto">
-        <div class="inner">
-          <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-        </div>
-      </footer>
-    </div>		
 <div id="wrapper" style="margin-left:0px">	
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id='myButton' style="display:none"></button>
 	<button type="button" class="btn btn-primary" onclick="CustomerPage(); return false" id='customerForm' style="display:none"></button>
@@ -55,7 +29,7 @@
                                         <li><a href="#" data-view="agendaWeek" data-toggle="tab" class="change-view">Week</a></li>
                                         <li><a href="#" data-view="agendaDay" data-toggle="tab" class="change-view">Day</a></li>
                                         <li><a href="#" class="change-today">Today</a></li>
-                                    @endif
+								@endif
 							</ul>
 					<div class="tabbable">		
 							<div class="tab-content">
@@ -98,33 +72,13 @@
 			  <div class="modal-footer">
 				<div class="form-group">
 					<div class="container">
-						<div class="row">
-							<div class="col-sm">
-								<h5 style="margin 0 auto ;float:left">Reservasi Ruangan : </h5>
-								{{-- {!! Form::Label('id_room', 'Ruangan :', ['style'=>'float:left;']) !!} --}}
-							</div>
-							<div class="col-sm">
-								<select data-toggle="popover" class="btn btn-secondary dropdown-toggle"  data-container="body" data-html="true" style="float:center" name="id_room"  id="idDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded='true'>
-									@foreach($room as $row)
-									<option value="{{$row->id}}">{{$row->name}}</option>
-									@endforeach
-								</select>
-								<div id="popover-content-idDropDown" class="hide">
-										<div class="list-group" style="overflow-y:auto; margin:0; border:0">
-											@foreach ($room as $row)
-												<a  class="list-group-item list-group-item-action flex-column align-items-start" style="margin: 0" >
-													<div class=" ">
-														<p class="">Ruang {{$row->name}}</p>
-													</div>
-													<small class="">Kapasitas Hanya Kursi {{$row->chair_capacity}}.</small> <br>
-													<small class="">Kapasitas Kursi + Meja {{$row->table_capacity}}.</small>
-												</a>
-											@endforeach
-										</div>
-								</div>
-							</div>		  
-						</div>
-					</div>
+							<h5 for="myID" style="float:left">Reservasi Ruangan : </h5>
+							<select class="form-control" name="id_room" id=idDropDown data-toggle="tooltip" data-placement="top" data-html="true">
+								@foreach ($room as $row)
+									<option value="{{$row->id}}" title="Kapastas {{$row->chair_capacity}} (hanya kursi), {{$row->table_capacity}} (Kursi + Meja)  ">{{$row->name}}</option>
+								@endforeach
+							</select>
+						  </div>
 				</div>
 				{{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
 				<a id='lanjutkan'  role="button" class="btn btn-primary" style="color:white">Lanjutkan</a>
@@ -134,19 +88,18 @@
 		</div>
 		
 	  </div>
-			
-
 <!-- //wrapper-->
+
 @endsection
 
 @section('customScript')
 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
 {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.js"></script>
 
 <script>
 	
-
 	
 	$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
 
