@@ -106,6 +106,10 @@
 														</ul>
 												</div>
 												<div class="panel-body">
+														<textarea class="form-control" id="sms"  rows="5" style="display:none">
+																There's one new reservation!<br>
+																Please navigate to Manage Reservations page to see it. 
+														</textarea>
 														<form>
 															{{ csrf_field() }}
 															<ul style="padding-bottom:10px">
@@ -125,8 +129,8 @@
 																				<th class="center unclickable" align="center">	</th>
                                                                                 <th  class="text-center " >ID <i class="fa fa-sort-amount-asc"></i></th>
                                                                                 <th class="text-center ">Name <i class="fa fa-sort"></i></th>
-                                                                                <th class="text-center ">Telephone<i class="fa fa-sort"></i></th>
-                                                                                <th class="text-center ">Email<i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Telephone <i class="fa fa-sort"></i></th>
+                                                                                <th class="text-center ">Email <i class="fa fa-sort"></i></th>
                                                                                 <th class="text-center  unclickable">Action</th>
 																				</tr>
 																		</thead>
@@ -173,7 +177,7 @@
 																			<div id="md-detail" class=" modal fade">
 																				<div class="modal-header bg-success bd-success-darken ">
 																						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-																						<h4 class="modal-title">Detail Customer</h4>
+																						<h4 class="modal-title">Customer's Detail</h4>
 																				</div>
 																				<!-- //modal-header-->
 																				<div class="modal-body">
@@ -251,6 +255,10 @@
 				
 		</div>
 		<!-- //main-->
+		<button style="visibility:hidden" id="notification-button" type="button" class="btn btn-default notific" data-theme="theme-inverse" data-sticky="true">theme-inverse</button>
+		<audio style="visibility:hidden" id="notification-sound">
+				<source src="{{asset('notification.mp3')}}" type="audio/mpeg">
+		</audio>
 		
 		<!--
 		//////////////////////////////////////////////////////////////
@@ -336,7 +344,7 @@
 <script type="text/javascript">
 	$(function() {
 				//SCRIPT DELETE
-				$(".md-effect").click(function(event){
+				$("tbody").on('click', '.md-effect',function(event){
 						event.preventDefault();
 						//SHOW DELETE MODAL
 						var id,tr = undefined;
@@ -372,35 +380,35 @@
 							);
 				});
 
-					//SCRIPT EDIT
-	$(".detail-button").click(function(event){
-			event.preventDefault();
-			//SHOW DELETE MODAL
-			var id=$(this).val();
-			var data=$(this).data();
-			//AJAX SCRIPT
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				}
-			});
-			$.ajax({
-				url: '/customerDetail',
-				type:"POST",
-				data: {id:id},
-				dataType:"json",
-				success:function(data) {
-					console.log(data);
-					$('#detail-id').html(data[0].id);
-					$('#detail-name').html(data[0].name);
-					$('#detail-telephone').html(data[0].telephone);
-					$('#detail-email').html(data[0].email);
-					$('#detail-created-at').html(data[0].created_at);
-					$('#detail-updated-at').html(data[0].updated_at);
-					$('#md-detail').attr('class','modal fade').addClass(data.effect).modal('show');
-				}
-			});
-	}); 
+				//SCRIPT EDIT
+				$("tbody").on('click', '.detail-button',function(event){
+						event.preventDefault();
+						//SHOW DELETE MODAL
+						var id=$(this).val();
+						var data=$(this).data();
+						//AJAX SCRIPT
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+							}
+						});
+						$.ajax({
+							url: '/customerDetail',
+							type:"POST",
+							data: {id:id},
+							dataType:"json",
+							success:function(data) {
+								console.log(data);
+								$('#detail-id').html(data[0].id);
+								$('#detail-name').html(data[0].name);
+								$('#detail-telephone').html(data[0].telephone);
+								$('#detail-email').html(data[0].email);
+								$('#detail-created-at').html(data[0].created_at);
+								$('#detail-updated-at').html(data[0].updated_at);
+								$('#md-detail').attr('class','modal fade').addClass(data.effect).modal('show');
+							}
+						});
+				}); 
 
 				$(".delete-selected").click(function(event){
 						event.preventDefault();
@@ -476,5 +484,32 @@
 					});
 				});
 		});
+</script>
+<script>
+	setInterval(function(){
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		$.ajax({
+			url: '/notif',
+			type:"POST",
+			dataType:"json",
+			success:function(data) {
+				if(data=='ok'){
+					$('#notification-button').click();
+					$('#notification-sound').get(0).play();		
+				}
+			}
+		});
+
+	}, 5000);
+	$(".notific").on('click',function(){
+		var nclick=$(this), data=nclick.data();
+		data.verticalEdge=data.vertical || 'right';
+		data.horizontalEdge=data.horizontal  || 'top';
+		$.notific8($("#sms").val(), data)	;
+	});
 </script>
 @endsection

@@ -38,15 +38,12 @@ Route::get('/sudosu', function(){
 });
 Route::get('/adminPanel', 'AdminPanelController@index');
 
-// Route::get('/manageReservations','ManageReservationsController@index');
-
-// Route::get('/history','HistoryController@index');
-
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 Route::get('/hoobla',function(){
     return view('hoobla');
 });
+
 
 //Manage Rooms
 Route::get('/manageRooms','ManageRoomsController@index');
@@ -67,3 +64,16 @@ Route::get('/exportCustomersPdf', 'ManageCustomersController@exportPdf');
 
 //History
 Route::get('/history','HistoryController@index');
+Route::post('/historyDetail','HistoryController@detail');
+Route::get('/exportLog/{value}','HistoryController@export');
+Route::get('/exportLogDocs/{value}','HistoryController@exportPdf');
+
+//Manage Reservations
+Route::get('/manageReservations','ManageReservationsController@index');
+Route::post('/reservationDetail','ManageReservationsController@detail');
+Route::post('/reservationApprove','ManageReservationsController@approve');
+Route::post('/reservationCancel','ManageReservationsController@cancel');
+Route::post('/reservationRevive','ManageReservationsController@revive');
+
+//Notifications
+Route::post('/notif','NotificationsController@notif');

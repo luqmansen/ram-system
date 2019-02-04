@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateTableReservations2 extends Migration
+class CreateNotificationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class UpdateTableReservations2 extends Migration
      */
     public function up()
     {
-        Schema::table('reservations', function (Blueprint $table) {
-            $table->string('status')->default('pending')->change();
+        //Room(id,name,table_capacity,chair_capacity)
+        Schema::create('notifications',function(Blueprint $table){
+            $table->increments('id');
+            $table->string('info');
+            $table->string('before');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +29,6 @@ class UpdateTableReservations2 extends Migration
      */
     public function down()
     {
-        
+        Schema::drop('notifications');
     }
 }

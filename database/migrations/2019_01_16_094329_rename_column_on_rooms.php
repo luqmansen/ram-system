@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateTableReservations2 extends Migration
+class RenameColumnOnRooms extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class UpdateTableReservations2 extends Migration
      */
     public function up()
     {
-        Schema::table('reservations', function (Blueprint $table) {
-            $table->string('status')->default('pending')->change();
+        Schema::table('rooms', function (Blueprint $table) {
+            $table->renameColumn('name', 'room_name');
         });
     }
 
@@ -25,6 +25,6 @@ class UpdateTableReservations2 extends Migration
      */
     public function down()
     {
-        
+        //
     }
 }

@@ -104,14 +104,13 @@
 
 @section('jquery-datepicker')
 
-{{-- Jquery- Date & Time Picker (integrated) --}}
+{{-- Jquery- Time Picker --}}
 <script type="text/javascript" src="{{URL::asset('js/jquery.min.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('assets/js/jquery.min.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+{{-- <script type="text/javascript" src="{{URL::asset('assets/js/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{URL::asset('assets/js/bootstrap.bundle.min.js')}}"></script> --}}
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.datepair.min.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/lib/bootstrap-datepicker.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.timepicker.js')}}"></script>
-{{-- J --}}
 <script>
         var div = document.getElementById("dom-target");
         var disabledRanges = div.textContent;

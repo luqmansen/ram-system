@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+
 use Illuminate\Http\Request;
 use App\Room;
+use App\Reservation;
 use Response;
+use DB;
 use PDF;
 
 class ManageRoomsController extends Controller
@@ -65,7 +69,7 @@ class ManageRoomsController extends Controller
         
         $room = Room::find($request->id);
 
-        $room->name = $name;
+        $room->room_name = $name;
         $room->table_capacity = $table_capacity;
         $room->chair_capacity = $chair_capacity;
 
@@ -80,13 +84,13 @@ class ManageRoomsController extends Controller
         
         $room = new Room;
 
-        $room->name = $name;
+        $room->room_name = $name;
         $room->table_capacity = $table_capacity;
         $room->chair_capacity = $chair_capacity;
 
         $room->save();
 
-        $data['id'] = Room::where('name',$request->name)->first();
+        $data['id'] = Room::where('room_name',$request->name)->first();
         $response = $data['id']->id;
         return Response::json($response);
     }
