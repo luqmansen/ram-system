@@ -478,7 +478,7 @@ table.fc-border-separate {
    }
    
 .fc-grid .fc-other-month .fc-day-number {
-   opacity: 0.6;
+   opacity: 0.7 !important;
    filter: alpha(opacity=30); /* for IE */
    /* opacity with small font can sometimes look too faded
       might want to set the 'color' property instead
@@ -667,6 +667,7 @@ table.fc-header{
 }
 
 .fc-week .fc-day > div .fc-day-number{
+   /* color: #7389e6;        */
    font-size: 15px;
    /* margin: 2px; */
    min-width: 19px;
@@ -676,7 +677,7 @@ table.fc-header{
    /* height: 30px; */
 }
 .fc-sun, .fc-sat{
-   color: #b8b8b8;
+   color: #6f7b8a;
 }
 
 .fc-week .fc-day:hover .fc-day-number{
