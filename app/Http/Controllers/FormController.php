@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Crypt;
 use Session;
 use Redirect;
 use DB;
+use Intervention\Image\Facades\Image;
 
 class FormController extends Controller
 {
@@ -112,8 +113,18 @@ class FormController extends Controller
             'end_hour' => 'required',
             'id_room' => 'required',
             'description' => 'required',
-            'file_name' => 'file | nullable | max: 1999 | mimes:pdf, jpg, jpeg'
-        ]);
+            'file_name' => 'file | required | max: 1999 | mimes:pdf',
+            'file_name' =>  'mimes: jpg,jpeg,png'
+        ],
+        [
+            'file_name.mimes' => 'FIle Harus Berupa Gambar atau PDF',
+            'file_name.max' => 'FIle Maksimal Berukuran 2MB',
+            'file_name.required' => 'Harap Upload Surat Peminjaman',
+            'description.required' => 'Harap Isikan Deskripsi Peminjaman Ruangan',
+            'start_hour.required' => 'Harap Isikan Waktu Mulai',
+            'end_hour.required' => 'Harap Isikan Waktu Selesai'
+        ]
+        );
         
             
         if($request->hasFile('file_name')){

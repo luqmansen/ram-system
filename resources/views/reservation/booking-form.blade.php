@@ -93,7 +93,7 @@
 
             <div>
                     
-                {{Form::label('file_name', 'Surat Peminjaman (PDF atau Gambar) ')}}
+                {{Form::label('file_name', 'Surat Peminjaman (PDF atau Gambar *maksimum 2MB) ')}}
                 {{Form::file('file_name', ['class' => 'form-control'])}}
             </div>
 
