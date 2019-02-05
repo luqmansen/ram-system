@@ -25,8 +25,9 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
-        <a class="navbar-brand " style="text-align: center; font-weight:bold; size:30px"  href="/">
-            UCCP
+        <a class="navbar-brand " style="text-align: center; font-weight:bold; size:30px"  href="
+        #">
+            UCCP | Sistem Peminjaman Ruangan ICT
         </a>
       </div>
     </nav>
