@@ -68,7 +68,7 @@ class FormController extends Controller
         }
         $disabledRange = json_encode($disabledTime);
 
-        $roomName = Room::select('name')->where('id', '=',$room)->first();
+        $roomName = Room::select('room_name')->where('id', '=',$room)->first();
         
         return view('reservation.booking-form')->with('disabledRange', $disabledRange)->with('day', $day)->with('month', $month)->with('year', $year)->with('date', $date)->with('room', $room)->with('roomName', $roomName);
     }

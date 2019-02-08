@@ -54,7 +54,7 @@
                         <div class='col'>
                                  {{Form::label('id_room', 'Ruangan ')}}
                                 <div class="dropdown">
-                                        {{Form::text('something', $roomName->name,['class' => 'readonly form-control', 'style' => 'text-align:center ;width:50%', 'disabled'])}}                                                     
+                                        {{Form::text('something', $roomName->room_name,['class' => 'readonly form-control', 'style' => 'text-align:center ;width:50%', 'disabled'])}}                                                     
                                         {{Form::hidden('id_room', $room)}}   
                                 </div>
                                 
