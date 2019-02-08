@@ -11,31 +11,28 @@
 |
 */
 
-Route::get('/try', 'CalendarController@index');
-Route::get('/calendar', 'FormController@index'); // this return calendar as index
+// Route::match(['get','post'],'/', 'IndexController@index');
 
 Route::get('/', 'IndexController@index');
+Route::post('/', 'IndexController@modalpost');
+Route::post('/getDate', 'IndexController@getDate');
 
+// Route::get('/reservation/{day}/{month}/{year}', 'FormController@roomdetail');
 
-Route::get('/reservation/{day}/{month}/{year}', 'FormController@roomdetail');
-
-Route::get('/reservation/customerform', 'FormController@create');  // function disini untuk display customer input dengan method create
-    
+///////////////////////////////// Customer Form //////////////////////////////
+Route::get('/reservation/customerform/{day}/{month}/{year}/{room}', 'FormController@create');
 Route::post('/reservationinput/customerform', 'FormController@store');
 
-Route::get('/reservation/bookingform', 'Formcontroller@create1');
-
+///////////////////////////////// Booking Form //////////////////////////////
+Route::get('/reservation/bookingform/{day}/{month}/{year}/{room}', 'Formcontroller@create1');
 Route::post('/reservationinput/bookingform', 'FormController@store1');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::get('/home', 'HomeController@index');
-
 Route::get('/admin', 'AdminController@index');
-
 Route::get('/admin/history', 'AdminController@history');
 
 Auth::routes();
-
 Route::get('/sudosu', function(){
     return view('auth.login');
 });

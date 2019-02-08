@@ -1,9 +1,15 @@
 @extends('inc.navbar')
-
+@include('inc.messages')
 @section('title')
     Form Peminjaman Ruangan
 @endsection
 
+@section('somethingUneedInHead')
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+@php
+    
+@endphp
 @section('customstyle')
 <style type="text/css">
 .input-group {
@@ -16,36 +22,42 @@
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('jquerytimepicker/jquery.timepicker.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('jquerytimepicker/lib/bootstrap-datepicker.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jquery-ui.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{URL::asset('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css')}}" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 
 @endsection
 
 @section('content')                  
-
-<div id="dom-target" style="display: none">
-        <?php
-                $forbidden_date = json_encode($rest);
-                echo htmlspecialchars($forbidden_date);
-        ?>
+<div id="dom-target" style="display:none">
+        @php
+            echo htmlspecialchars($disabledRange);
+        @endphp
 </div>
+<div id="disabledTime" ></div>
+
+<br><br>
 
     {!! Form::open(['action' => 'FormController@store1', 'method' => 'POST', "class" => 'form', 'enctype' => 'multipart/form-data']) !!}
-    {{-- this action is where our form is submitting to --}}
     
             <div class="form-group">
                     <div class='row'>
                         <div class="col">
                                 {{Form::label('date', 'Tanggal Peminjaman ')}}
-                                {{Form::text('date', '',['id' => 'datepicker','class' => ' readonly form-control', 'style' => 'width:80%'])}}
-                                                     
+                                @php
+                                        $newDate = date("d-F-Y", strtotime($date));
+                                        $inputDate = date("Y-m-d", strtotime($date));
+                                        
+                                @endphp 
+                                {{Form::text('someDate', $newDate,['id' => 'datepicker','class' => 'readonly form-control', 'style' => 'width:100%', 'disabled'])}}                                                     
+                                {{Form::hidden('date', $inputDate)}}   
+                                
                         </div>
                         <div class='col'>
                                  {{Form::label('id_room', 'Ruangan ')}}
                                 <div class="dropdown">
-                                        @php
-                                            $room = []
-                                        @endphp
-                                        {{Form::select('id_room', ['1' => '502', '2' => '503', '3' => '504'],'', ['class'=>"btn btn-secondary dropdown-toggle", 'type'=>"button" ,'id'=>"dropdownMenuButton" ,'data-toggle'=>"dropdown" ,'aria-haspopup'=>"true", 'aria-expanded'=>"true"])}}
+                                        {{Form::text('something', $roomName->name,['class' => 'readonly form-control', 'style' => 'text-align:center ;width:50%', 'disabled'])}}                                                     
+                                        {{Form::hidden('id_room', $room)}}   
                                 </div>
+                                
                         </div>
                 </div>
             </div>
@@ -81,7 +93,7 @@
 
             <div>
                     
-                {{Form::label('file_name', 'Surat Peminjaman (PDF atau Gambar) ')}}
+                {{Form::label('file_name', 'Surat Peminjaman (PDF atau Gambar *maksimum 2MB) ')}}
                 {{Form::file('file_name', ['class' => 'form-control'])}}
             </div>
 
@@ -100,6 +112,10 @@
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/lib/bootstrap-datepicker.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('jquerytimepicker/jquery.timepicker.js')}}"></script>
 <script>
+        var div = document.getElementById("dom-target");
+        var disabledRanges = div.textContent;
+        var myRanges = JSON.parse(disabledRanges);
+        
         $('#timeOnlyExample .time').timepicker({
         'showDuration': true,
         'disableTextInput' : true,
@@ -109,37 +125,20 @@
         'lang' : {am:"", pm:''},
         'minTime' : '7:00',
         'maxTime' : '17:00',
-        // 'disableTimeRanges' : [['12:00 am', '7:00am'], ['5:30pm', '11:30pm']]
+        'disableTimeRanges' : myRanges
         });
 
         var timeOnlyExampleEl = document.getElementById('timeOnlyExample');
-        var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);
+        var timeOnlyDatepair = new Datepair(timeOnlyExampleEl);  
 
-        //for disable datepicker textinput
-        $('.readonly').on('focus',function(){
-        $(this).trigger('blur');
-        });            
-</script>
 
-{{-- Script untuk Date Picker --}}
-<script type="text/javascript" src="{{URL::asset('https://code.jquery.com/jquery-1.10.2.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('https://code.jquery.com/ui/1.11.2/jquery-ui.js')}}"></script>
-<script>
-        var div = document.getElementById("dom-target");
-        var forbidden_date = div.textContent;
-        // console.log(forbidden_date);
-        $(function() 
-        {
-                $("#datepicker" ).datepicker(
-                        {
-                                dateFormat: 'dd MM yy',
-                                beforeShowDay: function(date)
-                                {
-                                        var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
-                                        return [ forbidden_date.indexOf(string) == -1 ]
-                                }
-                        });
-                        
-                });                
-</script>
+        // prevent user to close the tab, if it does, then make ajax request to delete last record in customer table
+
+        $(window).on('beforeunload', function() {
+                console.log('something here');
+                
+        });
+ </script>
+
+
 @endsection

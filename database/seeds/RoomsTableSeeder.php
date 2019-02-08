@@ -20,7 +20,7 @@ class RoomsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'name' => '502',
+                'room_name' => '502',
                 'table_capacity' => 125,
                 'chair_capacity' => 200,
                 'created_at' => '2019-01-07 16:00:40',
@@ -29,7 +29,7 @@ class RoomsTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 3,
-                'name' => '503',
+                'room_name' => '503',
                 'table_capacity' => 50,
                 'chair_capacity' => 75,
                 'created_at' => '2019-01-07 16:00:30',
@@ -38,7 +38,7 @@ class RoomsTableSeeder extends Seeder
             2 => 
             array (
                 'id' => 4,
-                'name' => '504',
+                'room_name' => '504',
                 'table_capacity' => 2,
                 'chair_capacity' => 2,
                 'created_at' => '2019-01-07 16:00:51',

@@ -1,5 +1,8 @@
 @extends('inc.navbar')
 
+@php
+    // dd($room);
+@endphp
 @section('title')
     Form Data Peminjam
 @endsection
@@ -22,8 +25,12 @@
             <div class="form-group">
                     {{Form::label('email', 'Email')}}
                     {{Form::text('email', '',['class' => 'form-control', 'placeholder' => 'contoh@contoh.com'])}}
-                        
+                    {{Form::hidden('day', $day)}}
+                    {{Form::hidden('month', $month)}}
+                    {{Form::hidden('year', $year)}}
+                    {{Form::hidden('room', $room)}}
             </div>
+
             
             {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
     {!! Form::close() !!} 
