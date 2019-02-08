@@ -91,7 +91,7 @@
 							<h5 for="myID" style="float:left">Reservasi Ruangan : </h5>
 							<select class="form-control" name="id_room" id=idDropDown data-toggle="tooltip" data-placement="top" data-html="true">
 								@foreach ($room as $row)
-									<option class="more_info"value="{{$row->id}}" title="Kapasitas {{$row->chair_capacity}} (hanya kursi), {{$row->table_capacity}} (Kursi + Meja)  ">{{$row->name}}</option>
+									<option class="more_info"value="{{$row->id}}" title="Kapasitas {{$row->chair_capacity}} (hanya kursi), {{$row->table_capacity}} (Kursi + Meja)  ">{{$row->room_name}}</option>
 								@endforeach
 							</select>
 						  </div>
