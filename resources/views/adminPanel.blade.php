@@ -59,7 +59,7 @@
 						
 								<div class="col-lg-8" ></div>
 								<!-- //content > row > col-lg-8 -->
-								
+								@include('index')
 								<div class="col-lg-4"></div>
 								<!-- //content > row > col-lg-4 -->
 								
