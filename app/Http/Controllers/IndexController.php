@@ -14,9 +14,9 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $room = Room::select('id', 'room_name', 'table_capacity','chair_capacity')->get();
+        // $room = Room::select('id', 'room_name', 'table_capacity','chair_capacity')->get();
         $room = Room::all(['id', 'room_name','table_capacity','chair_capacity']);
-        // dd($room[0]->id);
+        // dd($room);
         if (Auth::check()) {
             return redirect('/adminPanel')->with('room',$room);
         }

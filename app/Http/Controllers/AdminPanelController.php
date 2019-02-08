@@ -18,8 +18,8 @@ class AdminPanelController extends Controller
     }
 
     public function index(){
-        $room = Room::select('id', 'name', 'table_capacity','chair_capacity')->get();
-        $room = Room::all(['id', 'name','table_capacity','chair_capacity']);
+        $room = Room::select('id', 'room_name', 'table_capacity','chair_capacity')->get();
+        // $room = Room::all(['id', 'room_name','table_capacity','chair_capacity']);
         // dd($room[0]->id);
         
         
