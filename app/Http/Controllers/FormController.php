@@ -48,9 +48,13 @@ class FormController extends Controller
         $year = Crypt::decrypt($year);
         $room = Crypt::decrypt($room);
         
-        if(!Session::has('registration_step') || Session::get('registration_step') != 1) {
-            return Redirect::to('/reservation/customerform/'.$day.'/'.$month.'/'.$year.'/'.$room.'');
+        if(!Session::has('registration_step')) {
+            return Redirect::to('/');
         }
+        else{
+            Session::flush('registration_step');
+        }
+
         //fungsi untuk return array untuk restriction di date
         $restriction =  Reservation::select('*')->get();
         $date = "$day-$month-$year";
@@ -68,7 +72,7 @@ class FormController extends Controller
         }
         $disabledRange = json_encode($disabledTime);
 
-        $roomName = Room::select('name')->where('id', '=',$room)->first();
+        $roomName = Room::select('room_name')->where('id', '=',$room)->first();
         
         return view('reservation.booking-form')->with('disabledRange', $disabledRange)->with('day', $day)->with('month', $month)->with('year', $year)->with('date', $date)->with('room', $room)->with('roomName', $roomName);
     }
@@ -113,8 +117,7 @@ class FormController extends Controller
             'end_hour' => 'required',
             'id_room' => 'required',
             'description' => 'required',
-            'file_name' => 'file | required | max: 1999 | mimes:pdf',
-            'file_name' =>  'mimes: jpg,jpeg,png'
+            'file_name' => 'file | required | max: 1999 | mimes:pdf,jpg,jpeg,png'
         ],
         [
             'file_name.mimes' => 'FIle Harus Berupa Gambar atau PDF',
@@ -159,7 +162,7 @@ class FormController extends Controller
         $reservations->file_name = $fileNameToStore;
         $reservations->save();
 
-        $room = Room::all(['id', 'name','table_capacity','chair_capacity']);
+        $room = Room::all(['id', 'room_name','table_capacity','chair_capacity']);
         return view('index')->with('success', 'Peminjaman Telah Disimpan')->with('room', $room);
     }
 

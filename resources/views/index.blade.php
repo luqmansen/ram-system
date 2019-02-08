@@ -145,7 +145,7 @@
 						console.log(data[i].date);
 						$('.kosong').attr('style', 'display:none');
 						$('.ada').attr('style', 'display:show');
-						$('#myTable').append($("<tr><td>"+ data[i].name + "</td>" +
+						$('#myTable').append($("<tr><td>"+ data[i].room_name + "</td>" +
 												"<td>" + data[i].start_hour + "</td>" + 
 												"<td>" + data[i].end_hour  + 
 												"</td> </tr>"));	
