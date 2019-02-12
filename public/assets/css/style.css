@@ -32,6 +32,8 @@ body {
 body.full-lg #wrapper, body.full-lg #main {
   margin: 0;
   padding: 0;
+  backface-visibility: visible;
+  background-color: #232c3b;
 }
 
 ul {
