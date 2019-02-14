@@ -8,6 +8,13 @@
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jquery-ui.css')}}" />
 <link rel="stylesheet" href={{URL::asset("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css")}} integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
 
+<!-- Font Awesome -->
+<link rel="stylesheet" href={{URL::asset("https://use.fontawesome.com/releases/v5.7.0/css/all.css")}}>
+<!-- Bootstrap core CSS -->
+<link href={{URL::asset("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.min.css")}} rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href={{URL::asset("https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.1/css/mdb.min.css")}} rel="stylesheet">
+
 <link rel="stylesheet" href={{URL::asset('assets/css/style.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/modal.css')}}>
 <link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
@@ -224,12 +231,56 @@ footer {
                                         <li><a href="#" class="change-today">Today</a></li>
 								@endif --}}
 							</ul>
-					<div class="tabbable">		
+				<!--Main Navigation-->
+					<nav class="navbar navbar-expand-lg navbar-dark default-color">	
+							<a class="navbar-brand" href="#"><strong>Navbar</strong></a>
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+								aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+							<div class="collapse navbar-collapse" id="navbarSupportedContent">
+								<ul class="navbar-nav mr-auto">
+									<li class="nav-item active">
+										<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">Features</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">Pricing</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#">Opinions</a>
+									</li>
+								</ul>
+								<ul class="navbar-nav nav-flex-icons">
+									<li class="nav-item">
+										<a class="nav-link"><i class="fab fa-facebook-f"></i></a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link"><i class="fab fa-twitter"></i></a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link"><i class="fab fa-instagram"></i></a>
+									</li>
+								</ul>
+							</div>
+						</nav>
+						<div class="col-md-2"></div>
+						<div class="col-md-8 col-sm-12">
+							{{-- MAIN CALENDAR CONTENT --}}
+						<div class="tabbable">		
 							<div class="tab-content">
 										<div id="calendar" ></div>				
 							</div>
 					</div>
+						</div>
+						<div class="col-md-2"></div>
+
+
+<!--Main Navigation-->
 					<!-- Footer -->
+					<div class="col-sm-12">
 					<footer>
 							<div class="container">
 									<div class="row">
@@ -321,7 +372,7 @@ footer {
 									</div>
 							</div>
 					</footer>
-					
+				</div>
 					<div class="copyright">
 							<div class="container">
 									<div class="col-md-12 col-sm-12">
@@ -387,8 +438,17 @@ footer {
 @endsection
 
 @section('customScript')
+<!-- JQuery -->
+{{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.1/js/mdb.min.js"></script>
+
 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script> --}}
 {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.js"></script>
 
