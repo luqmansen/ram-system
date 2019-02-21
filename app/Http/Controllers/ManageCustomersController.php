@@ -30,11 +30,15 @@ class ManageCustomersController extends Controller
      */
     public function index()
     {
-        $date = Carbon::now()->format("Y-m-d");
-        $datas = Reservation::get()->where('status','active')->all();
+        $date = Carbon::now('Asia/Jakarta')->format("Y-m-d");
+        $datas = Reservation::whereRaw('STATUS in ("active", "pending")')->get();
         foreach ($datas as $data){
-            if($data->date < $date){
+            if($data->date < $date && $data->status == 'active'){
                 $data->status = "completed";
+                $data->save();
+            }
+            if ($data->date < $date && $data->status == 'pending') {
+                $data->status = "cancelled";
                 $data->save();
             }
         }

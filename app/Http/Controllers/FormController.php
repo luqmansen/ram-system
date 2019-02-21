@@ -11,6 +11,7 @@ use Session;
 use Redirect;
 use DB;
 use Intervention\Image\Facades\Image;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class FormController extends Controller
 {
@@ -33,34 +34,53 @@ class FormController extends Controller
     public function create($day, $month, $year, $room)
     {
         // dd(Session::all());
-        $day = Crypt::decrypt($day);
-        $month = Crypt::decrypt($month);
-        $year = Crypt::decrypt($year);
-        $room = Crypt::decrypt($room);
+        $sess = Session::get('registration_step');
+        if(!(Session::has('registration_step')) || !( $sess == 1 || $sess == 2 ) ){
+            return Redirect::to('/');
+        }
+        else{
+            Session::forget('registration_step');
+            Session::put('registration_step', 2);
+        }
+
+        try {
+            $day = Crypt::decrypt($day);
+            $month = Crypt::decrypt($month);
+            $year = Crypt::decrypt($year);
+            $room = Crypt::decrypt($room);   
+        } catch (DecryptException $e) {
+            return redirect('/missing');
+        }
 
         return view('reservation.customer-input')->with('day', $day)->with('month', $month)->with('year', $year)->with('room', $room);
     }
 
     public function create1($day, $month, $year, $room)
     {
-        $day = Crypt::decrypt($day);
-        $month = Crypt::decrypt($month);
-        $year = Crypt::decrypt($year);
-        $room = Crypt::decrypt($room);
+        try {
+            $day = Crypt::decrypt($day);
+            $month = Crypt::decrypt($month);
+            $year = Crypt::decrypt($year);
+            $room = Crypt::decrypt($room);       
+        } catch (DecryptException $e) {
+            return redirect('/missing');
+        }
         
-        if(!Session::has('registration_step')) {
+        $sess = Session::get('registration_step');
+        if(!(Session::has('registration_step')) || !( $sess == 2 || $sess == 3 ) ){
             return Redirect::to('/');
         }
         else{
-            Session::flush('registration_step');
+            Session::forget('registration_step');
+            Session::put('registration_step', 3);
         }
 
         //fungsi untuk return array untuk restriction di date
-        $restriction =  Reservation::select('*')->get();
+        // $restriction =  Reservation::select('*')whereRaw('STATUS in ("active", "pending")')->get();
         $date = "$day-$month-$year";
         $dateISO = "$year-$month-$day";
         
-        $timerange = Reservation::select('start_hour', 'end_hour')->where([['date', '=', $dateISO], ['id_room', '=', $room]])->get();
+        $timerange = Reservation::select('start_hour', 'end_hour')->where([['date', '=', $dateISO], ['id_room', '=', $room]])->whereRaw('STATUS in ("active", "pending")')->get();
         $disabledTime = array();
         $disab = array();
         foreach ($timerange as $time) 
@@ -81,7 +101,6 @@ class FormController extends Controller
 
     public function store(Request $request ) //Method untuk store form data peminjam (orang)
     {
-        Session::put('registration_step', 1);
         $this->validate($request, [
             'name' => 'required',
             'telephone' => 'required',
@@ -101,7 +120,7 @@ class FormController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
         $room = $request->input('room');
-
+        
         $day = Crypt::encrypt($day);
         $month = Crypt::encrypt($month);
         $year = Crypt::encrypt($year);
@@ -112,6 +131,7 @@ class FormController extends Controller
 
     public function store1(Request $request) //Method untuk store form data peminjaman
     {
+        Session::flush('registration_step');
         $this->validate($request, [
             'start_hour' => 'required',
             'end_hour' => 'required',
@@ -163,7 +183,7 @@ class FormController extends Controller
         $reservations->save();
 
         $room = Room::all(['id', 'room_name','table_capacity','chair_capacity']);
-        return view('index')->with('success', 'Peminjaman Telah Disimpan')->with('room', $room);
+        return redirect('/');
     }
 
 }

@@ -18,14 +18,19 @@ Route::post('/', 'IndexController@modalpost');
 Route::post('/getDate', 'IndexController@getDate');
 
 // Route::get('/reservation/{day}/{month}/{year}', 'FormController@roomdetail');
+// Prevent back history middleware group
+Route::group(['middleware' => 'prevent-back-history'],function(){
+    Auth::routes();
 
-///////////////////////////////// Customer Form //////////////////////////////
-Route::get('/reservation/customerform/{day}/{month}/{year}/{room}', 'FormController@create');
-Route::post('/reservationinput/customerform', 'FormController@store');
+    ///////////////////////////////// Customer Form //////////////////////////////
+    Route::get('/reservation/customerform/{day}/{month}/{year}/{room}', 'FormController@create');
+    Route::post('/reservationinput/customerform', 'FormController@store');
 
-///////////////////////////////// Booking Form //////////////////////////////
-Route::get('/reservation/bookingform/{day}/{month}/{year}/{room}', 'Formcontroller@create1');
-Route::post('/reservationinput/bookingform', 'FormController@store1');
+    ///////////////////////////////// Booking Form //////////////////////////////
+    Route::get('/reservation/bookingform/{day}/{month}/{year}/{room}', 'Formcontroller@create1');
+    Route::post('/reservationinput/bookingform', 'FormController@store1');
+
+  });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::get('/home', 'HomeController@index');

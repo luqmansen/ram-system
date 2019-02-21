@@ -125,6 +125,7 @@
         'lang' : {am:"", pm:''},
         'minTime' : '7:00',
         'maxTime' : '17:00',
+        'step' : '60',
         'disableTimeRanges' : myRanges
         });
 
@@ -138,6 +139,11 @@
                 console.log('something here');
                 
         });
+ </script>
+ <script>
+         $('input#start_hour').on('click', function(){
+                $('ul.ui-timepicker-list:first  li:last').css('display','none');
+         });
  </script>
 
 

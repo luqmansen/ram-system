@@ -302,7 +302,6 @@
                                                                                 <td>{{$row->end_hour}}</td>
 																				<td class="center">
                                                                                     <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Detail" class="btn btn-success detail-button" data-effect="md-scale"><i class="fa fa-search"></i></button>
-                                                                                    <button type="button" value="{{$row->id}}" data-toggle="tooltip" title="Revive" class="btn btn-primary revive-button" data-effect="md-scale"><i class="fa fa-repeat"></i></button>
                                                                                 </td>
 																			</tr>
 																			@endforeach																			

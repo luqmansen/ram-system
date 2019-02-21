@@ -14,7 +14,7 @@ class AlterTableReservation extends Migration
     public function up()
     {
         Schema::table('reservations', function (Blueprint $table) {
-            $table->string('note')->default('-')->change();
+            $table->string('note')->default('-')->nullable()->change();
         });
     }
 

@@ -1,340 +1,310 @@
 @extends('layouts.mainLayout')
+@section('title')
+<title>Homepage | Room Reservation & Monitoring System</title>
+@endsection
 
+@section('customStyle')
+{{-- <link href={{URL::asset('maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')}} rel="stylesheet" id="bootstrap-css"> --}}
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jquery-ui.css')}}" />
+<link rel="stylesheet" href={{URL::asset("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css")}} integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+
+<link rel="stylesheet" href={{URL::asset('assets/css/style.css')}}>
+<link rel="stylesheet" href={{URL::asset('css/modal.css')}}>
+<link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
+
+<style>
+.more_info {
+  border-bottom: 1px dotted;
+  position: relative;
+}
+
+.more_info .title {
+  position: absolute;
+  top: 20px;
+  background: silver;
+  padding: 4px;
+  left: 0;
+  white-space: nowrap;
+}
+</style>
+@endsection
+
+@include('inc.messages')
 @section('bodyWrapper')
-<body class="leftMenu nav-collapse">
-<div id="wrapper">
-		<!--
-		/////////////////////////////////////////////////////////////////////////
-		//////////     HEADER  CONTENT     ///////////////
-		//////////////////////////////////////////////////////////////////////
-		-->
-		<div id="header">
-		
-				<div class="logo-area clearfix">
-						<a href="#" class="logo"></a>
+<body class="full-lg">
+<div id="wrapper" style="margin-left:0px">	
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id='myButton' style="display:none"></button>
+	<button type="button" class="btn btn-primary" onclick="CustomerPage(); return false" id='customerForm' style="display:none"></button>
+	<div id="main">
+			<div id="main">
+				<ul class="nav nav-tabs" data-provide="tabdrop">
+								{{-- @if (!Auth::guest())
+									<li><a href="#" class="change" data-change="prev"><i class="fa fa-chevron-left"></i></a></li>
+                                    <li><a href="#" class="change" data-change="next"><i class="fa fa-chevron-right"></i></a></li>
+                                        <li class="active"><a href="#" data-view="month" data-toggle="tab" class="change-view">Month</a></li>
+                                        <li><a href="#" data-view="agendaWeek" data-toggle="tab" class="change-view">Week</a></li>
+                                        <li><a href="#" data-view="agendaDay" data-toggle="tab" class="change-view">Day</a></li>
+                                        <li><a href="#" class="change-today">Today</a></li>
+								@endif --}}
+							</ul>
+					<div class="tabbable">		
+							<div class="tab-content">
+										<div id="calendar" ></div>				
+							</div>
+					</div>
 				</div>
-				<!-- //logo-area-->
 				
-				<div class="tools-bar">
-						<ul class="nav navbar-nav navbar-right tooltip-area">
-                            <li class="dropdown">
-										<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-											<em><strong>Hi</strong>, {{ Auth::user()->name }}    </em> <i class="dropdown-icon fa fa-angle-down"></i>
-										</a>
-										<ul class="dropdown-menu pull-right icon-right arrow">
-												<li><a href="{{ route('logout') }}"
-                                                        onclick="event.preventDefault();
-                                                                    document.getElementById('logout-form').submit();">
-                                                        Logout
-                                                    </a>
-
-                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                                        {{ csrf_field() }}
-                                                    </form></li>
-										</ul>
-										<!-- //dropdown-menu-->
-								</li>
-								<li class="visible-lg">
-									<a href="#" class="h-seperate fullscreen" data-toggle="tooltip" title="Full Screen" data-container="body"  data-placement="left">
-										<i class="fa fa-expand"></i>
-									</a>
-								</li>
-						</ul>
-				</div>
-				<!-- //tools-bar-->
-				
-		</div>
-		<!-- //header-->
+		<!-- The Modal -->
+		<div class="modal fade" id="myModal">
+		  <div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
 			
-		<!--
-		/////////////////////////////////////////////////////////////////////////
-		//////////     MAIN SHOW CONTENT     //////////
-		//////////////////////////////////////////////////////////////////////
-		-->
-		<div id="main">
-				
-				<div id="content">
-				
-						<div class="row">
-						
-								<div class="col-lg-8" ></div>
-								<!-- //content > row > col-lg-8 -->
-								@include('index')
-								<div class="col-lg-4"></div>
-								<!-- //content > row > col-lg-4 -->
+			  <!-- Modal Header -->
+			  <div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h1 class="modal-title">Detail Ruangan</h1>
+			  </div>
+			  
+			  <!-- Modal body -->
+			  <div class="modal-body" style="overflow-y: scroll">
+					<h3 class="card-title kosong" style='display:none'>Ruangan Belum Dipesan </h3>
+					<h4 class="card-text kosong" style='display:none;'>Segera reservasi sekarang.</h4>
+					<table class='ada' style='display:none; overflow-y:hidden'>
+							<thead>
+							<tr>
+								<th>Ruangan</th>
+								<th>Waktu Mulai</th>
+								<th>Waktu Selesai</th>
 								
-						</div>
-						<!-- //content > row-->
-						
+							</tr>
+							</thead>
+							<tbody id="myTable">
+
+						</tbody>
+					</table>
+			  </div>
+			  
+			  <!-- Modal footer -->
+			  <div class="modal-footer">
+				<div class="form-group">
+					<div class="container">
+							<h5 for="myID" style="float:left">Reservasi Ruangan : </h5>
+							<select class="form-control" name="id_room" id=idDropDown data-toggle="tooltip" data-placement="top" data-html="true">
+								@foreach ($room as $row)
+									<option class="more_info"value="{{$row->id}}" title="Kapasitas {{$row->chair_capacity}} (hanya kursi), {{$row->table_capacity}} (Kursi + Meja)  ">{{$row->room_name}}</option>
+								@endforeach
+							</select>
+						  </div>
 				</div>
-				<!-- //content-->
-				
-				
+				{{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+				<a id='lanjutkan'  role="button" class="btn btn-primary" style="color:white">Lanjutkan</a>
+			  </div>
+			</div>
+		  </div>
 		</div>
-		<!-- //main-->
 		
-		
-		
-		<!--
-		///////////////////////////////////////////////////////////////////
-		//////////     MODAL MESSAGES     //////////
-		///////////////////////////////////////////////////////////////
-		-->
-		<div id="md-messages" class="modal fade md-slideUp bg-theme-inverse" tabindex="-1" data-width="450">
-				<div class="modal-header bd-theme-inverse-darken">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-						<h4 class="modal-title"><i class="fa fa-inbox"></i> Inbox messages</h4>
-				</div>
-				<!-- //modal-header-->
-				<div class="modal-body" style="padding:0">
-						<div class="widget-im">
-								<ul>
-										<li>
-												<section  class="thumbnail-in">
-														<div class="widget-im-tools tooltip-area pull-right">
-																<span>
-																		<i class="fa fa-paperclip"></i>
-																</span>
-																<span>
-																		<i class="fa fa-reply-all"></i>
-																</span>
-																<span>
-																		<a href="javascript:void(0)" class="im-delete" data-toggle="tooltip" title="Delete"><i class="fa fa-trash-o"></i></a>
-																</span>
-																<span>
-																		<time datetime="2013-11-16">1 : 52 am</time>
-																</span>
-														</div>
-														<h4><a href="javascript:void(0)">Edlado Holder</a>
-														</h4>
-														<div class="im-thumbnail"><img alt="" src="assets/img/avatar2.png" /></div>
-														<label></label>
-														<div class="pre-text"> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div>
-												</section>
-												<div class="im-confirm-group">
-														<div class=" btn-group btn-group-justified">
-																<a class="btn btn-inverse im-confirm" href="javascript:void(0)" data-confirm="yes">YES.</a>
-																<a class="btn btn-theme im-confirm" href="javascript:void(0)" data-confirm="no">NO.</a>
-														</div>
-												</div>
-										</li>
-										<li>
-												<section  class="thumbnail-in">
-														<div class="widget-im-tools tooltip-area pull-right">
-																<span>
-																		<i class="fa fa-paperclip"></i>
-																</span>
-																<span>
-																		<a href="javascript:void(0)" class="im-delete" data-toggle="tooltip" title="Delete"><i class="fa fa-trash-o"></i></a>
-																</span>
-																<span>
-																		<time datetime="2013-11-16">12 : 00 pm</time>
-																</span>
-														</div>
-														<h4><a href="javascript:void(0)">Laine Franchi</a>
-														</h4>
-														<div class="im-thumbnail"><i class="glyphicon glyphicon-user"></i></div>
-														<div class="pre-text"> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div>
-												</section>
-												<div class="im-confirm-group">
-														<div class=" btn-group btn-group-justified">
-																<a class="btn btn-inverse im-confirm" href="javascript:void(0)" data-confirm="yes">YES.</a>
-																<a class="btn btn-theme im-confirm" href="javascript:void(0)" data-confirm="no">NO.</a>
-														</div>
-												</div>
-										</li>
-										<li>
-												<section class="thumbnail-in">
-														<div class="widget-im-tools tooltip-area pull-right">
-																<span>
-																		<a href="javascript:void(0)" class="im-delete" data-toggle="tooltip" title="Delete"><i class="fa fa-trash-o"></i></a>
-																</span>
-																<span>
-																		<time datetime="2013-11-16">4 : 45 pm</time>
-																</span>
-														</div>
-														<h4><a href="javascript:void(0)">Cinda Collar</a>
-														</h4>
-														<div class="im-thumbnail"><img alt="" src="assets/img/avatar.png" /></div>
-														<label data-color="theme"></label>
-														<div class="pre-text"> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </div>
-												</section>
-												<div class="im-confirm-group">
-														<div class=" btn-group btn-group-justified">
-																<a class="btn btn-inverse im-confirm" href="javascript:void(0)" data-confirm="yes">YES.</a>
-																<a class="btn btn-theme im-confirm" href="javascript:void(0)" data-confirm="no">NO.</a>
-														</div>
-												</div>
-										</li>
-								</ul>
-								<button class="btn btn-inverse btn-block btn-lg" title="See More"><i class="fa fa-plus"></i></button>
-						</div>
-						<!-- //widget-im-->
-				</div>
-				<!-- //modal-body-->
-		</div>
-		<!-- //modal-->
-		
-		
-		
-		<!--
-		//////////////////////////////////////////////////////////////////////////
-		//////////     MODAL NOTIFICATION     //////////
-		//////////////////////////////////////////////////////////////////////
-		-->
-		<div id="md-notification" class="modal fade md-stickTop bg-danger" tabindex="-1" data-width="500">
-				<div class="modal-header bd-danger-darken">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-						<h4 class="modal-title"><i class="fa fa-bell-o"></i> Notification</h4>
-				</div>
-				<!-- //modal-header-->
-				<div class="modal-body" style="padding:0">
-						<div class="widget-im notification">
-								<ul>
-										<li>
-												<section class="thumbnail-in">
-														<div class="widget-im-tools tooltip-area pull-right">
-																<span>
-																		<time class="timeago lasted" datetime="2014">when you opened the page</time>
-																</span>
-																<span>
-																		<a href="javascript:void(0)" class="im-action" data-toggle="tooltip" data-placement="left" title="Action"><i class="fa fa-keyboard-o"></i></a>
-																</span>
-														</div>
-														<h4>Your request approved</h4>
-														<div class="im-thumbnail bg-theme-inverse"><i class="fa fa-check"></i></div>
-														<div class="pre-text">One Button (click to remove this)</div>
-												</section>
-												<div class="im-confirm-group">
-														<div class=" btn-group btn-group-justified">
-																<a class="btn btn-inverse im-confirm" href="javascript:void(0)" data-confirm="accept">Accept.</a>
-														</div>
-												</div>
-										</li>
-										<li>
-												<section class="thumbnail-in">
-														<div class="widget-im-tools tooltip-area pull-right">
-																<span>
-																		<time class="timeago" datetime="2013-11-17T14:24:17Z">timeago</time>
-																</span>
-																<span>
-																		<a href="javascript:void(0)" class="im-action" data-toggle="tooltip" data-placement="left" title="Action"><i class="fa fa-keyboard-o"></i></a>
-																</span>
-														</div>
-														<h4>Dashboard new design!! you want to see now ? </h4>
-														<div class="im-thumbnail bg-theme"><i class="fa fa-bell-o"></i></div>
-														<div class="pre-text">Two Button (with link and click to close this) Lorem ipsum dolor sit amet, consectetur adipisicing elit, </div>
-												</section>
-												<div class="im-confirm-group">
-														<div class=" btn-group btn-group-justified">
-																<a class="btn btn-inverse" href="dashboard.html">Go Now.</a>
-																<a class="btn btn-theme im-confirm" href="javascript:void(0)" data-confirm="no">Later.</a>
-														</div>
-												</div>
-										</li>
-										<li>
-												<section class="thumbnail-in">
-														<div class="widget-im-tools tooltip-area pull-right">
-																<span>
-																		<time class="timeago" datetime="2013-11-17T01:24:17Z">timeago</time>
-																</span>
-																<span>
-																		<a href="javascript:void(0)" class="im-action" data-toggle="tooltip" data-placement="left" title="Action"><i class="fa fa-keyboard-o"></i></a>
-																</span>
-														</div>
-														<h4>Error 404 <small>( File not  found )</small></h4>
-														<div class="im-thumbnail bg-warning"><i class="fa fa-exclamation-triangle"></i></div>
-														<div class="pre-text">Two Button (click to  action and remove) </div>
-												</section>
-												<div class="im-confirm-group">
-														<div class=" btn-group btn-group-justified">
-																<a class="btn btn-inverse im-confirm" href="javascript:void(0)" data-confirm="accept">Accept.</a>
-																<a class="btn btn-theme im-confirm" href="javascript:void(0)" data-confirm="actionNow">Fixed now.</a>
-														</div>
-												</div>
-										</li>
-										<li>
-												<section class="thumbnail-in">
-														<div class="widget-im-tools tooltip-area pull-right">
-																<span>
-																		<time class="timeago" datetime="2013-09-17T09:24:17Z">timeago</time>
-																</span>
-																<span>
-																		<a href="javascript:void(0)" class="im-action" data-toggle="tooltip" data-placement="left" title="Action"><i class="fa fa-keyboard-o"></i></a>
-																</span>
-														</div>
-														<h4>Upgrade Premium ?</h4>
-														<div class="im-thumbnail bg-inverse">
-																<i class="fa fa-cogs"></i></div>
-														<div class="pre-text"> Three button (test action) </div>
-												</section>
-												<div class="im-confirm-group">
-														<div class=" btn-group btn-group-justified">
-																<a class="btn btn-inverse im-confirm" href="javascript:void(0)" data-confirm="actionNow">Now.</a>
-																<a class="btn btn-theme im-confirm" href="javascript:void(0)" data-confirm="no">Later.</a>
-																<a class="btn btn-danger im-confirm" href="javascript:void(0)" data-confirm="yes">Delete.</a>
-														</div>
-												</div>
-										</li>
-								</ul>
-						</div>
-						<!-- //widget-im-->
-				</div>
-				<!-- //modal-body-->
-		</div>
-		<!-- //modal-->
-		
-		
-		
-		<!--
-		//////////////////////////////////////////////////////////////
-		//////////     LEFT NAV MENU     //////////
-		///////////////////////////////////////////////////////////
-		-->
-		<nav id="menu"  data-search="close">
-				<ul>
-                        <li><a href="{{url('adminPanel')}}">
-							<span><i class="icon  fa fa-calendar"></i>  Reservations Calendar </a></span>
-						</li>
-				        <li><a href="{{url('manageRooms')}}">
-							<span><i class="icon  fa fa-square"></i>  Manage Rooms </a></span>
-						</li>
-						<li><a href="{{url('manageCustomers')}}">
-							<span><i class="icon  fa fa-users"></i> Manage Customers </a></span>
-						</li>
-						<li><a href="{{url('manageReservations')}}">
-							<span><i class="icon  fa fa-file-o"></i> Manage Reservations </a></span>
-						</li>
-						<li><a href="{{url('history')}}">
-							<span><i class="icon  fa fa-laptop"></i> View Log / History </a></span>
-						</li>
-				</ul>
-		</nav>
-		<!-- //nav left menu-->
-		
-		
-</div>
+	  </div>
 <!-- //wrapper-->
+
 @endsection
 
 @section('customScript')
-<!-- Script swipe navbar -->
+{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+{{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.js"></script>
+
 <script>
-	var touchWrapper=document.getElementById("wrapper");
-	if(touchWrapper){
-		var wrapper= Hammer( touchWrapper );
-		wrapper.on("dragright", function(event) {	// hold , tap, doubletap ,dragright ,swipe, swipeup, swipedown, swipeleft, swiperight
-			if((event.gesture.deltaY<=7 && event.gesture.deltaY>=-7) && event.gesture.deltaX >100){
-				if($(window).width() < 991 ){
-					$('nav#menu').trigger( 'open.mm' );
-				}	
-			}
-		});
-		wrapper.on("dragleft", function(event) {
-			if((event.gesture.deltaY<=5 && event.gesture.deltaY>=-5) && event.gesture.deltaX <-100){
-				$('nav#contact-right').trigger( 'open.mm' );
-			}
-		});
+	
+
+	$.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+
+	function clearModal()
+	{
+		$('#myTable').empty();
+	};
+
+	function CustomerPage()
+	{
+		alert('henlo');
 	}
+
+	function getDate(date) 
+	{
+		$.ajax({
+			type: 'POST',
+			url: "/",
+			data:{date:date},
+			cache:false,
+			ifModified:true,
+			success: function (data) {
+				
+				if(Array.isArray(data) && data.length){
+					for (i = 0; i< data.length; ++i)
+					{
+						console.log(data[i].date);
+						$('.kosong').attr('style', 'display:none');
+						$('.ada').attr('style', 'display:show');
+						$('#myTable').append($("<tr><td>"+ data[i].room_name + "</td>" +
+												"<td>" + data[i].start_hour + "</td>" + 
+												"<td>" + data[i].end_hour  + 
+												"</td> </tr>"));	
+					};
+				} 
+				else 
+				{
+					console.log('data not exist');
+					$('.ada').attr('style', 'display:none');
+					$('.kosong').attr('style', 'display:show');
+				}
+				$('#myButton').click();
+			}
+		});
+	};
+
+	$(document).ready(function() {	
+
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+
+	
+	   $('#calendar').fullCalendar({
+		   	dayClick: function(date, jsEvent, view) { 
+			var hari = date.getDate();
+			m = String(hari);
+			//Fungsi agar hari formatnya jadi 2 digit
+			if (m < 2){
+				$day = '0'+ hari; 
+			} else {
+				$day = hari;
+			};
+
+			var bulan = date.getMonth() +1;
+			n = String(bulan);
+			
+			if (n < 2){
+				$month = '0'+ bulan; 
+			} else {
+				$month = bulan;
+			};
+
+			$year = date.getFullYear();
+            // window.location.href= $url;
+			$date =   $year + '-' + $month + '-' + $day;
+			// console.log($date);
+			
+			clearModal();
+			$(document).ready(function(){
+				getDate($date);
+				});
+			$('#lanjutkan').on('click',function(){
+				$room = $("#idDropDown").val();
+				$.ajax(
+					{
+						type: 'POST',
+						url: "/getDate",
+						data:{
+							day:$day,
+							month:$month,
+							year:$year,
+							room:$room
+							},
+						cache:false,
+						ifModified:true,
+						success: function (data) 
+						{
+							// console.log(data[0]);
+							$url = "/reservation/customerform/"+data[0]+'/'+data[1]+'/'+data[2]+'/'+data[3];
+							window.location.href=$url;
+						}
+					});
+			});
+            },
+			
+            header: {
+				left: '',
+				center: 'title',
+				right: 'prev,next today'
+			},
+			editable: false,
+            droppable: true,
+            selectable: true,
+			contentHeight : 600,
+			height : 600, 
+            aspectRatio: 1.35,
+            axisFormat: 'h:mm',
+			columnFormat: {
+                month: 'ddd',    // Mon
+                week: 'ddd d', // Mon 7
+                day: 'dddd M/d',  // Monday 9/7
+                agendaDay: 'dddd d'
+            },
+            titleFormat: {
+                month: 'MMMM yyyy', // September 2009
+                week: "MMMM yyyy", // September 2009
+                day: 'MMMM yyyy'                  // Tuesday, Sep 8, 2009
+            },
+            // events: [
+            // {
+            // title  : 'Ruang A Penuh',
+            // start  : '2019-01-7'
+            // }
+            //         ]
+			});
+		$(".change-view").click(function(){
+			 var data=$(this).data();
+			$('#calendar').fullCalendar( 'changeView', data.view ); 
+		});
+		$(".change-today").click(function(){
+			$('#calendar').fullCalendar( 'today' );
+		});
+		$(".change").click(function(){
+			  var data=$(this).data();
+			$('#calendar').fullCalendar( data.change );
+		});
+		
+	});
+	// Pop over ruangan detail
+	$("[data-toggle=popover]").each(function(i, obj) 
+	{
+		$(this).popover(
+		{
+			html: true,
+			content: function() 
+				{
+				var id = $(this).attr('id')
+				return $('#popover-content-' + id).html();
+				}
+		});
+	});
+// close popover when click anywhere on page
+	$('html').on('click', function(e) 
+	{
+		if (typeof $(e.target).data('original-title') == 'undefined') 
+		{
+    		$('[data-original-title]').popover('hide');
+  		}
+	});
+	// i dont remember what is this, just leave it here
+	$(function()
+	{
+            $(".toggle-menu").remove();
+	});  
+	
+
+</script>
+
+<script>
+	$("option[title]").click(function () {
+		var $title = $(this).find(".title");
+		if (!$title.length) {
+			$(this).append('<option class="title">' + $(this).attr("title") + '</option>');
+		} else {
+			$title.remove();
+		}
+		});​
+	
 </script>
 @endsection
