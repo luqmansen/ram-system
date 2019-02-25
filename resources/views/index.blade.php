@@ -6,6 +6,8 @@
 @section('customStyle')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.0/src/js.cookie.min.js"></script>
+{{-- <link rel="stylesheet" href={{URL::asset('css/caledar.css')}}> --}}
+<link rel="stylesheet" href={{URL::asset('css/customFC.css')}}>
 
 <style>
 .more_info {
@@ -35,20 +37,28 @@
 #welcome-banner{
 	background-image: linear-gradient(to bottom right, #005b9f, #00849f);
 }
+table.ada tr th {
+	padding-right: 30px;
+	
+}
+table.ada tr:nth-child(even) {
+	background: #d3d3d3;
+	
+}
 </style>
 @endsection
 
 @section('contentBody')
 
-<body style="background-color:#f1f2f6">
-<div class="main-content hidden">
-		<nav class="navbar navbar-expand-lg transparent navbar-fixed-top" id="home-navbar"> 
-				<a class="navbar-brand" href="#">
+<body style="background-color:#f1f2f6;background-image:url(assets/img/BG-1.png);background-repeat:no-repeat;background-position:center bottom;background-size:100%;">
+<div class="main-content hidden" style="">
+		<nav class="navbar navbar-expand-lg navbar-fixed-top transparent" id="home-navbar"> 
+				<a class="navbar-brand" href="/">
 						<img src="assets/img/logo_.png" height="38" alt="Logo UCCP">
 					</a>
 					<i class="far fa-question-circle ml-auto" style="color:#005b9f;padding-right:10px;cursor:pointer;" data-toggle="tooltip" title="Klik untuk memunculkan bantuan"></i>
 		</nav>
-		<div class="container py-2 mt-3 hidden" id="welcome-banner" style="border-radius:10px;color:#ffffff">
+		<div class="container py-3 mt-3 hidden" id="welcome-banner" style="border-radius:10px;color:#ffffff">
 			<div class="row">
 				<div class="col-12 text-right">
 						<i style="cursor:pointer" id="welcome-banner-close" class="fas fa-times"></i>
@@ -86,96 +96,75 @@
 						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id='myButton' style="display:none"></button>
 						<button type="button" class="btn btn-primary" onclick="CustomerPage(); return false" id='customerForm' style="display:none"></button>
 								<div id="main">
-											<div class="row justify-content-center mt-5">
-												<div class="col-sm-12 col-md-10" style="background-color:#FFFFFF;border-radius:20px;">
+											<div class="row mt-5 mb-1">
+												<div class="col-12" >
+														{{-- <button id="my-today-button" class="btn" style="background-color:#FFF">Today</button> --}}
+														<i class="far fa-arrow-alt-circle-left fa-2x" id="my-prev-button" style="cursor:pointer"></i>
+														<i class="far fa-arrow-alt-circle-right fa-2x" id="my-next-button" style="cursor:pointer"></i>
+														<h3 id="externalTitle" style="display:inline-block;padding-left:20px; width:248px;"></h3>
+												</div>
+											</div>
+											{{-- row --}}
+											<div class="row justify-content-center align-items-center">
+												<div class="col-12" style="background-color:rgba(255, 255, 255, 0.7);border-radius:20px;">
 														<div class="tabbable">		
 																<div class="tab-content">
-																			<div id="calendar" ></div>				
+																	<div id="calendar" ></div>				
 																</div>
 														</div>
 												</div>
 											</div>
-											<div class="row">
-												<!-- Button trigger modal -->
-													<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="display:none">
-															Launch demo modal
-														</button>
-														
+											<div class="row">														
 														<!-- Modal -->
-														<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-															<div class="modal-dialog" role="document">
+														<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+															<div class="modal-dialog modal-dialog-centered" role="document">
 																<div class="modal-content">
 																	<div class="modal-header">
-																		<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+																		<h5 class="modal-title" id="exampleModalLabel">Detail Ruangan</h5>
 																		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 																			<span aria-hidden="true">&times;</span>
 																		</button>
 																	</div>
 																	<div class="modal-body">
-																		...
+																			<div class="alert alert-success kosong" style="display:none" role="alert">
+																					Belum ada peminjaman
+																				</div>
+																			<table class='ada' style='display:none;width:100%; overflow-y:hidden'>
+																					<thead>
+																					<tr>
+																						<th align="center">Ruangan</th>
+																						<th align="center">Waktu Mulai</th>
+																						<th align="center">Waktu Selesai</th>
+																						
+																					</tr>
+																					</thead>
+																					<tbody id="myTable">
+														
+																				</tbody>
+																			</table>
+																			<hr>
+																			<div class="container">
+																					<h5 for="myID" style="float:left">Reservasi Ruangan : </h5>
+																					<select class="form-control" name="id_room" id=idDropDown data-toggle="tooltip" data-placement="top" data-html="true">
+																						@foreach ($room as $row)
+																							<option class="more_info"value="{{$row->id}}" title="Kapasitas {{$row->chair_capacity}} (hanya kursi), {{$row->table_capacity}} (Kursi + Meja)  ">{{$row->room_name}}</option>
+																						@endforeach
+																					</select>
+																			</div>
 																	</div>
 																	<div class="modal-footer">
-																		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-																		<button type="button" class="btn btn-primary">Save changes</button>
+																			<button id='lanjutkan' type="button" class="btn btn-primary" data-dismiss="modal">Lanjutkan</button>
+																		</div>
+																		{{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+																		
+																		{{-- <a id='lanjutkan'  role="button" class="btn btn-primary" style="color:white">Lanjutkan</a> --}}
 																	</div>
 																</div>
 															</div>
 														</div>
 											</div>
 												<!-- The Modal -->
-							<div class="modal fade" id="myModal">
-									<div class="modal-dialog modal-dialog-centered">
-									<div class="modal-content">
-									
-										<!-- Modal Header -->
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<h1 class="modal-title">Detail Ruangan</h1>
-										</div>
-										
-										<!-- Modal body -->
-										<div class="modal-body" style="overflow-y: scroll">
-											<h3 class="card-title kosong" style='display:none'>Ruangan Belum Dipesan </h3>
-											<h4 class="card-text kosong" style='display:none;'>Segera reservasi sekarang.</h4>
-											<table class='ada' style='display:none; overflow-y:hidden'>
-													<thead>
-													<tr>
-														<th>Ruangan</th>
-														<th>Waktu Mulai</th>
-														<th>Waktu Selesai</th>
-														
-													</tr>
-													</thead>
-													<tbody id="myTable">
-						
-												</tbody>
-											</table>
-										</div>
-										
-										<!-- Modal footer -->
-										<div class="modal-footer">
-										<div class="form-group">
-											<div class="container">
-													<h5 for="myID" style="float:left">Reservasi Ruangan : </h5>
-													<select class="form-control" name="id_room" id=idDropDown data-toggle="tooltip" data-placement="top" data-html="true">
-														@foreach ($room as $row)
-															<option class="more_info"value="{{$row->id}}" title="Kapasitas {{$row->chair_capacity}} (hanya kursi), {{$row->table_capacity}} (Kursi + Meja)  ">{{$row->room_name}}</option>
-														@endforeach
-													</select>
-													</div>
-										</div>
-										{{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-										<a id='lanjutkan'  role="button" class="btn btn-primary" style="color:white">Lanjutkan</a>
-										</div>
-									</div>
-									</div>
-								</div>
-										
-									</div>
-									{{-- main --}}
-						
-					
-					<!-- //wrapper-->
+							<!-- //wrapper-->
 		</div>
 		</div>
 		<div class="container-fluid" style="background-color:#2f3542;">
@@ -207,8 +196,7 @@ $( document ).ready(function(){
 $( document ).ready(function(){
 	$('.main-content').removeClass('hidden');
 	$('#loading').addClass('hidden');
-	var fctitle = $('.fc-header-center').text();
-	console.log(fctitle);
+	// Cookies.remove('welcome-banner');
 });
 
 $('#welcome-banner-never').on('click', function(){
@@ -369,14 +357,18 @@ $( window ).resize(function() {
 			
             header: {
 				left: '',
-				center: 'title',
-				right: 'prev,next today'
+				center: '',
+				right: ''
 			},
+			viewRender: function(view) {
+        var title = view.title;
+        $("#externalTitle").html(title);
+      },
 			editable: false,
             droppable: true,
             selectable: true,
-			contentHeight : 600,
-			height : 600, 
+			contentHeight : 800,
+			height : 800, 
             aspectRatio: 1.35,
             axisFormat: 'h:mm',
 			columnFormat: {
@@ -397,6 +389,15 @@ $( window ).resize(function() {
             // }
             //         ]
 			});
+		$('#my-prev-button').click(function() {
+			$('#calendar').fullCalendar('prev');
+		});
+		$('#my-next-button').click(function() {
+			$('#calendar').fullCalendar('next');
+		});
+		$('#my-today-button').click(function() {
+			$('#calendar').fullCalendar('today');
+		});
 		$(".change-view").click(function(){
 			 var data=$(this).data();
 			$('#calendar').fullCalendar( 'changeView', data.view ); 

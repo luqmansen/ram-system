@@ -131,7 +131,6 @@ class FormController extends Controller
 
     public function store1(Request $request) //Method untuk store form data peminjaman
     {
-        Session::flush('registration_step');
         $this->validate($request, [
             'start_hour' => 'required',
             'end_hour' => 'required',
@@ -140,12 +139,12 @@ class FormController extends Controller
             'file_name' => 'file | required | max: 1999 | mimes:pdf,jpg,jpeg,png'
         ],
         [
-            'file_name.mimes' => 'FIle Harus Berupa Gambar atau PDF',
-            'file_name.max' => 'FIle Maksimal Berukuran 2MB',
+            'file_name.mimes' => 'File Harus Berupa Gambar atau PDF',
+            'file_name.max' => 'File Maksimal Berukuran 2MB',
             'file_name.required' => 'Harap Upload Surat Peminjaman',
             'description.required' => 'Harap Isikan Deskripsi Peminjaman Ruangan',
-            'start_hour.required' => 'Harap Isikan Waktu Mulai',
-            'end_hour.required' => 'Harap Isikan Waktu Selesai'
+            'start_hour.required' => 'Harap Isikan Jam Mulai',
+            'end_hour.required' => 'Harap Isikan Jam Selesai'
         ]
         );
         
@@ -183,6 +182,7 @@ class FormController extends Controller
         $reservations->save();
 
         $room = Room::all(['id', 'room_name','table_capacity','chair_capacity']);
+        Session::flush('registration_step');
         return redirect('/');
     }
 
