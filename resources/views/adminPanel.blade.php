@@ -1,16 +1,14 @@
 @extends('layouts.mainLayout')
+
 @section('title')
-<title>Homepage | Room Reservation & Monitoring System</title>
+<title>Reservation Calendar | Room Reservation & Monitoring System</title>
 @endsection
 
 @section('customStyle')
-{{-- <link href={{URL::asset('maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css')}} rel="stylesheet" id="bootstrap-css"> --}}
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/jquery-ui.css')}}" />
-<link rel="stylesheet" href={{URL::asset("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css")}} integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
-
-<link rel="stylesheet" href={{URL::asset('assets/css/style.css')}}>
-<link rel="stylesheet" href={{URL::asset('css/modal.css')}}>
-<link rel="stylesheet" href={{URL::asset('css/caledar.css')}}>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.0/src/js.cookie.min.js"></script>
+{{-- <link rel="stylesheet" href={{URL::asset('css/caledar.css')}}> --}}
+<link rel="stylesheet" href={{URL::asset('css/customFC.css')}}>
 
 <style>
 .more_info {
@@ -26,94 +24,296 @@
   left: 0;
   white-space: nowrap;
 }
+
+.home-navbar.scrolled {
+	background-color:#ffffff;
+	border-bottom:5px solid #005b9f;
+}
+.hidden{
+	display: none;
+}
+#welcome-banner-never:hover{
+	text-decoration: underline;
+}
+#welcome-banner{
+	background-image: linear-gradient(to bottom right, #005b9f, #00849f);
+}
+table.ada tr th {
+	padding-right: 30px;
+	
+}
+table.ada tr:nth-child(even) {
+	background: #d3d3d3;
+	
+}
 </style>
+
 @endsection
 
-@include('inc.messages')
 @section('bodyWrapper')
-<body class="full-lg">
-<div id="wrapper" style="margin-left:0px">	
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id='myButton' style="display:none"></button>
-	<button type="button" class="btn btn-primary" onclick="CustomerPage(); return false" id='customerForm' style="display:none"></button>
-	<div id="main">
-			<div id="main">
-				<ul class="nav nav-tabs" data-provide="tabdrop">
-								{{-- @if (!Auth::guest())
-									<li><a href="#" class="change" data-change="prev"><i class="fa fa-chevron-left"></i></a></li>
-                                    <li><a href="#" class="change" data-change="next"><i class="fa fa-chevron-right"></i></a></li>
-                                        <li class="active"><a href="#" data-view="month" data-toggle="tab" class="change-view">Month</a></li>
-                                        <li><a href="#" data-view="agendaWeek" data-toggle="tab" class="change-view">Week</a></li>
-                                        <li><a href="#" data-view="agendaDay" data-toggle="tab" class="change-view">Day</a></li>
-                                        <li><a href="#" class="change-today">Today</a></li>
-								@endif --}}
-							</ul>
-					<div class="tabbable">		
-							<div class="tab-content">
-										<div id="calendar" ></div>				
-							</div>
-					</div>
-				</div>
-				
-		<!-- The Modal -->
-		<div class="modal fade" id="myModal">
-		  <div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-			
-			  <!-- Modal Header -->
-			  <div class="modal-header">
-				  <button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h1 class="modal-title">Detail Ruangan</h1>
-			  </div>
-			  
-			  <!-- Modal body -->
-			  <div class="modal-body" style="overflow-y: scroll">
-					<h3 class="card-title kosong" style='display:none'>Ruangan Belum Dipesan </h3>
-					<h4 class="card-text kosong" style='display:none;'>Segera reservasi sekarang.</h4>
-					<table class='ada' style='display:none; overflow-y:hidden'>
-							<thead>
-							<tr>
-								<th>Ruangan</th>
-								<th>Waktu Mulai</th>
-								<th>Waktu Selesai</th>
-								
-							</tr>
-							</thead>
-							<tbody id="myTable">
-
-						</tbody>
-					</table>
-			  </div>
-			  
-			  <!-- Modal footer -->
-			  <div class="modal-footer">
-				<div class="form-group">
-					<div class="container">
-							<h5 for="myID" style="float:left">Reservasi Ruangan : </h5>
-							<select class="form-control" name="id_room" id=idDropDown data-toggle="tooltip" data-placement="top" data-html="true">
-								@foreach ($room as $row)
-									<option class="more_info"value="{{$row->id}}" title="Kapasitas {{$row->chair_capacity}} (hanya kursi), {{$row->table_capacity}} (Kursi + Meja)  ">{{$row->room_name}}</option>
-								@endforeach
-							</select>
-						  </div>
-				</div>
-				{{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-				<a id='lanjutkan'  role="button" class="btn btn-primary" style="color:white">Lanjutkan</a>
-			  </div>
-			</div>
-		  </div>
-		</div>
+<body class="leftMenu nav-collapse">
+<div id="wrapper">
+		<!--
+		/////////////////////////////////////////////////////////////////////////
+		//////////     HEADER  CONTENT     ///////////////
+		//////////////////////////////////////////////////////////////////////
+		-->
+		<div id="header">
 		
-	  </div>
-<!-- //wrapper-->
+				<div class="logo-area clearfix">
+						<a href="#" class="logo"></a>
+				</div>
+				<!-- //logo-area-->
+				
+				<div class="tools-bar">
+						<ul class="nav navbar-nav nav-main-xs">
+								<li><a href="#menu" class="icon-toolsbar"><i class="fa fa-bars"></i></a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right tooltip-area">
+                            <li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+											<em><strong>Hi</strong>, {{ Auth::user()->name }}    </em> <i class="dropdown-icon fa fa-angle-down"></i>
+										</a>
+										<ul class="dropdown-menu pull-right icon-right arrow">
+												<li><a href="{{ route('logout') }}"
+                                                        onclick="event.preventDefault();
+                                                                    document.getElementById('logout-form').submit();">
+                                                        Logout
+                                                    </a>
 
+                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                        {{ csrf_field() }}
+                                                    </form></li>
+										</ul>
+										<!-- //dropdown-menu-->
+								</li>
+								<li class="visible-lg">
+									<a href="#" class="h-seperate fullscreen" data-toggle="tooltip" title="Full Screen" data-container="body"  data-placement="left">
+										<i class="fa fa-expand"></i>
+									</a>
+								</li>
+						</ul>
+				</div>
+				<!-- //tools-bar-->
+				
+		</div>
+		<!-- //header-->
+
+        <!--
+		/////////////////////////////////////////////////////////////////////////
+		//////////     MAIN SHOW CONTENT     //////////
+		//////////////////////////////////////////////////////////////////////
+		-->
+		<div id="main">
+				
+				<div id="content">
+				
+						<div class="row mt-5 mb-1">
+								<div class="col-12" style="padding-bottom:20px;" >
+										{{-- <button id="my-today-button" class="btn" style="background-color:#FFF">Today</button> --}}
+										<i class="fa fa-arrow-circle-left fa-2x" id="my-prev-button" style="cursor:pointer"></i>
+										<i class="fa fa-arrow-circle-right fa-2x" id="my-next-button" style="cursor:pointer"></i>
+										<h3 id="externalTitle" style="display:inline-block;padding-left:20px; width:248px;"></h3>
+								</div>
+							</div>
+							{{-- row --}}
+							<div class="row justify-content-center align-items-center">
+								<div class="col-12" style="background-color:rgba(255, 255, 255, 0.7);border-radius:20px;">
+										<div class="tabbable">		
+												<div class="tab-content">
+													<div id="calendar" ></div>				
+												</div>
+										</div>
+								</div>
+							</div>
+							<div class="row">														
+										<!-- Modal -->
+										<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">Detail Ruangan</h5>
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">
+															<div class="alert alert-success kosong" style="display:none" role="alert">
+																	Belum ada peminjaman
+																</div>
+															<table class='ada' style='display:none;width:100%; overflow-y:hidden'>
+																	<thead>
+																	<tr>
+																		<th align="center">Ruangan</th>
+																		<th align="center">Waktu Mulai</th>
+																		<th align="center">Waktu Selesai</th>
+																		
+																	</tr>
+																	</thead>
+																	<tbody id="myTable">
+										
+																</tbody>
+															</table>
+															<hr>
+															<div class="container">
+																	<h5 for="myID" style="float:left">Reservasi Ruangan : </h5>
+																	<select class="form-control" name="id_room" id=idDropDown data-toggle="tooltip" data-placement="top" data-html="true">
+																		@foreach ($room as $row)
+																			<option class="more_info"value="{{$row->id}}" title="Kapasitas {{$row->chair_capacity}} (hanya kursi), {{$row->table_capacity}} (Kursi + Meja)  ">{{$row->room_name}}</option>
+																		@endforeach
+																	</select>
+															</div>
+													</div>
+													<div class="modal-footer">
+															<button id='lanjutkan' type="button" class="btn btn-primary" data-dismiss="modal">Lanjutkan</button>
+														</div>
+														{{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+														
+														{{-- <a id='lanjutkan'  role="button" class="btn btn-primary" style="color:white">Lanjutkan</a> --}}
+													</div>
+												</div>
+											</div>
+										</div>
+							</div>
+								<!-- The Modal -->
+						
+				</div>
+				<!-- //content-->
+
+				<footer id="site-footer" class="fixed hidden-xs">
+					<section>		
+				
+					<!-- START Copyright -->
+					<div id="copyright">
+						<p>PT UCCP All Rights Reserved 2019</p>
+					</div>
+					<!-- END Copyright -->
+					
+					</section>
+				</footer>
+				
+				
+		</div>
+		<!-- //main-->
+		
+		<!--
+		//////////////////////////////////////////////////////////////
+		//////////     LEFT NAV MENU     //////////
+		///////////////////////////////////////////////////////////
+		-->
+		<nav id="menu"  data-search="close">
+				<ul>
+                        <li><a href="{{url('adminPanel')}}">
+							<span><i class="icon  fa fa-calendar"></i>  Reservations Calendar </a></span>
+						</li>
+				        <li><a href="{{url('manageRooms')}}">
+							<span><i class="icon  fa fa-square"></i>  Manage Rooms </a></span>
+						</li>
+						<li><a href="{{url('manageCustomers')}}">
+							<span><i class="icon  fa fa-users"></i> Manage Customers </a></span>
+						</li>
+						<li><a href="{{url('manageReservations')}}">
+							<span><i class="icon  fa fa-file-o"></i> Manage Reservations </a></span>
+						</li>
+						<li><a href="{{url('history')}}">
+							<span><i class="icon  fa fa-laptop"></i> View Log / History </a></span>
+						</li>
+				</ul>
+		</nav>
+		<!-- //nav left menu-->
+
+		
+		
+		
+</div>
+<!-- //wrapper-->
 @endsection
 
 @section('customScript')
+<!-- Script swipe navbar -->
+<script>
+	var touchWrapper=document.getElementById("wrapper");
+	if(touchWrapper){
+		var wrapper= Hammer( touchWrapper );
+		wrapper.on("dragright", function(event) {	// hold , tap, doubletap ,dragright ,swipe, swipeup, swipedown, swipeleft, swiperight
+			if((event.gesture.deltaY<=7 && event.gesture.deltaY>=-7) && event.gesture.deltaX >100){
+				if($(window).width() < 991 ){
+					$('nav#menu').trigger( 'open.mm' );
+				}	
+			}
+		});
+		wrapper.on("dragleft", function(event) {
+			if((event.gesture.deltaY<=5 && event.gesture.deltaY>=-5) && event.gesture.deltaX <-100){
+				$('nav#contact-right').trigger( 'open.mm' );
+			}
+		});
+	}
+</script>
 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
 {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.js"></script>
+<script>
 
+$( document ).ready(function(){
+	var wb = Cookies.get('welcome-banner');
+	if(wb != 1){
+		$('#welcome-banner').removeClass('hidden');
+	}
+});
+$( document ).ready(function(){
+	$('.main-content').removeClass('hidden');
+	$('#loading').addClass('hidden');
+	// Cookies.remove('welcome-banner');
+});
+
+$('#welcome-banner-never').on('click', function(){
+	Cookies.set('welcome-banner', '1', { expires: 30 });
+	$('#welcome-banner').hide();
+});
+$('#welcome-banner-close').on('click', function(){
+	$('#welcome-banner').hide();
+});
+</script>
+
+<script>
+var widths = $('body').width();
+if (widths <= 767){
+	$('#footer-copyright').addClass('text-center');
+		$('#footer-link').addClass('text-center').css('padding-bottom','10px');
+		$('#footer-link').removeClass('text-right');
+}
+
+$( window ).resize(function() {
+  var width = $('body').width();
+	if (width >= 768){
+		$('#footer-copyright').removeClass('text-center');
+		$('#footer-link').removeClass('text-center').css('padding-bottom','10px');
+		$('#footer-link').addClass('text-right');
+	} else{
+		$('#footer-copyright').addClass('text-center');
+		$('#footer-link').addClass('text-center').css('padding-bottom','10px');
+		$('#footer-link').removeClass('text-right');
+	}
+});
+
+</script>
+
+<!-- Script tooltip -->
+<script>
+		$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();   
+		});
+	</script>
+<script>
+	$(function () {
+  $(document).scroll(function () {
+	  var $nav = $("#home-navbar");
+		$nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+		$nav.toggleClass('transparent', $(this).scrollTop() > $nav.height());
+	});
+});
+</script>
 <script>
 	
 
@@ -225,14 +425,18 @@
 			
             header: {
 				left: '',
-				center: 'title',
-				right: 'prev,next today'
+				center: '',
+				right: ''
 			},
+			viewRender: function(view) {
+        var title = view.title;
+        $("#externalTitle").html(title);
+      },
 			editable: false,
             droppable: true,
             selectable: true,
-			contentHeight : 600,
-			height : 600, 
+			contentHeight : 800,
+			height : 800, 
             aspectRatio: 1.35,
             axisFormat: 'h:mm',
 			columnFormat: {
@@ -253,6 +457,15 @@
             // }
             //         ]
 			});
+		$('#my-prev-button').click(function() {
+			$('#calendar').fullCalendar('prev');
+		});
+		$('#my-next-button').click(function() {
+			$('#calendar').fullCalendar('next');
+		});
+		$('#my-today-button').click(function() {
+			$('#calendar').fullCalendar('today');
+		});
 		$(".change-view").click(function(){
 			 var data=$(this).data();
 			$('#calendar').fullCalendar( 'changeView', data.view ); 
@@ -307,4 +520,16 @@
 		});​
 	
 </script>
+@if  (session('status'))
+<script>
+Swal({
+		 type: 'success',
+		 title: 'Berhasil',
+		 text: 'Tiket berhasil dimasukan!',
+		 showConfirmButton: false,
+		 timer: 1500
+ });
+</script>
+@endif
+
 @endsection

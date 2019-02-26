@@ -183,7 +183,7 @@ class FormController extends Controller
 
         $room = Room::all(['id', 'room_name','table_capacity','chair_capacity']);
         Session::flush('registration_step');
-        return redirect('/');
+        return redirect('/')->with('status', 'success');
     }
 
 }

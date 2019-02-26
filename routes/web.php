@@ -33,7 +33,7 @@ Route::group(['middleware' => 'prevent-back-history'],function(){
   });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-Route::get('/home', 'HomeController@index');
+// Route::get('/home', 'HomeController@index');
 Route::get('/admin', 'AdminController@index');
 Route::get('/admin/history', 'AdminController@history');
 

@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 use App\Room;
 use Carbon\Carbon;
 use App\Reservation;
 use DB;
+use Session;
 
 use Illuminate\Http\Request;
 
@@ -34,11 +36,13 @@ class AdminPanelController extends Controller
             }
         }
 
-        $room = Room::select('id', 'room_name', 'table_capacity','chair_capacity')->get();
-        // $room = Room::all(['id', 'room_name','table_capacity','chair_capacity']);
-        // dd($room[0]->id);
-        
-        
-        return view('hoobla')->with('room', $room) ;
+        if(Session::has('registration_step')){
+            Session::forget('registration_step');
+        }
+        Session::put('registration_step', 1);
+        // $room = Room::select('id', 'room_name', 'table_capacity','chair_capacity')->get();
+        $room = Room::all(['id', 'room_name','table_capacity','chair_capacity']);
+        // dd($room);
+            return view('adminPanel')->with('room',$room);
     }
 }

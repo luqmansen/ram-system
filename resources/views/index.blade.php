@@ -169,7 +169,7 @@ table.ada tr:nth-child(even) {
 		</div>
 		<div class="container-fluid" style="background-color:#2f3542;">
 			<div class="row pt-3 mt-5" >
-				<div class="col-md-6" id="footer-copyright"><p style="color:#dfe4ea;font-size:14px;">PT UCCP All Rights Reserved 2018</p></div>
+				<div class="col-md-6" id="footer-copyright"><p style="color:#dfe4ea;font-size:14px;">PT UCCP All Rights Reserved 2019</p></div>
 				<div class="col-md-6 text-right" id="footer-link"><a href="https://uccprima.id" style="color:#dfe4ea;font-size:14px;padding-bottom:3px"	>PT Undip Citra Ciptaprima Main Site <i class="fas fa-external-link-square-alt"></i></a></div>
 			</div>
 		</div>
@@ -452,4 +452,15 @@ $( window ).resize(function() {
 		});​
 	
 </script>
+@if  (session('status'))
+<script>
+Swal({
+		 type: 'success',
+		 title: 'Berhasil',
+		 text: 'Tiket berhasil dimasukan!',
+		 showConfirmButton: false,
+		 timer: 1500
+ });
+</script>
+@endif
 @endsection

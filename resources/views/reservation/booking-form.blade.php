@@ -156,6 +156,7 @@
         var div = document.getElementById("dom-target");
         var disabledRanges = div.textContent;
         var myRanges = JSON.parse(disabledRanges);
+        console.log(disabledRanges);
         
         $('#timeOnlyExample .time').timepicker({
         'showDuration': true,
