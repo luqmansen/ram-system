@@ -6090,7 +6090,7 @@ body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom
 }
 
 .modal {
-/*   background-color: #ffffff; */
+  background-color: #ffffff;
   background-clip: padding-box;
   border-radius: 0;
   bottom: auto;
@@ -9429,7 +9429,7 @@ footer#site-footer article p {
 
   .site-logo {
     background: url(../img/logo_2x.png) no-repeat center center;
-    background-size: 75px 75px;
+    background-size: 207px 63px;
   }
 }
 div.color-themes {

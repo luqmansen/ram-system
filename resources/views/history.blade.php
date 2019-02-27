@@ -368,6 +368,18 @@
 				</ul>
 		</nav>
 		<!-- //nav left menu-->
+
+		<footer id="site-footer" class="fixed hidden-xs">
+			<section>		
+		
+			<!-- START Copyright -->
+			<div id="copyright">
+				<p>PT UCCP All Rights Reserved 2019</p>
+			</div>
+			<!-- END Copyright -->
+			
+			</section>
+		</footer>
 		
 		
 </div>

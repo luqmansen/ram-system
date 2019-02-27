@@ -90,7 +90,7 @@
 		-->
 		<nav id="menu"  data-search="close">
 				<ul>
-                        <li><a href="{{url('home')}}">
+                        <li><a href="{{url('adminPanel')}}">
 							<span><i class="icon  fa fa-calendar"></i>  Reservations Calendar </a></span>
 						</li>
 				        <li><a href="{{url('manageRooms')}}">

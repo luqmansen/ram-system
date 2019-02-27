@@ -1,3 +1,7 @@
+.ui-timepicker-list:first li:last-child{
+	display: none !important;
+}
+
 .ui-timepicker-wrapper {
 	overflow-y: auto;
 	max-height: 150px;

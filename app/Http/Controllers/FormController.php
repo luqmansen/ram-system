@@ -11,6 +11,7 @@ use Session;
 use Redirect;
 use DB;
 use Intervention\Image\Facades\Image;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class FormController extends Controller
 {
@@ -33,30 +34,53 @@ class FormController extends Controller
     public function create($day, $month, $year, $room)
     {
         // dd(Session::all());
-        $day = Crypt::decrypt($day);
-        $month = Crypt::decrypt($month);
-        $year = Crypt::decrypt($year);
-        $room = Crypt::decrypt($room);
+        $sess = Session::get('registration_step');
+        if(!(Session::has('registration_step')) || !( $sess == 1 || $sess == 2 ) ){
+            return Redirect::to('/');
+        }
+        else{
+            Session::forget('registration_step');
+            Session::put('registration_step', 2);
+        }
+
+        try {
+            $day = Crypt::decrypt($day);
+            $month = Crypt::decrypt($month);
+            $year = Crypt::decrypt($year);
+            $room = Crypt::decrypt($room);   
+        } catch (DecryptException $e) {
+            return redirect('/missing');
+        }
 
         return view('reservation.customer-input')->with('day', $day)->with('month', $month)->with('year', $year)->with('room', $room);
     }
 
     public function create1($day, $month, $year, $room)
     {
-        $day = Crypt::decrypt($day);
-        $month = Crypt::decrypt($month);
-        $year = Crypt::decrypt($year);
-        $room = Crypt::decrypt($room);
-        
-        if(!Session::has('registration_step') || Session::get('registration_step') != 1) {
-            return Redirect::to('/reservation/customerform/'.$day.'/'.$month.'/'.$year.'/'.$room.'');
+        try {
+            $day = Crypt::decrypt($day);
+            $month = Crypt::decrypt($month);
+            $year = Crypt::decrypt($year);
+            $room = Crypt::decrypt($room);       
+        } catch (DecryptException $e) {
+            return redirect('/missing');
         }
+        
+        $sess = Session::get('registration_step');
+        if(!(Session::has('registration_step')) || !( $sess == 2 || $sess == 3 ) ){
+            return Redirect::to('/');
+        }
+        else{
+            Session::forget('registration_step');
+            Session::put('registration_step', 3);
+        }
+
         //fungsi untuk return array untuk restriction di date
-        $restriction =  Reservation::select('*')->get();
+        // $restriction =  Reservation::select('*')whereRaw('STATUS in ("active", "pending")')->get();
         $date = "$day-$month-$year";
         $dateISO = "$year-$month-$day";
         
-        $timerange = Reservation::select('start_hour', 'end_hour')->where([['date', '=', $dateISO], ['id_room', '=', $room]])->get();
+        $timerange = Reservation::select('start_hour', 'end_hour')->where([['date', '=', $dateISO], ['id_room', '=', $room]])->whereRaw('STATUS in ("active", "pending")')->get();
         $disabledTime = array();
         $disab = array();
         foreach ($timerange as $time) 
@@ -77,7 +101,6 @@ class FormController extends Controller
 
     public function store(Request $request ) //Method untuk store form data peminjam (orang)
     {
-        Session::put('registration_step', 1);
         $this->validate($request, [
             'name' => 'required',
             'telephone' => 'required',
@@ -97,7 +120,7 @@ class FormController extends Controller
         $month = $request->input('month');
         $year = $request->input('year');
         $room = $request->input('room');
-
+        
         $day = Crypt::encrypt($day);
         $month = Crypt::encrypt($month);
         $year = Crypt::encrypt($year);
@@ -113,16 +136,15 @@ class FormController extends Controller
             'end_hour' => 'required',
             'id_room' => 'required',
             'description' => 'required',
-            'file_name' => 'file | required | max: 1999 | mimes:pdf',
-            'file_name' =>  'mimes: jpg,jpeg,png'
+            'file_name' => 'file | required | max: 1999 | mimes:pdf,jpg,jpeg,png'
         ],
         [
-            'file_name.mimes' => 'FIle Harus Berupa Gambar atau PDF',
-            'file_name.max' => 'FIle Maksimal Berukuran 2MB',
+            'file_name.mimes' => 'File Harus Berupa Gambar atau PDF',
+            'file_name.max' => 'File Maksimal Berukuran 2MB',
             'file_name.required' => 'Harap Upload Surat Peminjaman',
             'description.required' => 'Harap Isikan Deskripsi Peminjaman Ruangan',
-            'start_hour.required' => 'Harap Isikan Waktu Mulai',
-            'end_hour.required' => 'Harap Isikan Waktu Selesai'
+            'start_hour.required' => 'Harap Isikan Jam Mulai',
+            'end_hour.required' => 'Harap Isikan Jam Selesai'
         ]
         );
         
@@ -159,8 +181,9 @@ class FormController extends Controller
         $reservations->file_name = $fileNameToStore;
         $reservations->save();
 
-        $room = Room::all(['id', 'name','table_capacity','chair_capacity']);
-        return view('index')->with('success', 'Peminjaman Telah Disimpan')->with('room', $room);
+        $room = Room::all(['id', 'room_name','table_capacity','chair_capacity']);
+        Session::flush('registration_step');
+        return redirect('/')->with('status', 'success');
     }
 
 }

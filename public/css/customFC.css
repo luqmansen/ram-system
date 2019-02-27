@@ -1,0 +1,42 @@
+
+.fc-first th{
+    font-family: 'Staatliches', cursive;
+    /* font-family: 'Roboto', sans-serif; */
+    background:transparent !important;
+    color:#005b9f;
+    font-size:18px !important;
+    font-weight:500 !important;
+    font-style: bold;
+ 
+}
+/* .fc-state-highlight > div > div.fc-day-number{
+    background-color: blue;
+    color: #FFFFFF;
+    border-radius: 50%;
+    margin: 4px;
+}
+
+.fc-week .fc-day.fc-state-highlight:hover .fc-day-number{
+    background-color:  #ff3b30;
+} */
+
+.fc-state-highlight {
+    background: #005b9f !important;
+    color: #FFF
+
+}
+
+.fc-border-separate .fc-week .fc-first{
+    border-left: 0 !important;
+ }
+ .fc-border-separate .fc-week .fc-last{
+    border-right: 0 !important;
+ }
+
+ tbody:first-child{
+     display: none;
+ }
+ .fc-week .fc-day > div .fc-day-number{
+    /* color: #7389e6;        */
+    font-size: 18px !important;
+ }

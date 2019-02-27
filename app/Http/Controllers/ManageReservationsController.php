@@ -30,11 +30,15 @@ class ManageReservationsController extends Controller
      */
     public function index()
     {
-        $date = Carbon::now()->format("Y-m-d");
-        $datas = Reservation::get()->where('status','active')->all();
+        $date = Carbon::now('Asia/Jakarta')->format("Y-m-d");
+        $datas = Reservation::whereRaw('STATUS in ("active", "pending")')->get();
         foreach ($datas as $data){
-            if($data->date < $date){
+            if($data->date < $date && $data->status == 'active'){
                 $data->status = "completed";
+                $data->save();
+            }
+            if ($data->date < $date && $data->status == 'pending') {
+                $data->status = "cancelled";
                 $data->save();
             }
         }
@@ -120,16 +124,6 @@ class ManageReservationsController extends Controller
         $reservation = Reservation::find($request->id);
 
         $reservation->status = 'cancelled';
-
-        $reservation->save();
-        $response = 'ok';
-        return Response::json($response);
-    }
-    public function revive(Request $request){
-        $id = $request->id;
-        $reservation = Reservation::find($request->id);
-
-        $reservation->status = 'pending';
 
         $reservation->save();
         $response = 'ok';
